@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="WHM-1C-B2N">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <scenes>
+        <!--Environment Demo View Controller-->
+        <scene sceneID="nyg-eH-NuL">
+            <objects>
+                <viewController storyboardIdentifier="EnvironmentDemoViewController" id="WHM-1C-B2N" customClass="EnvironmentDemoViewController" customModule="ThunderBoard" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="dA1-yy-uu6"/>
+                        <viewControllerLayoutGuide type="bottom" id="82V-0N-sDA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ekX-2F-DfH">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6qq-WB-wAJ" userLabel="Sharing View">
+                                <rect key="frame" x="0.0" y="20" width="600" height="64"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="QcD-6T-jhA"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="ImO-P8-bas" kind="embed" identifier="streamingSegue" id="UPW-7U-qHO"/>
+                                </connections>
+                            </containerView>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0iZ-GU-LsU">
+                                <rect key="frame" x="0.0" y="84" width="600" height="452"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gOg-az-qxQ" userLabel="Content View">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="500"/>
+                                        <subviews>
+                                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gKd-vH-YNj" userLabel="Temperature">
+                                                <rect key="frame" x="30" y="20" width="240" height="288"/>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="gKd-vH-YNj" secondAttribute="height" multiplier="10:12" id="OLZ-6B-JFW"/>
+                                                </constraints>
+                                                <connections>
+                                                    <segue destination="7bi-Dn-yLE" kind="embed" identifier="temperatureSegue" id="jli-wX-l3Y"/>
+                                                </connections>
+                                            </containerView>
+                                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OCv-ql-bW0" userLabel="Humidity">
+                                                <rect key="frame" x="330" y="20" width="240" height="288"/>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="OCv-ql-bW0" secondAttribute="height" multiplier="10:12" id="CTY-ZR-3Sa"/>
+                                                </constraints>
+                                                <connections>
+                                                    <segue destination="qwt-YZ-vyZ" kind="embed" identifier="humiditySegue" id="iUE-cs-YAy"/>
+                                                </connections>
+                                            </containerView>
+                                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GPS-dk-9xi" userLabel="Ambient Light Container">
+                                                <rect key="frame" x="30" y="316" width="240" height="288"/>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="GPS-dk-9xi" secondAttribute="height" multiplier="10:12" id="HcG-Cc-sJM"/>
+                                                </constraints>
+                                                <connections>
+                                                    <segue destination="zun-Ld-8F5" kind="embed" identifier="ambientLightSegue" id="b2h-5v-Erj"/>
+                                                </connections>
+                                            </containerView>
+                                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aXd-3x-UNG" userLabel="UV Index">
+                                                <rect key="frame" x="330" y="316" width="240" height="288"/>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="aXd-3x-UNG" secondAttribute="height" multiplier="10:12" id="YLq-mP-roI"/>
+                                                </constraints>
+                                                <connections>
+                                                    <segue destination="4Hg-5D-IRd" kind="embed" identifier="uvIndexSegue" id="3Gs-nF-mRq"/>
+                                                </connections>
+                                            </containerView>
+                                        </subviews>
+                                        <animations/>
+                                        <constraints>
+                                            <constraint firstItem="gKd-vH-YNj" firstAttribute="top" secondItem="gOg-az-qxQ" secondAttribute="top" constant="20" id="4Nh-Rt-mZ5"/>
+                                            <constraint firstItem="gKd-vH-YNj" firstAttribute="centerX" secondItem="gOg-az-qxQ" secondAttribute="centerX" multiplier="0.5" id="8h5-MX-3DA"/>
+                                            <constraint firstItem="GPS-dk-9xi" firstAttribute="centerX" secondItem="gOg-az-qxQ" secondAttribute="centerX" multiplier="0.5" id="DUp-eN-EJX"/>
+                                            <constraint firstItem="aXd-3x-UNG" firstAttribute="width" secondItem="gOg-az-qxQ" secondAttribute="width" multiplier="0.4" id="HoP-YC-wRe"/>
+                                            <constraint firstItem="OCv-ql-bW0" firstAttribute="width" secondItem="gOg-az-qxQ" secondAttribute="width" multiplier="0.4" id="I2M-f7-MTm"/>
+                                            <constraint firstItem="aXd-3x-UNG" firstAttribute="centerX" secondItem="gOg-az-qxQ" secondAttribute="centerX" multiplier="1.5" id="J9A-db-6qj"/>
+                                            <constraint firstItem="gKd-vH-YNj" firstAttribute="width" secondItem="gOg-az-qxQ" secondAttribute="width" multiplier="0.4" id="K2E-f3-aFq"/>
+                                            <constraint firstItem="GPS-dk-9xi" firstAttribute="top" secondItem="gKd-vH-YNj" secondAttribute="bottom" constant="8" id="Mbs-TL-jIY"/>
+                                            <constraint firstItem="aXd-3x-UNG" firstAttribute="top" secondItem="OCv-ql-bW0" secondAttribute="bottom" constant="8" id="NA4-6i-B33"/>
+                                            <constraint firstItem="GPS-dk-9xi" firstAttribute="width" secondItem="gOg-az-qxQ" secondAttribute="width" multiplier="0.4" id="aKI-EV-8Rl"/>
+                                            <constraint firstAttribute="height" constant="500" placeholder="YES" id="eEA-vT-eNn"/>
+                                            <constraint firstItem="OCv-ql-bW0" firstAttribute="top" secondItem="gOg-az-qxQ" secondAttribute="top" constant="20" id="pIU-3o-FQl"/>
+                                            <constraint firstItem="OCv-ql-bW0" firstAttribute="centerX" secondItem="gOg-az-qxQ" secondAttribute="centerX" multiplier="1.5" id="qf3-eH-zAp"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstItem="gOg-az-qxQ" firstAttribute="top" secondItem="0iZ-GU-LsU" secondAttribute="top" id="URL-nD-u3m"/>
+                                    <constraint firstAttribute="trailing" secondItem="gOg-az-qxQ" secondAttribute="trailing" id="o8t-su-3sJ"/>
+                                    <constraint firstItem="gOg-az-qxQ" firstAttribute="leading" secondItem="0iZ-GU-LsU" secondAttribute="leading" id="sZD-qT-6Ih"/>
+                                    <constraint firstAttribute="bottom" secondItem="gOg-az-qxQ" secondAttribute="bottom" constant="-48" id="yDc-hj-fot"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="0iZ-GU-LsU" firstAttribute="trailing" secondItem="ekX-2F-DfH" secondAttribute="trailing" id="5G4-UR-f4f"/>
+                            <constraint firstItem="6qq-WB-wAJ" firstAttribute="top" secondItem="dA1-yy-uu6" secondAttribute="bottom" id="Par-hj-GNU"/>
+                            <constraint firstItem="0iZ-GU-LsU" firstAttribute="leading" secondItem="ekX-2F-DfH" secondAttribute="leading" id="YWi-Ie-wPh"/>
+                            <constraint firstItem="82V-0N-sDA" firstAttribute="top" secondItem="gOg-az-qxQ" secondAttribute="bottom" constant="16" id="kpy-ev-0xT"/>
+                            <constraint firstItem="6qq-WB-wAJ" firstAttribute="trailing" secondItem="ekX-2F-DfH" secondAttribute="trailing" id="nvn-Ri-zXn"/>
+                            <constraint firstItem="0iZ-GU-LsU" firstAttribute="top" secondItem="6qq-WB-wAJ" secondAttribute="bottom" id="sfg-eM-e8t"/>
+                            <constraint firstItem="6qq-WB-wAJ" firstAttribute="leading" secondItem="ekX-2F-DfH" secondAttribute="leading" id="su9-Es-MxP"/>
+                            <constraint firstItem="82V-0N-sDA" firstAttribute="top" secondItem="0iZ-GU-LsU" secondAttribute="bottom" constant="64" id="u1F-MY-0vR"/>
+                            <constraint firstItem="gOg-az-qxQ" firstAttribute="width" secondItem="ekX-2F-DfH" secondAttribute="width" id="wtL-Xl-lfb"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="kpy-ev-0xT"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="contentView" destination="gOg-az-qxQ" id="f2w-J6-685"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6aD-4q-TUt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="231" y="325"/>
+        </scene>
+        <!--Streaming View Controller-->
+        <scene sceneID="g3A-A1-hJc">
+            <objects>
+                <viewController id="ImO-P8-bas" customClass="StreamingViewController" customModule="ThunderBoard" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yja-Sz-19w" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="940" y="218"/>
+        </scene>
+        <!--Environment Cell View Controller-->
+        <scene sceneID="Fjm-Vc-6js">
+            <objects>
+                <viewController id="7bi-Dn-yLE" customClass="EnvironmentCellViewController" customModule="ThunderBoard" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="l1S-X5-AyO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="91" y="902"/>
+        </scene>
+        <!--Environment Cell View Controller-->
+        <scene sceneID="AJE-Zb-lJZ">
+            <objects>
+                <viewController id="zun-Ld-8F5" customClass="EnvironmentCellViewController" customModule="ThunderBoard" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Oyf-ET-nIb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="91" y="1237"/>
+        </scene>
+        <!--Environment Cell View Controller-->
+        <scene sceneID="ij0-Ag-4BS">
+            <objects>
+                <viewController id="qwt-YZ-vyZ" customClass="EnvironmentCellViewController" customModule="ThunderBoard" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="noe-hJ-n9Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="365" y="902"/>
+        </scene>
+        <!--Environment Cell View Controller-->
+        <scene sceneID="0x5-S6-DOs">
+            <objects>
+                <viewController id="4Hg-5D-IRd" customClass="EnvironmentCellViewController" customModule="ThunderBoard" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PGE-hx-kW8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="365" y="1237"/>
+        </scene>
+    </scenes>
+</document>
