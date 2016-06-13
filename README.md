@@ -2,7 +2,7 @@
 
 Thunderboard is an app for demonstrating the capabilities of the Thunderboard React sensor board. It includes Motion, Environment, and I/O demos. Thunderboard is a native iOS app written in Swift 2.0.
 
-Source code for the [Android app](https://github.com/SiliconLabs/thunderboard-react-android) and [Firebase web interface](https://github.com/SiliconLabs/thundercloud) is also available.
+Source code for the [Android app](https://github.com/SiliconLabs/thunderboard-android) and [Firebase web interface](https://github.com/SiliconLabs/thundercloud) is also available.
 
 # Screenshots
 
@@ -42,7 +42,7 @@ The cloud streaming feature is built with [Firebase](https://www.firebase.com). 
 
 ### Cloud Data
 
-The format for data sent to Firebase is documented inside the web application [README](https://github.com/SiliconLabs/thunderboard-react-web/blob/master/README.md).
+The format for data sent to Firebase is documented inside the web application [README](https://github.com/SiliconLabs/thundercloud/README.md).
 
 ### Short URLs
 
