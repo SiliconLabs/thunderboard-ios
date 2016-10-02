@@ -1,6 +1,6 @@
 //
 //  BleDevice+DemoConfiguration.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -43,6 +43,10 @@ extension BleDevice {
                     log.debug("found all characteristics")
                     break
                 }
+                else {
+                    let missing = uuids.subtract(matches)
+                    log.info("missing characteristics: \(missing)")
+                }
                 
                 log.debug("waiting for characteristics")
                 // TODO: remove sleep and inject operation into queue (linking dependencies)
@@ -62,9 +66,8 @@ extension BleDevice {
         let queue = NSOperationQueue()
         queue.maxConcurrentOperationCount = 1
         
-        self.enumerateCharacteristics { (characteristic: CBCharacteristic) -> Void in
-
-            if characteristic.tb_supportsNotification() && !self.isNotificationProtected(characteristic) {
+        allCharacteristics.forEach({ characteristic in
+            if characteristic.tb_supportsNotificationOrIndication() && !self.isNotificationProtected(characteristic) {
                 log.debug("Disabling notification on \(characteristic.UUID)")
                 queue.tb_addAsyncOperationBlock({ (operation: AsyncOperation) -> Void in
 
@@ -79,7 +82,7 @@ extension BleDevice {
                     self.cbPeripheral?.setNotifyValue(false, forCharacteristic: characteristic)
                 })
             }
-        }
+        })
     }
     
     func configureIoDemo() {
@@ -113,10 +116,10 @@ extension BleDevice {
         // Enable notifications for the Digital characteristic
         queue.tb_addAsyncOperationBlock { (operation) -> Void in
 
-            self.enumerateCharacteristics { (characteristic: CBCharacteristic) -> Void in
+            self.allCharacteristics.forEach({ characteristic in
                 
                 log.debug("checking \(characteristic.UUID)")
-                if characteristic.tb_supportsNotification() && !self.isNotificationProtected(characteristic) {
+                if characteristic.tb_supportsNotificationOrIndication() && !self.isNotificationProtected(characteristic) {
                     
                     let notifyOperation = queue.tb_addAsyncOperationBlock({ (operation: AsyncOperation) -> Void in
                         
@@ -141,7 +144,7 @@ extension BleDevice {
                     
                     completion.addDependency(notifyOperation)
                 }
-            }
+            })
             
             operation.done()
         }
@@ -167,12 +170,27 @@ extension BleDevice {
         
         // NOTE: the environmental demo polls the characteristics,
         // so we don't need to wait for discovery to occur.
+        // HOWEVER, we need to wait for model and power (to determine if air quality should be shown)
+        
+        queue.tb_addAsyncOperationBlock { (operation) in
+            while self.power == .Unknown {
+                log.info("waiting for power source information")
+                sleep(1)
+            }
+            
+            while self.model == .Unknown {
+                log.info("waiting for model information")
+                sleep(1)
+            }
+            
+            operation.done()
+        }
 
         // Environmental characteristics do not notify - the demo connection class handles polling, so notify is disabled for all
-        self.enumerateCharacteristics { (characteristic: CBCharacteristic) -> Void in
+        allCharacteristics.forEach({ characteristic in
             
             log.debug("checking \(characteristic.UUID)")
-            if characteristic.tb_supportsNotification() && !self.isNotificationProtected(characteristic) {
+            if characteristic.tb_supportsNotificationOrIndication() && !self.isNotificationProtected(characteristic) {
                 
                 queue.tb_addAsyncOperationBlock({ (operation: AsyncOperation) -> Void in
                     
@@ -188,7 +206,7 @@ extension BleDevice {
                     self.cbPeripheral.setNotifyValue(false, forCharacteristic: characteristic)
                 })
             }
-        }
+        })
         
         // add completion task
         queue.tb_addAsyncOperationBlock({ (operation: AsyncOperation) -> Void in
@@ -218,13 +236,17 @@ extension BleDevice {
         }
         
         // wait for required characteristics to become available
-        let requiredCharacteristics: Set<CBUUID> = [
+        var requiredCharacteristics: Set<CBUUID> = [
             CBUUID.Command,
             CBUUID.OrientationMeasurement,
             CBUUID.AccelerationMeasurement,
-            CBUUID.CSCMeasurement,
-            CBUUID.CSCControlPoint
         ]
+
+        if capabilities.contains(.Revolutions) {
+            requiredCharacteristics.insert(.CSCMeasurement)
+            requiredCharacteristics.insert(.CSCControlPoint)
+        }
+        
         queue.addOperation(waitForCharacteristics(requiredCharacteristics))
         
         let completion = AsyncOperation(block: { operation in
@@ -239,11 +261,11 @@ extension BleDevice {
         
         // Enable notifications for the Orientation, Acceleration, and Revolutions characteristics
         queue.tb_addAsyncOperationBlock({ operation in
-            self.enumerateCharacteristics { (characteristic: CBCharacteristic) -> Void in
+            self.allCharacteristics.forEach({ characteristic in
                 
                 log.debug("checking \(characteristic.UUID)")
                 
-                if (characteristic.tb_supportsNotification() || characteristic.tb_supportsIndication()) && !self.isNotificationProtected(characteristic) {
+                if characteristic.tb_supportsNotificationOrIndication() && !self.isNotificationProtected(characteristic) {
                     
                     let notifyOperation = queue.tb_addAsyncOperationBlock({ (operation: AsyncOperation) -> Void in
                         
@@ -268,7 +290,7 @@ extension BleDevice {
                     
                     completion.addDependency(notifyOperation)
                 }
-            }
+            })
             
             operation.done()
             

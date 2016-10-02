@@ -1,14 +1,14 @@
 //
 //  ErrorTypes.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
 
 import Foundation
 
-let domainUrlShortener  = "com.silabs.ThunderBoard.urlshortening"
-let domainStreaming     = "com.silabs.ThunderBoard.streaming"
+let domainUrlShortener  = "com.silabs.Thunderboard.urlshortening"
+let domainStreaming     = "com.silabs.Thunderboard.streaming"
 
 enum ErrorCodes: Int {
     case UrlShorteningRequestCreation

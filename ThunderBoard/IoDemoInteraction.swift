@@ -1,6 +1,6 @@
 //
 //  IODemoInteraction.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -9,7 +9,8 @@ import Foundation
 
 protocol IoDemoInteractionOutput : class {
     func showButtonState(button: Int, pressed: Bool)
-    func showLedState(led: UInt, isOn: Bool)
+    func showLedState(led: Int, state: LedState)
+    func disableRgb()
 }
 
 class IoDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput, IoDemoConnectionDelegate, IoDemoStreamingDataSource {
@@ -30,25 +31,40 @@ class IoDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput, IoDemoC
     }
     
     func updateView() {
-        ledOn(0, on: isLedOn(0))
-        ledOn(1, on: isLedOn(1))
-        buttonPressed(0, pressed: isSwitchPressed(0))
-        buttonPressed(1, pressed: isSwitchPressed(1))
-    }
-    
-    func toggleLed(ledNum: UInt) {
-        let newLedState: Bool = !(connection?.isLedOn(ledNum))!
-        connection?.setLed(ledNum, on: newLedState)
-    }
-    
-    func isLedOn(ledIndex: UInt) -> Bool {
-        return (connection?.isLedOn(ledIndex))!
-    }
-    
-    func isSwitchPressed(switchIndex: UInt) -> Bool {
-        return (connection?.isSwitchPressed(switchIndex))!
-    }
+        guard let connection = connection else {
+            return
+        }
+        
+        for i in 0 ..< connection.numberOfSwitches {
+            buttonPressed(i, pressed: connection.isSwitchPressed(i))
+        }
+        
+        for i in 0 ..< connection.numberOfLeds {
+            updatedLed(i, state: connection.ledState(i))
+        }
 
+        if connection.capabilities.contains(.RGBOutput) == false {
+            output?.disableRgb()
+        }
+    }
+    
+    func toggleLed(ledNum: Int) {
+        guard let connection = connection else {
+            return
+        }
+        
+        let state = connection.ledState(ledNum)
+        connection.setLed(ledNum, state: state.toggle())
+    }
+    
+    func setColor(index: Int, color: LedRgb) {
+        guard let connection = connection else {
+            return
+        }
+        
+        let state = connection.ledState(index).setColor(color)
+        connection.setLed(index, state: state)
+    }
     
     //MARK: IoDemoConnectionDelegate
     
@@ -60,8 +76,8 @@ class IoDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput, IoDemoC
         output?.showButtonState(button, pressed: pressed)
     }
     
-    func ledOn(led: UInt, on: Bool) {
-        output?.showLedState(led, isOn: on)
+    func updatedLed(led: Int, state: LedState) {
+        output?.showLedState(led, state: state)
     }
     
     //MARK:- IoDemoStreamingDataSource
@@ -73,20 +89,20 @@ class IoDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput, IoDemoC
         }
         
         return [
-            connection.isSwitchPressed(0),  // TODO: hardcoded number of inputs
+            connection.isSwitchPressed(0),  // TODO WIP Sense: hardcoded number of inputs
             connection.isSwitchPressed(1)
         ]
     }
     
-    func currentOutputStates() -> [Bool] {
+    func currentOutputStates() -> [LedState] {
         guard let connection = connection else {
             log.error("Connection to device is invalid")
             return []
         }
         
         return [
-            connection.isLedOn(0),   // TODO: hardcoded number of outputs
-            connection.isLedOn(1)
+            connection.ledState(0),   // TODO WIP Sense: hardcoded number of outputs
+            connection.ledState(1)
         ]
     }
 }

@@ -1,6 +1,6 @@
 //
 //  SimulatedIoDemoConnection.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -12,41 +12,43 @@ class SimulatedIoDemoConnection : IoDemoConnection {
     var device: Device
     weak var connectionDelegate: IoDemoConnectionDelegate?
     
+    // For demo, switches will shadow the LEDs
+    var numberOfLeds: Int = 3
+    var numberOfSwitches: Int = 2
+    private var deviceState: [LedState] = []
+    
     init(device: SimulatedDevice) {
         self.device = device
+
+        deviceState.append(LedState.Digital(false, device.ledColor(0)))
+        deviceState.append(LedState.Digital(false, device.ledColor(1)))
+        deviceState.append(LedState.RGB(false, LedRgb(red: 0.90, green: 0.50, blue: 0)))
     }
-    
-    // For demo, switches will shadow the LEDs
-    private var leds: [Bool] = [false, false]
-    func setLed(led: UInt, on: Bool) {
+
+    func setLed(led: Int, state: LedState) {
         let index = Int(led)
-        if index < leds.count {
-            leds[index] = on
+        if index < deviceState.count {
+            deviceState[index] = state
             
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
-                self.connectionDelegate?.buttonPressed(index, pressed: on)
+            delay(0.5) {
+                self.connectionDelegate?.buttonPressed(index, pressed: self.isSwitchPressed(index))
             }
 
-            self.connectionDelegate?.ledOn(UInt(index), on: on)
+            self.connectionDelegate?.updatedLed(led, state: state)
         }
     }
     
-    func isLedOn(led: UInt) -> Bool {
-        let index = Int(led)
-        if index < leds.count {
-            return leds[index]
-        }
-        
-        return false
+    func ledState(led: Int) -> LedState {
+        return deviceState[led]
     }
     
-    func isSwitchPressed(switchIndex: UInt) -> Bool {
-        let index = Int(switchIndex)
-        if index < leds.count {
-            return leds[index]
+    func isSwitchPressed(switchIndex: Int) -> Bool {
+        let state = ledState(switchIndex)
+        switch state {
+        case .Digital(let on, _):
+            return on
+        case .RGB(let on, _):
+            return on
         }
-        
-        return false
     }
-    
 }

@@ -1,6 +1,6 @@
 //
 //  MotionDemoView.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -76,7 +76,7 @@ class MotionDemoView : UIView {
     private func setupView() {
         
         self.scrollView?.alwaysBounceVertical = false
-        self.contentView?.backgroundColor = StyleColor.siliconGray
+        self.contentView?.backgroundColor = StyleColor.lightGray
 
         setupOrientation()
         setupAcceleration()
@@ -139,7 +139,7 @@ class MotionDemoView : UIView {
     private func setupSpeed() {
         self.speedLabel?.tb_setText("SPEED", style: StyleText.header2)
         speedContainer?.tb_applyCommonRoundedCornerWithShadowStyle()
-        self.speedContainer?.backgroundColor = StyleColor.mediumGray
+        self.speedContainer?.backgroundColor = StyleColor.white
         
         for label in [speedValue, rpmValue] {
             label?.style = StyleText.demoValue;
@@ -155,7 +155,7 @@ class MotionDemoView : UIView {
     private func setupDistance() {
         self.distanceLabel?.tb_setText("DISTANCE", style: StyleText.header2)
         distanceContainer?.tb_applyCommonRoundedCornerWithShadowStyle()
-        self.distanceContainer?.backgroundColor = StyleColor.mediumGray
+        self.distanceContainer?.backgroundColor = StyleColor.white
         
         for label in [distanceValue, totalRpmValue] {
             label?.style = StyleText.demoValue

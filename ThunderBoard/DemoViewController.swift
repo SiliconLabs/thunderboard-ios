@@ -1,6 +1,6 @@
 //
 //  DemoViewController.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -30,8 +30,7 @@ class DemoViewController : UIViewController, DemoStreamingInteractionOutput, Str
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.view.backgroundColor = StyleColor.siliconGray
+        self.view.backgroundColor = StyleColor.lightGray
         self.automaticallyAdjustsScrollViewInsets = false
     }
     

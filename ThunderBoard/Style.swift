@@ -1,6 +1,6 @@
 //
 //  Style.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -44,15 +44,15 @@ class StyleColor {
     }
     
     class var mediumGray: UIColor {
-        get { return UIColor.tb_hex(0x6c6c6c) }
+        get { return UIColor.tb_hex(0x797777) }
     }
     
     class var gray: UIColor {
-        get { return UIColor.tb_hex(0xc1c1c1) }
+        get { return UIColor.tb_hex(0xd4d4d4) }
     }
     
     class var lightGray: UIColor {
-        get { return UIColor.tb_hex(0xefefef) }
+        get { return UIColor.tb_hex(0xeeeeee) }
     }
     
     class var yellow: UIColor {
@@ -107,6 +107,10 @@ class StyleColor {
         get { return UIColor.tb_hex(0xfff4f1) }
     }
     
+    class var pinkyPeach: UIColor {
+        get { return UIColor.tb_hex(0xffae9d) }
+    }
+    
     class var peachGold: UIColor {
         get { return UIColor.tb_hex(0xffe7cf) }
     }
@@ -127,6 +131,10 @@ class StyleColor {
         get { return UIColor.tb_hex(0x87a10d) }
     }
     
+    class var darkGreen: UIColor {
+        get { return UIColor.tb_hex(0x0b8000) }
+    }
+    
     class var white: UIColor {
         get { return UIColor.whiteColor() }
     }
@@ -135,80 +143,79 @@ class StyleColor {
 class StyleText {
     
     class var demoTitle: StyleText {
-        get { return StyleText(fontName: .HelveticaNeueThin, size: 29, color: StyleColor.white, kerning: 25) }
+        get { return StyleText(fontName: .OpenSansLight, size: 29, color: StyleColor.darkGray, kerning: 25) }
     }
     
     class var demoStatus: StyleText {
-        get { return StyleText(fontName: .HelveticaNeueLight, size: 19, color: StyleColor.white, kerning: 75) }
+        get { return StyleText(fontName: .OpenSansLight, size: 17, color: StyleColor.siliconGray, kerning: 25) }
     }
     
     class var deviceName: StyleText {
-        get { return StyleText(fontName: .HelveticaNeueLight, size: 19, color: StyleColor.white, kerning: nil) }
+        get { return StyleText(fontName: .OpenSansLight, size: 19, color: StyleColor.siliconGray, kerning: nil) }
     }
     
     class var deviceName2: StyleText {
-        get { return StyleText(fontName: .HelveticaNeueBold, size: 15, color: StyleColor.white, kerning: nil) }
+        get { return StyleText(fontName: .OpenSansBold, size: 15, color: StyleColor.siliconGray, kerning: nil) }
     }
     
     class var deviceName3: StyleText {
-        get { return StyleText(fontName: .HelveticaNeueLight, size: 19, color: StyleColor.gray, kerning: 25) }
+        get { return StyleText(fontName: .OpenSansLight, size: 19, color: StyleColor.gray, kerning: 25) }
+    }
+    
+    class var deviceListStatus: StyleText {
+        get { return StyleText(fontName: .OpenSansLight, size: 19, color: StyleColor.mediumGray, kerning: 25) }
     }
     
     class var header: StyleText {
-        get { return StyleText(fontName: .HelveticaNeueLight, size: 12, color: StyleColor.gray, kerning: 25) }
+        get { return StyleText(fontName: .OpenSansRegular, size: 12, color: StyleColor.siliconGray, kerning: 25) }
     }
     
     class var header2: StyleText {
-        get { return StyleText(fontName: .HelveticaNeueLight, size: 12, color: StyleColor.lightGray, kerning: 25) }
+        get { return StyleText(fontName: .OpenSansLight, size: 12, color: StyleColor.mediumGray, kerning: 25) }
     }
     
     class var headerActive: StyleText {
-        get { return StyleText(fontName: .HelveticaNeueBold, size: 12, color: StyleColor.gray, kerning: 25) }
+        get { return StyleText(fontName: .OpenSansBold, size: 12, color: StyleColor.siliconGray, kerning: 25) }
     }
     
     class var main1: StyleText {
-        get { return StyleText(fontName: .HelveticaNeueLight, size: 15, color: StyleColor.white, kerning: nil) }
+        get { return StyleText(fontName: .OpenSansLight, size: 15, color: StyleColor.siliconGray, kerning: nil) }
     }
     
     class var navBarTitle: StyleText {
-        get { return StyleText(fontName: .HelveticaNeueLight, size: 17, color: StyleColor.white, kerning: nil) }
+        get { return StyleText(fontName: .OpenSansRegular, size: 17, color: StyleColor.white, kerning: nil) }
     }
     
     class var numbers1: StyleText {
-        get { return StyleText(fontName: .HelveticaNeueBold, size: 12, color: StyleColor.white, kerning: 25) }
+        get { return StyleText(fontName: .OpenSansBold, size: 12, color: StyleColor.siliconGray, kerning: 25) }
     }
     
     class var streamingLabel: StyleText {
-        get { return StyleText(fontName: .HelveticaNeueBold, size: 13, color: StyleColor.white, kerning: 25) }
+        get { return StyleText(fontName: .OpenSansBold, size: 13, color: StyleColor.white, kerning: 25) }
     }
     
     class var subtitle1: StyleText {
-        get { return StyleText(fontName: .HelveticaNeueLight, size: 12, color: StyleColor.gray, kerning: 25) }
+        get { return StyleText(fontName: .OpenSansLight, size: 12, color: StyleColor.mediumGray, kerning: 25) }
     }
     
     class var subtitle2: StyleText {
-        get { return StyleText(fontName: .HelveticaNeueBold, size: 10, color: StyleColor.gray, kerning: 25) }
+        get { return StyleText(fontName: .OpenSansBold, size: 10, color: StyleColor.mediumGray, kerning: 25) }
     }
     
     class var demoValue: StyleText {
-        get { return StyleText(fontName: .HelveticaNeueLight, size: 24, color: StyleColor.white, kerning: 75) }
+        get { return StyleText(fontName: .OpenSansLight, size: 24, color: StyleColor.siliconGray, kerning: 75) }
     }
     
     class var buttonLabel: StyleText {
-        get { return StyleText(fontName: .HelveticaNeueBold, size: 13, color: StyleColor.gray, kerning: nil) }
+        get { return StyleText(fontName: .OpenSansBold, size: 13, color: StyleColor.gray, kerning: nil) }
     }
     
     class var powered_by: StyleText {
-        get { return StyleText(fontName: .HelveticaNeueRegular, size: 15, color: StyleColor.white, kerning: nil) }
+        get { return StyleText(fontName: .OpenSansRegular, size: 15, color: StyleColor.white, kerning: nil) }
     }
-    class var launch_tagline: StyleText {
-        get { return StyleText(fontName: .HelveticaNeueUltraLight, size: 31, color: StyleColor.lightGray, kerning: nil) }
-    }
-    class var launch_tagline_highlight: StyleText {
-        get { return StyleText(fontName: .HelveticaNeueLight, size: 31, color: StyleColor.bromineOrange, kerning: nil) }
-    }
+    
     class var note: StyleText {
-        get { return StyleText(fontName: .HelveticaNeueLight, size: 12, color: StyleColor.gray, kerning: 25) }
+        get { return StyleText(fontName: .OpenSansLight, size: 12, color: StyleColor.mediumGray, kerning: 25) }
     }
 
     //MARK:-
@@ -249,11 +256,9 @@ class StyleText {
     }
     
     enum FontName: String {
-        case HelveticaNeueBold          = "HelveticaNeue-Bold"
-        case HelveticaNeueLight         = "HelveticaNeue-Light"
-        case HelveticaNeueRegular       = "HelveticaNeue-Regular"
-        case HelveticaNeueThin          = "HelveticaNeue-Thin"
-        case HelveticaNeueUltraLight    = "HelveticaNeue-UltraLight"
+        case OpenSansLight              = "OpenSans-Light"
+        case OpenSansBold               = "OpenSans-Bold"
+        case OpenSansRegular            = "OpenSans"
     }
 }
 
@@ -261,5 +266,155 @@ class StyleAnimations {
     
     class var spinnerDuration: NSTimeInterval {
         get { return 1.5 }
+    }
+}
+
+extension UIColor {
+    class func colorForTemperature(temp: Temperature) -> UIColor {
+        let inf = Temperature.infinity
+        switch temp {
+        case 37.7 ..< inf:
+            return StyleColor.red
+        case 32.2 ..< 37.7:
+            return StyleColor.redOrange
+        case 26.6 ..< 32.2:
+            return StyleColor.pink
+        case 21.1 ..< 26.6:
+            return StyleColor.yellowOrange
+        case 15.5 ..< 21.1:
+            return StyleColor.yellow
+        case 10 ..< 15.5:
+            return StyleColor.brightGreen
+        case 4.4 ..< 10:
+            return StyleColor.terbiumGreen
+        case -1.1 ..< 4.4:
+            return StyleColor.mediumGreen
+        case -6.6 ..< -1.1:
+            return StyleColor.lightBlue
+        case -12.2 ..< -6.6:
+            return StyleColor.blue
+        case -17.7 ..< -12.2:
+            return StyleColor.darkViolet
+        case -23.3 ..< -17.7:
+            return StyleColor.violet
+        case -28.8 ..< -23.3:
+            return StyleColor.darkGray
+        case (-inf) ..< -28.8: fallthrough
+        default:
+            return StyleColor.gray
+        }
+    }
+    
+    class func colorForHumidity(humidity: Humidity) -> UIColor {
+        let inf = Humidity.infinity
+        switch humidity {
+        case 65 ..< inf:
+            return StyleColor.redOrange
+        case 61 ..< 65:
+            return StyleColor.bromineOrange
+        case 56 ..< 61:
+            return StyleColor.yellowOrange
+        case 51 ..< 56:
+            return StyleColor.yellow
+        case 46 ..< 51:
+            return StyleColor.terbiumGreen
+        case (-inf) ..< 46: fallthrough
+        default:
+            return StyleColor.blue
+        }
+    }
+    
+    class func colorForIlluminance(lx: Lux) -> UIColor {
+        let inf = Lux.infinity
+        switch lx {
+        case (-inf) ..< 41:
+            return StyleColor.darkViolet
+        case 41 ..< 81:
+            return StyleColor.violet
+        case 81 ..< 120:
+            return StyleColor.lightViolet
+        case 120 ..< 161:
+            return StyleColor.whiteViolet
+        case 161 ..< 201:
+            return StyleColor.lightPeach
+        case 201 ..< 301:
+            return StyleColor.peachGold
+        case 301 ..< 501:
+            return StyleColor.pinkyPeach
+        case 501 ..< 1001:
+            return StyleColor.pink
+        case 1001 ..< 10001:
+            return StyleColor.bromineOrange
+        case 10001 ..< inf: fallthrough
+        default:
+            return StyleColor.yellowOrange
+        }
+    }
+    
+    class func colorForUVIndex(uv: UVIndex) -> UIColor {
+        let inf = UVIndex.infinity
+        switch uv {
+        case (-inf) ..< 3:
+            return StyleColor.terbiumGreen
+        case 3 ..< 6:
+            return StyleColor.yellow
+        case 6 ..< 8:
+            return StyleColor.yellowOrange
+        case 8 ..< 11:
+            return StyleColor.redOrange
+        case 11 ..< inf: fallthrough
+        default:
+            return StyleColor.violet
+        }
+    }
+    
+    class func colorForCO2(ppm: AirQualityCO2) -> UIColor {
+        let inf = AirQualityCO2.infinity
+        switch ppm {
+        case (-inf) ..< 1000:
+            return StyleColor.terbiumGreen
+        case 1000 ..< 1200:
+            return StyleColor.yellow
+        case 1200 ..< 5000:
+            return StyleColor.redOrange
+        case 5000 ..< inf: fallthrough
+        default:
+            return StyleColor.darkGray
+        }
+    }
+    
+    class func colorForVOC(ppb: AirQualityVOC) -> UIColor {
+        let inf = AirQualityVOC.infinity
+        switch ppb {
+        case (-inf) ..< 100:
+            return StyleColor.terbiumGreen
+        case 100 ..< 1000:
+            return StyleColor.yellow
+        case 1000 ..< inf: fallthrough
+        default:
+            return StyleColor.redOrange
+        }
+    }
+    
+    class func colorForAtmosphericPressure(pressure: AtmosphericPressure) -> UIColor {
+        // current design utilizes the same color for all values
+        return StyleColor.terbiumGreen
+    }
+    
+    class func colorForSoundLevel(level: SoundLevel) -> UIColor {
+        let inf = SoundLevel.infinity
+        switch level {
+        case (-inf) ..< 30:
+            return StyleColor.blue
+        case 30 ..< 60:
+            return StyleColor.terbiumGreen
+        case 60 ..< 90:
+            return StyleColor.yellow
+        case 90 ..< 120:
+            return StyleColor.yellowOrange
+        case 120 ..< inf: fallthrough
+        default:
+            return StyleColor.redOrange
+        }
     }
 }

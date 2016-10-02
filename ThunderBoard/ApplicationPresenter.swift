@@ -1,6 +1,6 @@
 //
 //  ApplicationPresenter.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -9,7 +9,7 @@ import UIKit
 import SafariServices
 
 typealias PresentationRoles = protocol<DeviceSelectionPresenter, DemoSelectionPresenter, DemoPresenter, DemoStreamSharePresenter, NotificationPresenter, DemoHistoryPresenter, SettingsPresenter>
-class ApplicationPresenter : NSObject, SFSafariViewControllerDelegate, DeviceTransportApplicationDelegate, ConnectedDeviceDelegate, PresentationRoles {
+class ApplicationPresenter : NSObject, DeviceTransportApplicationDelegate, ConnectedDeviceDelegate, PresentationRoles {
 
     var navigationController: NavigationController?
     var notificationManager: NotificationManager!
@@ -20,7 +20,6 @@ class ApplicationPresenter : NSObject, SFSafariViewControllerDelegate, DeviceTra
     private var deviceConnector: DeviceConnection!
     private var deviceSelectionInteraction: DeviceSelectionInteraction?
     private var deviceId: DeviceId?
-    private var showingSafari = false
 
     init(window: UIWindow?) {
 
@@ -69,7 +68,7 @@ class ApplicationPresenter : NSObject, SFSafariViewControllerDelegate, DeviceTra
     
     func transportConnectedToDevice(device: Device) {
         device.connectedDelegate = self
-        self.navigationController?.updateConnectedDevice(device.name ?? String.tb_placeholderText(), battery: device.batteryLevel, firmwareVersion: device.firmwareVersion)
+        self.navigationController?.updateConnectedDevice(device.name ?? String.tb_placeholderText(), power: device.power, firmwareVersion: device.firmwareVersion)
         self.navigationController?.showConnectedDevice()
         notificationManager?.setConnectedDevices([device])
     }
@@ -89,13 +88,10 @@ class ApplicationPresenter : NSObject, SFSafariViewControllerDelegate, DeviceTra
     
     //MARK:- ConnectedDeviceDelegate
     
-    func connectedDeviceUpdated(name: String, RSSI: Int?, battery: Int?, identifier: DeviceId?, firmwareVersion: String?) {
-        self.navigationController?.updateConnectedDevice(name, battery: battery, firmwareVersion: firmwareVersion)
+    func connectedDeviceUpdated(name: String, RSSI: Int?, power: PowerSource, identifier: DeviceId?, firmwareVersion: String?) {
+        self.navigationController?.updateConnectedDevice(name, power: power, firmwareVersion: firmwareVersion)
         self.deviceId = identifier
-        
-        if !showingSafari {
-            self.navigationController?.showConnectedDevice()
-        }
+        self.navigationController?.showConnectedDevice()
     }
     
     //MARK: - DeviceSelectionPresenter
@@ -128,14 +124,21 @@ class ApplicationPresenter : NSObject, SFSafariViewControllerDelegate, DeviceTra
     func showMotionDemo(connection: MotionDemoConnection) {
         
         var demo: MotionDemoViewController!
-        let settings = ThunderBoardSettings()
+        let settings = ThunderboardSettings()
         
-        switch settings.motionDemoModel {
-        case .Board:
-            demo = factory.motionBoardDemoViewController(connection)
-        case .Car:
-            demo = factory.motionCarDemoViewController(connection)
+        switch connection.device.model {
+        case .React: fallthrough
+        case .Unknown:
+            switch settings.motionDemoModel {
+            case .Board:
+                demo = factory.motionBoardDemoViewController(connection)
+            case .Car:
+                demo = factory.motionCarDemoViewController(connection)
+            }
+        case .Sense:
+            demo = factory.motionSenseBoardDemoViewController(connection)
         }
+        
         
         self.navigationController?.pushViewController(demo, animated: true)
     }
@@ -176,22 +179,8 @@ class ApplicationPresenter : NSObject, SFSafariViewControllerDelegate, DeviceTra
             return
         }
         
-        showingSafari = true
-        
         let url = NSURL.tb_urlForDemoHistory(device)
-        let safari = SFSafariViewController(URL: url)
-        safari.delegate = self
-        self.navigationController?.pushViewController(safari, animated: true)
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
-        self.navigationController?.hideConnectedDevice()
-    }
-    
-    func safariViewControllerDidFinish(controller: SFSafariViewController) {
-        self.navigationController?.popViewControllerAnimated(true)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationController?.showConnectedDevice()
-
-        showingSafari = false
+        UIApplication.sharedApplication().openURL(url)
     }
     
     //MARK: - SettingsPresenter

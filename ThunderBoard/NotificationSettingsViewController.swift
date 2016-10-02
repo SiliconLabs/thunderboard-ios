@@ -1,6 +1,6 @@
 //
 //  NotificationSettingsViewController.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -141,21 +141,20 @@ class NotificationSettingsViewController : UIViewController, UITableViewDelegate
     
     private func setupAppearance() {
         self.automaticallyAdjustsScrollViewInsets = false
-        self.view.backgroundColor = StyleColor.siliconGray
+        self.view.backgroundColor = StyleColor.lightGray
         
-        self.tableView?.backgroundColor = StyleColor.siliconGray
+        self.tableView?.backgroundColor = StyleColor.lightGray
         self.tableView?.layoutMargins = UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 0)
         self.tableView?.preservesSuperviewLayoutMargins = false
+
+        self.notificationsDescriptionLabel?.style = StyleText.note
+        self.notificationsDescriptionLabel?.text = "You'll get a notification when an allowed Bluetooth demo device is on and in range. This helps demonstrate beaconing."
         
-        let color = StyleColor.white.colorWithAlphaComponent(0.4)
-        self.notificationsDescriptionLabel?.style = StyleText(fontName: .HelveticaNeueLight, size: 12, color: color, kerning: nil)
-        self.notificationsDescriptionLabel?.text = "You'll get a notification when an allowed bluetooth demo device is on and in range. This helps demonstrate beaconing."
-        
-        self.notificationsEnabledContainer?.backgroundColor = StyleColor.mediumGray
+        self.notificationsEnabledContainer?.backgroundColor = StyleColor.white
         self.notificationsEnabledContainer?.tb_applyCommonDropShadow()
-        self.notificationsEnabledLabel?.style = StyleText(fontName: .HelveticaNeueLight, size: 16, color: StyleColor.white, kerning: nil)
+        self.notificationsEnabledLabel?.style = StyleText.main1
         self.notificationsEnabledLabel?.text = "Allow Beacon Notifications"
-        self.notificationsEnabledSwitch?.onTintColor = StyleColor.blue
+        self.notificationsEnabledSwitch?.onTintColor = StyleColor.terbiumGreen
     }
     
     private func setupInteraction() {

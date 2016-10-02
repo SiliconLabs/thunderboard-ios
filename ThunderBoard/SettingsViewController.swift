@@ -1,6 +1,6 @@
 //
 //  SettingsViewController.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -21,7 +21,6 @@ class SettingsViewController: UITableViewController {
 
     @IBOutlet weak var measurementsLabel: StyledLabel!
     @IBOutlet weak var measurementsControl: UISegmentedControl!
-    @IBOutlet weak var measurementsSeparator: UIView!
     
     @IBOutlet weak var temperatureLabel: StyledLabel!
     @IBOutlet weak var temperatureControl: UISegmentedControl!
@@ -33,10 +32,10 @@ class SettingsViewController: UITableViewController {
     @IBOutlet weak var beaconNotificationsStateLabel: StyledLabel!
     
     weak var notificationManager: NotificationManager?
-    private let settings = ThunderBoardSettings()
+    private let settings = ThunderboardSettings()
     private let notificationsSegue           = "notificationsSegue"
-    private let beaconEnabledText            = "On"
-    private let beaconDisabledText           = "Off"
+    private let beaconEnabledText            = "ON"
+    private let beaconDisabledText           = "OFF"
     private let personalInfoTitleText        = "PERSONAL INFO"
     private let preferencesTitleText         = "PREFERENCES"
     private let editLabelText                = "Edit"
@@ -72,10 +71,19 @@ class SettingsViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        cell.backgroundColor = StyleColor.mediumGray
+        
+        guard let cell = cell as? SettingsViewCell else {
+            fatalError("settings table cell subclass should be used")
+        }
+        
+        cell.backgroundColor = StyleColor.white
         
         if tableView.tb_isLastCell(indexPath) {
+            cell.drawBottomSeparator = false
             cell.tb_applyCommonDropShadow()
+        }
+        else {
+            cell.drawBottomSeparator = true
         }
     }
     
@@ -91,6 +99,8 @@ class SettingsViewController: UITableViewController {
         
         let headerView = UITableViewHeaderFooterView()
         let contentView = headerView.contentView
+        
+        contentView.backgroundColor = StyleColor.lightGray
 
         switch Sections(rawValue: section)! {
         case .PersonalInfo:
@@ -99,7 +109,6 @@ class SettingsViewController: UITableViewController {
         
         case .Preferences:
             setupSectionTitle(preferencesTitleText, contentView: contentView)
-            
         }
         
         return headerView
@@ -150,7 +159,7 @@ class SettingsViewController: UITableViewController {
         
         editView.tb_setText(editLabelText, style: StyleText.header)
         
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "editTapped")
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(editTapped))
         editView.addGestureRecognizer(tapGestureRecognizer)
         editView.userInteractionEnabled = true
         
@@ -283,19 +292,18 @@ class SettingsViewController: UITableViewController {
         tableView.estimatedRowHeight = 42
         
         automaticallyAdjustsScrollViewInsets = true
-        view.backgroundColor = StyleColor.siliconGray
-        
-        tableView?.backgroundColor = StyleColor.siliconGray
+        view.backgroundColor = StyleColor.lightGray
+        tableView?.backgroundColor = StyleColor.lightGray
 
         measurementsLabel.tb_setText(measurementsLabelText, style: StyleText.main1)
         temperatureLabel.tb_setText(temperatureLabelText, style: StyleText.main1)
         motionModelLabel.tb_setText(motionModelText, style: StyleText.main1)
         beaconNotificationsLabel.tb_setText(beaconNotificationsLabelText, style: StyleText.main1)
-        beaconNotificationsStateLabel.style = StyleText.headerActive
+        beaconNotificationsStateLabel.style = StyleText.main1
         
-        measurementsControl.tintColor = StyleColor.blue
-        temperatureControl.tintColor = StyleColor.blue
-        motionModelControl.tintColor = StyleColor.blue
+        measurementsControl.tintColor = StyleColor.terbiumGreen
+        temperatureControl.tintColor = StyleColor.terbiumGreen
+        motionModelControl.tintColor = StyleColor.terbiumGreen
         
         setupFooter()
     }
@@ -355,6 +363,6 @@ class SettingsViewController: UITableViewController {
     private func updateBeaconNotificationsControl() {
         let enabled = settings.beaconNotifications
         let enabledText = enabled ? beaconEnabledText : beaconDisabledText
-        beaconNotificationsStateLabel.tb_setText(enabledText, style: StyleText.headerActive)
+        beaconNotificationsStateLabel.tb_setText(enabledText, style: StyleText.header.tweakColor(color: StyleColor.mediumGray))
     }
 }

@@ -1,6 +1,6 @@
 //
 //  DeviceTableViewCell.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -12,8 +12,7 @@ class DeviceTableViewCell: UITableViewCell {
     @IBOutlet weak var rssiImage: UIImageView!
     @IBOutlet weak var rssiLabel: UILabel!
     @IBOutlet weak var connectingSpinner: Spinner!
-    
-    
+
     var drawSeparator: Bool = false
     
     override func drawRect(rect: CGRect) {
@@ -25,9 +24,8 @@ class DeviceTableViewCell: UITableViewCell {
             path.addLineToPoint(CGPointMake(rect.width, 0))
             path.lineWidth = 1
             
-            StyleColor.white.colorWithAlphaComponent(0.18).setStroke()
+            StyleColor.lightGray.setStroke()
             path.stroke()
         }
-
     }
 }

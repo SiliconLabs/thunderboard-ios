@@ -1,15 +1,15 @@
 //
-//  ThunderBoardTypes.swift
-//  ThunderBoard
+//  ThunderboardTypes.swift
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
 
 import Foundation
 
-let ThunderBoardBeaconId = NSUUID(UUIDString: "CEF797DA-2E91-4EA4-A424-F45082AC0682")!
+let ThunderboardBeaconId = NSUUID(UUIDString: "CEF797DA-2E91-4EA4-A424-F45082AC0682")!
 
-enum ThunderBoardDemo: Int {
+enum ThunderboardDemo: Int {
     case Motion
     case Environment
     case IO
@@ -27,15 +27,66 @@ typealias Centimeters = Float
 typealias Inches      = Float
 typealias Feet        = Float
 
+enum LedState {
+    case Digital(Bool, LedStaticColor)
+    case RGB(Bool, LedRgb)
+}
+
+enum LedStaticColor {
+    case Red
+    case Green
+    case Blue
+}
+
+struct LedRgb {
+    let red: Float
+    let green: Float
+    let blue: Float
+}
+
+extension LedState {
+    func toggle() -> LedState {
+        switch self {
+        case .Digital(let on, let color):
+            return .Digital(!on, color)
+        case .RGB(let on, let color):
+            return .RGB(!on, color)
+        }
+    }
+    
+    func setColor(color: LedRgb) -> LedState {
+        switch self {
+        case .Digital:
+            return self
+        case .RGB(let on, _):
+            return .RGB(on, color)
+        }
+    }
+    
+    func setColor(red: Float, green: Float, blue: Float) -> LedState {
+        return setColor(LedRgb(red: red, green: green, blue: blue))
+    }
+    
+    var on: Bool {
+        switch self {
+        case .Digital(let on, _):
+            return on
+        case .RGB(let on, _):
+            return on
+        }
+    }
+}
+
 extension Degree {
     func tb_toRadian() -> Radian {
         return self * Float(M_PI) / 180.0
     }
     
-    func tb_toString(precision: Int) -> String? {
+    func tb_toString(maximumDecimalPlaces: Int, minimumDecimalPlaces: Int = 0) -> String? {
         let formatter = NSNumberFormatter()
         formatter.numberStyle = .DecimalStyle
-        formatter.maximumFractionDigits = precision
+        formatter.minimumFractionDigits = minimumDecimalPlaces
+        formatter.maximumFractionDigits = maximumDecimalPlaces
         return formatter.stringFromNumber(NSNumber(float: self))
     }
 }
@@ -44,7 +95,7 @@ extension Double {
     func tb_toString(precision: Int) -> String? {
         let formatter = NSNumberFormatter()
         formatter.numberStyle = .DecimalStyle
-        formatter.maximumFractionDigits = 0
+        formatter.maximumFractionDigits = precision
         return formatter.stringFromNumber(NSNumber(double: self))
     }
 }
@@ -58,7 +109,7 @@ extension Meters {
     }
 }
 
-struct ThunderBoardInclination {
+struct ThunderboardInclination {
     let x, y, z: Degree
     
     init() {
@@ -76,7 +127,7 @@ struct ThunderBoardInclination {
 
 typealias α = Float
 
-struct ThunderBoardVector {
+struct ThunderboardVector {
     let x, y, z: α
     
     init() {
@@ -93,7 +144,7 @@ struct ThunderBoardVector {
 
 }
 
-struct ThunderBoardCSCMeasurement {
+struct ThunderboardCSCMeasurement {
     let revolutionsSinceConnecting: UInt
     let secondsSinceConnecting:     NSTimeInterval
     
@@ -122,6 +173,10 @@ typealias Temperature = Double
 typealias Humidity = Double
 typealias Lux = Double
 typealias UVIndex = Double
+typealias AirQualityCO2 = Double
+typealias AirQualityVOC = Double
+typealias SoundLevel = Double
+typealias AtmosphericPressure = Double
     
 extension Temperature {
     var tb_FahrenheitValue: Temperature {
@@ -139,9 +194,23 @@ struct EnvironmentData {
     var humidity: Humidity?
     var ambientLight: Lux?
     var uvIndex: UVIndex?
+    var co2: CarbonDioxideReading?
+    var voc: VolatileOrganicCompoundsReading?
+    var sound: SoundLevel?
+    var pressure: AtmosphericPressure?
 }
 
-struct ThunderBoardWheel {
+struct CarbonDioxideReading {
+    let enabled: Bool
+    let value: AirQualityCO2?
+}
+
+struct VolatileOrganicCompoundsReading {
+    let enabled: Bool
+    let value: AirQualityVOC?
+}
+
+struct ThunderboardWheel {
     var diameter:                               Meters
     var revolutionsSinceConnecting:             UInt           = 0
     var secondsSinceConnecting:                 NSTimeInterval = 0
@@ -196,7 +265,8 @@ struct ThunderBoardWheel {
             secondsSinceConnecting         = cumulativeSecondsSinceConnecting
             countOfRepeatedSameValues      = 0
         } else {
-            if ++countOfRepeatedSameValues >= rotationTimeOut {
+            countOfRepeatedSameValues += 1
+            if countOfRepeatedSameValues >= rotationTimeOut {
                 previousSecondsSinceConnecting = secondsSinceConnecting
                 previousRevolutions            = revolutionsSinceConnecting
             }

@@ -1,6 +1,6 @@
 //
 //  SharingActivityProvider.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -10,7 +10,7 @@ import UIKit
 class SharingActivityProvider : UIActivityItemProvider {
 
     private let thunderboardUrl = ApplicationConfig.ProductMicroSiteUrl
-    private let settings = ThunderBoardSettings()
+    private let settings = ThunderboardSettings()
 
     private var demoUrl: String
     init(url: String) {
@@ -67,14 +67,14 @@ class SharingActivityProvider : UIActivityItemProvider {
     private func emailMessageItem() -> String {
         //    Here is the link to access your synced data. It will remain active for 30 days after your sync ends.
         //    <URL>
-        //    Learn more about ThunderBoard at <URL>.
+        //    Learn more about Thunderboard at <URL>.
         //    <Name>
         //    <Title>
         //    <Email>
         //    <Phone>
         
         var message = "Here is the link to access your synced data. It will remain active for 30 days after your sync ends.\n\n\(demoUrl)\n\n"
-        message += "Learn more about ThunderBoard at \(thunderboardUrl)\n\n"
+        message += "Learn more about Thunderboard at \(thunderboardUrl)\n\n"
         
         if let name = settings.userName {
             message += "\(name)\n"

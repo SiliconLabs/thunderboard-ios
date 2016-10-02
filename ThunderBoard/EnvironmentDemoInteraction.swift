@@ -1,6 +1,6 @@
 //
 //  EnvironmentDemoInteraction.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -8,7 +8,7 @@
 import Foundation
 
 protocol EnvironmentDemoInteractionOutput : class {
-    func updatedEnvironmentData(data: EnvironmentData)
+    func updatedEnvironmentData(data: EnvironmentData, capabilities: Set<DeviceCapability>)
 }
 
 class EnvironmentDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput, EnvironmentDemoConnectionDelegate, EnvironmentDemoStreamingDataSource {
@@ -21,10 +21,12 @@ class EnvironmentDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput
     weak var streamSharePresenter: DemoStreamSharePresenter?
 
     private var currentData: EnvironmentData = EnvironmentData()
+    private let capabilities: Set<DeviceCapability>
     
     //MARK: - Public
     
     init(output: EnvironmentDemoInteractionOutput?, demoConnection: EnvironmentDemoConnection) {
+        self.capabilities = demoConnection.capabilities
         self.output = output
         self.connection = demoConnection
         self.connection?.connectionDelegate = self
@@ -42,7 +44,7 @@ class EnvironmentDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput
     
     func updatedEnvironmentData(data: EnvironmentData) {
         currentData = data
-        self.output?.updatedEnvironmentData(currentData)
+        self.output?.updatedEnvironmentData(currentData, capabilities: capabilities)
     }
     
     //MARK: - EnvironmentDemoStreamingDataSource

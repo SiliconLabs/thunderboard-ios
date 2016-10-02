@@ -1,6 +1,6 @@
 //
 //  CBUUIDExtensions.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -46,6 +46,14 @@ extension CBUUID {
         get { return CBUUID(string: "0x1815") }
     }
     
+    class var IndoorAirQualityCustom: CBUUID {
+        get { return CBUUID(string: "0xefd658ae-c400-ef33-76e7-91b00019103b") }
+    }
+    
+    class var PowerSourceServiceCustom: CBUUID {
+        get { return CBUUID(string: "EC61A454-ED00-A5E8-B8F9-DE9EC026EC51") }
+    }
+    
     
     // ---------------------------------------------------------------------------------------
     // MARK:- Characteristic Identifiers
@@ -54,11 +62,6 @@ extension CBUUID {
     //
     // Generic Access Characteristics
     //
-    
-    /// Device Name (org.bluetooth.characteristic.gap.device_name)
-    class var DeviceName: CBUUID {
-        get { return CBUUID(string: "0x2A00") }
-    }
 
     /// Manufacturer Name (org.bluetooth.characteristic.gap.???)
     class var ManufacturerName: CBUUID {
@@ -93,6 +96,10 @@ extension CBUUID {
         get { return CBUUID(string: "0x2A19") }
     }
 
+    class var PowerSourceCharacteristicCustom: CBUUID {
+        get { return CBUUID(string: "EC61A454-ED01-A5E8-B8F9-DE9EC026EC51") }
+    }
+
     //
     // Environmental Sensing Characteristics
     //
@@ -112,9 +119,42 @@ extension CBUUID {
         get { return CBUUID(string: "0x2A76") }
     }
     
+    class var Pressure: CBUUID {
+        get { return CBUUID(string: "0x2A6D") }
+    }
+    
     /// Ambient Light (custom)
     class var AmbientLight: CBUUID {
         get { return CBUUID(string: "0xc8546913-bfd9-45eb-8dde-9f8754f4a32e") }
+    }
+    
+    /// Sound Level (sense)
+    class var SoundLevelCustom: CBUUID {
+        get { return CBUUID(string: "0xC8546913-BF02-45EB-8DDE-9F8754F4A32E") }
+    }
+    
+    /// Environment Control Point (sense)
+    class var SenseEnvironmentControlPointCustom: CBUUID {
+        get { return CBUUID(string: "0xC8546913-BF03-45EB-8DDE-9F8754F4A32E") }
+    }
+
+    //
+    // Sense Indoor Air Quality Service
+    //
+    
+    /// Air Quality: Carbon Dioxide (sense)
+    class var SenseAirQualityCarbonDioxide: CBUUID {
+        get { return CBUUID(string: "0xefd658ae-c401-ef33-76e7-91b00019103b") }
+    }
+    
+    /// Air Quality: Volatile Organic Compounds
+    class var SenseAirQualityVolatileOrganicCompounds: CBUUID {
+        get { return CBUUID(string: "0xefd658ae-c402-ef33-76e7-91b00019103b") }
+    }
+    
+    /// Air Quality Control Point
+    class var SenseAirQualityControlPoint: CBUUID {
+        get { return CBUUID(string: "0xefd658ae-c403-ef33-76e7-91b00019103b") }
     }
 
     
@@ -173,5 +213,9 @@ extension CBUUID {
     /// Number of Digitals (org.bluetooth.descriptor.number_of_digitals)
     class var NumberOfDigitals: CBUUID {
         get { return CBUUID(string: "0x2909") }
+    }
+    
+    class var SenseRGBOutput: CBUUID {
+        get { return CBUUID(string: "FCB89C40-C603-59F3-7DC3-5ECE444A401B") }
     }
 }

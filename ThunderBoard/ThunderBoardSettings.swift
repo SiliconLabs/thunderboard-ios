@@ -1,13 +1,13 @@
 //
-//  ThunderBoardSettings.swift
-//  ThunderBoard
+//  ThunderboardSettings.swift
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
 
 import UIKit
 
-class ThunderBoardSettings: NSObject {
+class ThunderboardSettings: NSObject {
 
     private let defaults = NSUserDefaults.standardUserDefaults()
 

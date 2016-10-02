@@ -1,6 +1,6 @@
 //
 //  ViewControllerFactory.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -105,6 +105,24 @@ class ViewControllerFactory {
         demoViewController.interaction = interaction
         demoViewController.streamingInteraction = interaction
 
+        return demoViewController
+    }
+    
+    func motionSenseBoardDemoViewController(connection: MotionDemoConnection) -> MotionSenseBoardDemoViewController {
+        
+        let demoViewController = UIStoryboard(name: "MotionSenseBoardDemoViewController", bundle: nil).instantiateViewControllerWithIdentifier("MotionSenseBoardDemoViewController") as! MotionSenseBoardDemoViewController
+        
+        let interaction = MotionDemoInteraction(output: demoViewController, demoConnection: connection)
+        interaction.streamingOutput = demoViewController
+        interaction.streamSharePresenter = self.presenter
+        
+        let streaming = MotionDemoStreamingConnection(device: connection.device, output: interaction)
+        streaming.dataSource = interaction
+        interaction.streamingConnection = streaming
+        
+        demoViewController.interaction = interaction
+        demoViewController.streamingInteraction = interaction
+        
         return demoViewController
     }
 

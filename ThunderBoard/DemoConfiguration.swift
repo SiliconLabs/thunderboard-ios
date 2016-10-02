@@ -1,6 +1,6 @@
 //
 //  DemoConfiguration.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -10,7 +10,7 @@ import Foundation
 protocol DemoConfiguration: class {
     var deviceIdentifier: DeviceId? { get }
     weak var configurationDelegate: DemoConfigurationDelegate? { get set }
-    func configureForDemo(demo: ThunderBoardDemo)
+    func configureForDemo(demo: ThunderboardDemo)
     func resetDemoConfiguration()
 }
 

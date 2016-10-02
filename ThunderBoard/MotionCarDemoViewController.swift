@@ -1,6 +1,6 @@
 //
 //  MotionCarDemoViewController.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -27,7 +27,7 @@ class MotionCarDemoViewController : MotionDemoViewController {
         motionView.setModelScene("SL_Derby_Assembly_1116_centered.obj", initialOrientation: initialOrientation)
     }
     
-    override func modelTranformMatrixForOrientation(orientation: ThunderBoardInclination) -> SCNMatrix4 {
+    override func modelTranformMatrixForOrientation(orientation: ThunderboardInclination) -> SCNMatrix4 {
         let modelIdentity = motionView.modelIdentity
         
         var transform = SCNMatrix4Rotate(modelIdentity, -orientation.x.tb_toRadian(), 1, 0, 0)

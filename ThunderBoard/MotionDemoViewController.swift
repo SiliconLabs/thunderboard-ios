@@ -1,6 +1,6 @@
 //
 //  MotionDemoViewController.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -14,16 +14,16 @@ class MotionDemoViewController : DemoViewController, MotionDemoInteractionOutput
         return self.view as! MotionDemoView
     }
     var interaction: MotionDemoInteraction!
+    var ledMaterials: [SCNMaterial] = []
     
     private var calibrationAlert: UIAlertController?
     
     private let calibrationTitle    = "Calibrating"
-    private let calibrationMessage  = "Please ensure the ThunderBoard is stationary during calibration"
+    private let calibrationMessage  = "Please ensure the Thunderboard is stationary during calibration"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupModel()
-        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -31,21 +31,22 @@ class MotionDemoViewController : DemoViewController, MotionDemoInteractionOutput
         self.navigationController?.tb_setNavigationBarStyleForDemo(.Motion)
         setupUnitsLabels()
         setupWheel()
-        updateModelOrientation(ThunderBoardInclination(x: 0, y: 0, z: 0), animated: false)
+        updateModelOrientation(ThunderboardInclination(x: 0, y: 0, z: 0), animated: false)
+        interaction.updateView()
     }
     
     func setupModel() {
         // no-op - implemented in subclasses
     }
     
-    func modelTranformMatrixForOrientation(orientation: ThunderBoardInclination) -> SCNMatrix4 {
+    func modelTranformMatrixForOrientation(orientation: ThunderboardInclination) -> SCNMatrix4 {
         // no-op - implemented in subclasses to account for model orientation deltas
         return motionView.modelIdentity
     }
 
     //MARK: - MotionDemoInteractionOutput
     
-    func updateOrientation(orientation: ThunderBoardInclination) {
+    func updateOrientation(orientation: ThunderboardInclination) {
         let degrees = " °"
         self.motionView.orientationXValue?.text = orientation.x.tb_toString(0)! + degrees
         self.motionView.orientationYValue?.text = orientation.y.tb_toString(0)! + degrees
@@ -54,15 +55,17 @@ class MotionDemoViewController : DemoViewController, MotionDemoInteractionOutput
         updateModelOrientation(orientation, animated: true)
     }
     
-    func updateAcceleration(vector: ThunderBoardVector) {
+    func updateAcceleration(vector: ThunderboardVector) {
         let gravity = " g"
-        self.motionView.accelerationXValue?.text = vector.x.tb_toString(1)! + gravity
-        self.motionView.accelerationYValue?.text = vector.y.tb_toString(1)! + gravity
-        self.motionView.accelerationZValue?.text = vector.z.tb_toString(1)! + gravity
+        
+        self.motionView.accelerationXValue?.text = vector.x.tb_toString(2, minimumDecimalPlaces: 2)!
+        self.motionView.accelerationXValue?.text = vector.x.tb_toString(2, minimumDecimalPlaces: 2)! + gravity
+        self.motionView.accelerationYValue?.text = vector.y.tb_toString(2, minimumDecimalPlaces: 2)! + gravity
+        self.motionView.accelerationZValue?.text = vector.z.tb_toString(2, minimumDecimalPlaces: 2)! + gravity
     }
     
     func updateWheel(diameter: Meters) {
-        let settings = ThunderBoardSettings()
+        let settings = ThunderboardSettings()
         switch settings.measurement {
         case .Metric:
             let diameterInCentimeters: Centimeters = diameter * 100
@@ -74,7 +77,7 @@ class MotionDemoViewController : DemoViewController, MotionDemoInteractionOutput
     }
     
     func updateLocation(distance: Float, speed: Float, rpm: Float, totalRpm: UInt) {
-        let settings = ThunderBoardSettings()
+        let settings = ThunderboardSettings()
         switch settings.measurement {
         case .Metric:
             self.motionView.distanceValue?.text = distance.tb_toString(1)
@@ -85,6 +88,10 @@ class MotionDemoViewController : DemoViewController, MotionDemoInteractionOutput
         }
         self.motionView.rpmValue?.text = rpm.tb_toString(0)
         self.motionView.totalRpmValue?.text = String(totalRpm)
+    }
+    
+    func updateLedColor(on: Bool, color: LedRgb) {
+        updateModelLedColor(on ? color.uiColor : StyleColor.mediumGray)
     }
     
     func deviceCalibrating(isCalibrating: Bool) {
@@ -109,7 +116,7 @@ class MotionDemoViewController : DemoViewController, MotionDemoInteractionOutput
     //MARK: - Private
     
     private func setupUnitsLabels() {
-        let settings = ThunderBoardSettings()
+        let settings = ThunderboardSettings()
         
         switch settings.measurement {
         case .Metric:
@@ -129,12 +136,19 @@ class MotionDemoViewController : DemoViewController, MotionDemoInteractionOutput
         self.updateWheel(diameter)
     }
     
-    private func updateModelOrientation(orientation : ThunderBoardInclination, animated: Bool) {
+    private func updateModelOrientation(orientation : ThunderboardInclination, animated: Bool) {
         let finalTransform = modelTranformMatrixForOrientation(orientation)
         
         SCNTransaction.begin()
         SCNTransaction.setAnimationDuration(animated ? 0.1 : 0.0)
         motionView.scene.rootNode.childNodes.first?.transform = finalTransform
         SCNTransaction.commit()
+    }
+    
+    private func updateModelLedColor(color: UIColor) {
+        ledMaterials.forEach { (material) in
+            material.diffuse.contents = color
+            material.emission.contents = color
+        }
     }
 }

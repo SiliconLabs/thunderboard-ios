@@ -1,6 +1,6 @@
 //
 //  DeviceSelectionInteraction.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -45,6 +45,7 @@ class DeviceSelectionInteraction : DeviceScannerDelegate, DeviceConnectionDelega
     private var abandonAutoConnectTimer: WeakTimer?
     private var expiredDiscoveryTimer: WeakTimer?
     private let expirationDuration: NSTimeInterval = 10
+    private let updateThrottle = Throttle(interval: 0.75)
     
     var settingsPresenter: SettingsPresenter?
     
@@ -157,7 +158,7 @@ class DeviceSelectionInteraction : DeviceScannerDelegate, DeviceConnectionDelega
         abandonAutoConnectTimer = WeakTimer.scheduledTimer(5, repeats: false, action: { [weak self] () -> Void in
             log.info("Abandoning attempts to connect to \(identifier) - timeout")
             self?.abandonAutoConnectionDevice()
-            })
+        })
         
         attemptAutoConnection()
     }
@@ -218,13 +219,15 @@ class DeviceSelectionInteraction : DeviceScannerDelegate, DeviceConnectionDelega
         let discovered = DiscoveredDevice(device: device, latestDiscovery: NSDate())
         
         if index == NSNotFound {
-            self.discoveredDevices.append(discovered)
-            self.interactionOutput?.bleScanningListUpdated()
+            discoveredDevices.append(discovered)
+            interactionOutput?.bleScanningListUpdated()
         }
         else {
             if let display = deviceAtIndex(index) {
-                self.discoveredDevices[index] = discovered
-                self.interactionOutput?.bleDeviceUpdated(display, index: index)
+                discoveredDevices[index] = discovered
+                updateThrottle.run({ 
+                    self.interactionOutput?.bleDeviceUpdated(display, index: index)
+                })
             }
         }
 
@@ -232,13 +235,13 @@ class DeviceSelectionInteraction : DeviceScannerDelegate, DeviceConnectionDelega
     }
     
     func stoppedScanning() {
-        self.interactionOutput?.bleScanning(false)
+        interactionOutput?.bleScanning(false)
     }
     
     //MARK:- DeviceConnectionDelegate
     
     func connectedToDevice(device: Device) {
-        self.interactionOutput?.interactionShowConnectionDemos(device.demoConfiguration())
+        interactionOutput?.interactionShowConnectionDemos(device)
     }
     
     func connectionToDeviceFailed() {
@@ -251,6 +254,6 @@ class DeviceSelectionInteraction : DeviceScannerDelegate, DeviceConnectionDelega
             return
         }
         
-        self.interactionOutput?.interactionShowConnectionTimedOut(name)
+        interactionOutput?.interactionShowConnectionTimedOut(name)
     }
 }

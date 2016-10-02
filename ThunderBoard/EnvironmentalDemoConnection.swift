@@ -1,6 +1,6 @@
 //
 //  EnvironmentDemoConnection.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -14,4 +14,42 @@ protocol EnvironmentDemoConnection: DemoConnection {
 protocol EnvironmentDemoConnectionDelegate: class {
     func demoDeviceDisconnected()
     func updatedEnvironmentData(data: EnvironmentData)
+}
+
+extension EnvironmentDemoConnection {
+    var capabilities: Set<DeviceCapability> {
+        let environmentCapabilities: Set<DeviceCapability> = [
+            .Temperature,
+            .UVIndex,
+            .AmbientLight,
+            .Humidity,
+            .SoundLevel,
+            .AirQualityCO2,
+            .AirQualityVOC,
+            .AirPressure,
+        ]
+        
+        // Filter AirQuality capabilities if the Sense board is on CoinCell power
+        let enabledDeviceCapabilities = device.capabilities.filter({ (capability) -> Bool in
+            if device.model != .Sense {
+                return true
+            }
+
+            switch capability {
+            case .AirQualityCO2: fallthrough
+            case .AirQualityVOC:
+                switch device.power {
+                case .Unknown, .CoinCell:
+                    return false
+                case .USB, .AA, .GenericBattery:
+                    return true
+                }
+                
+            default:
+                return true
+            }
+        })
+        
+        return environmentCapabilities.intersect(enabledDeviceCapabilities)
+    }
 }

@@ -1,6 +1,6 @@
 //
 //  BeaconNotificationManager.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -18,7 +18,7 @@ class BeaconNotificationManager : NSObject, NotificationManager, CLLocationManag
         set (newValue) { enableNotifications(newValue) }
     }
     
-    private let settings = ThunderBoardSettings()
+    private let settings = ThunderboardSettings()
     private var clManager: CLLocationManager?
     private var connectedDevices: [Device]?
     
@@ -80,7 +80,7 @@ class BeaconNotificationManager : NSObject, NotificationManager, CLLocationManag
         }
         
         // remove known devices
-        let settings = ThunderBoardSettings()
+        let settings = ThunderboardSettings()
         settings.clearConnectedDeviceIds()
         
         dumpDebugInformation()
@@ -200,7 +200,7 @@ class BeaconNotificationManager : NSObject, NotificationManager, CLLocationManag
         let major = CLBeaconMajorValue( (deviceId >> 16) & 0xFFFF )
         let minor = CLBeaconMinorValue( deviceId & 0xFFFF )
         let identifier = "\(device.identifier)"
-        let beacon = CLBeaconRegion(proximityUUID: ThunderBoardBeaconId, major: major, minor: minor, identifier: identifier)
+        let beacon = CLBeaconRegion(proximityUUID: ThunderboardBeaconId, major: major, minor: minor, identifier: identifier)
         beacon.notifyEntryStateOnDisplay = true
         beacon.notifyOnEntry = true
         beacon.notifyOnExit = true

@@ -1,6 +1,6 @@
 //
 //  CBCharacteristicExtensions.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -33,12 +33,11 @@ extension CBCharacteristicProperties : CustomStringConvertible {
 
 extension CBCharacteristic {
     
-    func tb_supportsNotification() -> Bool {
-        return self.properties.rawValue & CBCharacteristicProperties.Notify.rawValue != 0
-    }
-    
-    func tb_supportsIndication() -> Bool {
-        return self.properties.rawValue & CBCharacteristicProperties.Indicate.rawValue != 0
+    func tb_supportsNotificationOrIndication() -> Bool {
+        let notification = self.properties.rawValue & CBCharacteristicProperties.Notify.rawValue != 0
+        let indication = self.properties.rawValue & CBCharacteristicProperties.Indicate.rawValue != 0
+        
+        return notification || indication
     }
     
     func tb_supportsRead() -> Bool {
@@ -146,7 +145,7 @@ extension CBCharacteristic {
         }
     }
     
-    func tb_inclinationValue() -> ThunderBoardInclination? {
+    func tb_inclinationValue() -> ThunderboardInclination? {
         if let data = self.value {
             if data.length >= 6 {
                 var xDegreesTimes100: Int16 = 0;
@@ -158,14 +157,14 @@ extension CBCharacteristic {
                 let xDegrees = Degree(xDegreesTimes100) / 100.0;
                 let yDegrees = Degree(yDegreesTimes100) / 100.0;
                 let zDegrees = Degree(zDegreesTimes100) / 100.0;
-                return ThunderBoardInclination(x: xDegrees, y: yDegrees, z: zDegrees)
+                return ThunderboardInclination(x: xDegrees, y: yDegrees, z: zDegrees)
             }
         }
         
         return nil
     }
     
-    func tb_vectorValue() -> ThunderBoardVector? {
+    func tb_vectorValue() -> ThunderboardVector? {
         if let data = self.value {
             if data.length >= 6 {
                 var xAccelerationTimes1k: Int16 = 0;
@@ -177,14 +176,14 @@ extension CBCharacteristic {
                 let xAcceleration = α(xAccelerationTimes1k) / 1000.0;
                 let yAcceleration = α(yAccelerationTimes1k) / 1000.0;
                 let zAcceleration = α(zAccelerationTimes1k) / 1000.0;
-                return ThunderBoardVector(x: xAcceleration, y: yAcceleration, z: zAcceleration)
+                return ThunderboardVector(x: xAcceleration, y: yAcceleration, z: zAcceleration)
             }
         }
         
         return nil
     }
     
-    func tb_cscMeasurementValue() -> ThunderBoardCSCMeasurement? {
+    func tb_cscMeasurementValue() -> ThunderboardCSCMeasurement? {
         if let data = self.value {
             if data.length >= 7 {
                 var revolutionsSinceConnecting:            UInt32 = 0
@@ -192,11 +191,34 @@ extension CBCharacteristic {
                 data.getBytes(&revolutionsSinceConnecting, range: NSMakeRange(1, 4))
                 data.getBytes(&secondsSinceConnectingTimes1024, range: NSMakeRange(5, 2))
                 let secondsSinceConnecting: NSTimeInterval = Double(secondsSinceConnectingTimes1024) / 1024
-                return ThunderBoardCSCMeasurement(revolutions:UInt(revolutionsSinceConnecting), seconds:secondsSinceConnecting)
+                return ThunderboardCSCMeasurement(revolutions:UInt(revolutionsSinceConnecting), seconds:secondsSinceConnecting)
             }
         }
         
         return nil
     }
     
+    func tb_analogLedState() -> LedState? {
+        guard let data = self.value else {
+            return nil
+        }
+        
+        // 0x0F FF FF FF
+        //    |  |  |  +- blue
+        //    |  |  +---- green
+        //    |  +------- red
+        //    +---------- enabled
+        if data.length != 4 {
+            return nil
+        }
+        
+        let enabled = data.tb_getByteAtIndex(0)
+        let red = Float(data.tb_getByteAtIndex(1))
+        let green = Float(data.tb_getByteAtIndex(2))
+        let blue = Float(data.tb_getByteAtIndex(3))
+        
+        // note: for now, we're only supporting all-on for the LEDs
+        let on = (enabled == 0) ? false : true
+        return LedState.RGB(on, LedRgb(red: red/255, green: green/255, blue: blue/255))
+    }
 }

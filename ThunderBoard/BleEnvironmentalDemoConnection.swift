@@ -1,6 +1,6 @@
 //
 //  BleEnvironmentDemoConnection.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -17,6 +17,8 @@ class BleEnvironmentDemoConnection : EnvironmentDemoConnection {
     
     private var currentData: EnvironmentData = EnvironmentData()
     private var pollingTimer: WeakTimer?
+    private var vocEnabled = false
+    private var co2Enabled = false
     weak var connectionDelegate: EnvironmentDemoConnectionDelegate?
 
     init(device: BleDevice) {
@@ -68,7 +70,32 @@ class BleEnvironmentDemoConnection : EnvironmentDemoConnection {
         case CBUUID.AmbientLight:
             if let ambient = characteristic.tb_uint32Value() {
                 currentData.ambientLight = Double(ambient / 100) // delivered with hundredths precision
-                log.debug("AmbientLight: \(characteristic.tb_hexStringValue()!) -> \(currentData.ambientLight)", function: "")
+                notifyUpdatedData()
+            }
+            
+        case CBUUID.SenseAirQualityCarbonDioxide:
+            if let co2 = characteristic.tb_uint16Value() {
+                co2Enabled = true
+                currentData.co2 = CarbonDioxideReading(enabled: co2Enabled, value: AirQualityCO2(co2))
+                notifyUpdatedData()
+            }
+            
+        case CBUUID.SenseAirQualityVolatileOrganicCompounds:
+            if let voc = characteristic.tb_uint16Value() {
+                vocEnabled = true
+                currentData.voc = VolatileOrganicCompoundsReading(enabled: vocEnabled, value: AirQualityVOC(voc))
+                notifyUpdatedData()
+            }
+            
+        case CBUUID.SoundLevelCustom:
+            if let db = characteristic.tb_int16Value() {
+                currentData.sound = SoundLevel(db / 100)
+                notifyUpdatedData()
+            }
+            
+        case CBUUID.Pressure:
+            if let pressure = characteristic.tb_uint32Value() {
+                currentData.pressure = AtmosphericPressure(pressure / 1000)
                 notifyUpdatedData()
             }
             
@@ -78,10 +105,29 @@ class BleEnvironmentDemoConnection : EnvironmentDemoConnection {
     }
     
     private func readCurrentValues() {
-        self.bleDevice.readValuesForCharacteristic(CBUUID.Temperature)
-        self.bleDevice.readValuesForCharacteristic(CBUUID.Humidity)
-        self.bleDevice.readValuesForCharacteristic(CBUUID.UVIndex)
-        self.bleDevice.readValuesForCharacteristic(CBUUID.AmbientLight)
+
+        capabilities.forEach({
+            switch $0 {
+            case .Temperature:
+                bleDevice.readValuesForCharacteristic(CBUUID.Temperature)
+            case .Humidity:
+                bleDevice.readValuesForCharacteristic(CBUUID.Humidity)
+            case .UVIndex:
+                bleDevice.readValuesForCharacteristic(CBUUID.UVIndex)
+            case .AmbientLight:
+                bleDevice.readValuesForCharacteristic(CBUUID.AmbientLight)
+            case .AirQualityCO2:
+                bleDevice.readValuesForCharacteristic(CBUUID.SenseAirQualityCarbonDioxide)
+            case .AirQualityVOC:
+                bleDevice.readValuesForCharacteristic(CBUUID.SenseAirQualityVolatileOrganicCompounds)
+            case .SoundLevel:
+                bleDevice.readValuesForCharacteristic(CBUUID.SoundLevelCustom)
+            case .AirPressure:
+                bleDevice.readValuesForCharacteristic(CBUUID.Pressure)
+            default:
+                break
+            }
+        })
     }
     
     private func notifyUpdatedData() {

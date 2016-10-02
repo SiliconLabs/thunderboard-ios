@@ -1,6 +1,6 @@
 //
 //  ConnectedDevice.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -8,5 +8,5 @@
 import Foundation
 
 protocol ConnectedDeviceDelegate: class {
-    func connectedDeviceUpdated(name: String, RSSI: Int?, battery: Int?, identifier: DeviceId?, firmwareVersion: String?)
+    func connectedDeviceUpdated(name: String, RSSI: Int?, power: PowerSource, identifier: DeviceId?, firmwareVersion: String?)
 }

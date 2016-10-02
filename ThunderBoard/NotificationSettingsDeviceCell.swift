@@ -1,6 +1,6 @@
 //
 //  NotificationSettingsDeviceCell.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -16,7 +16,7 @@ class NotificationSettingsDeviceCell: UITableViewCell {
     typealias ActionHandler = ( () -> Void )
     var actionHandler: ActionHandler?
     
-    private let actionStyle = StyleText(fontName: .HelveticaNeueBold, size: 12, color: StyleColor.gray, kerning: nil)
+    private let actionStyle = StyleText.headerActive
     
     var drawSeparator: Bool = false {
         didSet {
@@ -32,23 +32,23 @@ class NotificationSettingsDeviceCell: UITableViewCell {
             path.addLineToPoint(CGPointMake(rect.width, 0))
             path.lineWidth = 1
             
-            StyleColor.white.colorWithAlphaComponent(0.18).setStroke()
+            StyleColor.lightGray.setStroke()
             path.stroke()
         }
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.backgroundColor = StyleColor.mediumGray
+        self.backgroundColor = StyleColor.white
         self.contentView.backgroundColor = UIColor.clearColor()
         
         self.selectedBackgroundView = UIView()
-        self.selectedBackgroundView?.backgroundColor = StyleColor.darkGray
-        deviceName?.style = StyleText(fontName: .HelveticaNeueLight, size: 16, color: StyleColor.white, kerning: nil)
-        deviceStatus?.style = StyleText(fontName: .HelveticaNeueLight, size: 12, color: StyleColor.gray, kerning: nil)
+        self.selectedBackgroundView?.backgroundColor = StyleColor.white
+        deviceName?.style = StyleText.main1
+        deviceStatus?.style = StyleText.subtitle1
         setActionTitle("")
         
-        actionButton?.addTarget(self, action: Selector("actionButtonTapped:"), forControlEvents: .TouchUpInside)
+        actionButton?.addTarget(self, action: #selector(actionButtonTapped(_:)), forControlEvents: .TouchUpInside)
     }
     
     func setActionTitle(title: String) {

@@ -1,6 +1,6 @@
 //
 //  DemoSelectionInteraction.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -8,7 +8,7 @@
 import Foundation
 
 protocol DemoSelectionInteractionOutput: class {
-    func showConfiguringDemo(demo: ThunderBoardDemo)
+    func showConfiguringDemo(demo: ThunderboardDemo)
     func enableDemoHistory(enabled: Bool)
 }
 
@@ -20,7 +20,7 @@ class DemoSelectionInteraction: DemoConfigurationDelegate {
     private var demoConfiguration: DemoConfiguration?
     
     weak var output: DemoSelectionInteractionOutput?
-    var configuringDemo: ThunderBoardDemo?
+    var configuringDemo: ThunderboardDemo?
     
     //MARK:- Public
     
@@ -32,7 +32,7 @@ class DemoSelectionInteraction: DemoConfigurationDelegate {
         output?.enableDemoHistory(enableHistory)
     }
     
-    func configureForDemo(demo: ThunderBoardDemo) {
+    func configureForDemo(demo: ThunderboardDemo) {
         
         // prevent multiple configurations
         if configuringDemo != nil {

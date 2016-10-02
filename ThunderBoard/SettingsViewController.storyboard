@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="1XA-9s-9Nl">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="1XA-9s-9Nl">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -32,7 +32,7 @@
                         <sections>
                             <tableViewSection id="wvg-du-ed6">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="139" id="EcX-Zf-cGg">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="139" id="EcX-Zf-cGg" customClass="SettingsViewCell" customModule="ThunderBoard" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="99" width="375" height="139"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EcX-Zf-cGg" id="49R-yd-DuR">
@@ -89,7 +89,7 @@
                             </tableViewSection>
                             <tableViewSection id="4G1-EM-F9w">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="54" id="ze4-Sq-QZb">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="54" id="ze4-Sq-QZb" customClass="SettingsViewCell" customModule="ThunderBoard" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="274" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ze4-Sq-QZb" id="8Tx-q3-f5P">
@@ -116,24 +116,14 @@
                                                         <action selector="measurementsDidChange:" destination="wn4-bo-hC8" eventType="valueChanged" id="RvU-Cc-Yfj"/>
                                                     </connections>
                                                 </segmentedControl>
-                                                <view alpha="0.17999999999999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N3g-7f-FMs" userLabel="Separator">
-                                                    <rect key="frame" x="15" y="53" width="375" height="2"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="2" id="Hzp-09-vdD"/>
-                                                    </constraints>
-                                                </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="h07-R0-byY" firstAttribute="leading" secondItem="Qeg-Pa-bNG" secondAttribute="trailing" constant="12" id="KUS-en-xEB"/>
                                                 <constraint firstItem="Qeg-Pa-bNG" firstAttribute="leading" secondItem="8Tx-q3-f5P" secondAttribute="leading" constant="15" id="QHE-ve-GKy"/>
                                                 <constraint firstItem="Qeg-Pa-bNG" firstAttribute="centerY" secondItem="8Tx-q3-f5P" secondAttribute="centerY" id="YfD-RO-cbQ"/>
-                                                <constraint firstItem="N3g-7f-FMs" firstAttribute="leading" secondItem="8Tx-q3-f5P" secondAttribute="leading" constant="15" id="Ysi-hO-iP1"/>
                                                 <constraint firstAttribute="trailing" secondItem="h07-R0-byY" secondAttribute="trailing" constant="16" id="b4B-qY-mCb"/>
-                                                <constraint firstAttribute="trailing" secondItem="N3g-7f-FMs" secondAttribute="trailing" constant="-15" id="bNs-09-WMb"/>
                                                 <constraint firstItem="h07-R0-byY" firstAttribute="centerY" secondItem="8Tx-q3-f5P" secondAttribute="centerY" id="cbl-48-INz"/>
                                                 <constraint firstItem="Qeg-Pa-bNG" firstAttribute="width" secondItem="h07-R0-byY" secondAttribute="width" id="dOy-NM-RUd"/>
-                                                <constraint firstAttribute="bottom" secondItem="N3g-7f-FMs" secondAttribute="bottom" constant="-1" id="iLf-bn-djd"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
@@ -143,7 +133,7 @@
                                             </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="54" id="1Ix-fS-iAz">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="54" id="1Ix-fS-iAz" customClass="SettingsViewCell" customModule="ThunderBoard" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="328" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Ix-fS-iAz" id="Q11-1q-Mye">
@@ -170,24 +160,14 @@
                                                         <action selector="temperatureDidChange:" destination="wn4-bo-hC8" eventType="valueChanged" id="Nco-ZD-7fR"/>
                                                     </connections>
                                                 </segmentedControl>
-                                                <view alpha="0.17999999999999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0pV-CR-39d" userLabel="Separator">
-                                                    <rect key="frame" x="15" y="53" width="375" height="2"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="2" id="a1k-hf-g4w"/>
-                                                    </constraints>
-                                                </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="YdO-Au-Oj9" firstAttribute="centerY" secondItem="Q11-1q-Mye" secondAttribute="centerY" id="0S9-Gm-CMZ"/>
                                                 <constraint firstItem="ymW-9A-0xc" firstAttribute="leading" secondItem="YdO-Au-Oj9" secondAttribute="trailing" constant="12" id="Dh1-EF-XO7"/>
-                                                <constraint firstAttribute="trailing" secondItem="0pV-CR-39d" secondAttribute="trailing" constant="-15" id="F2z-Zu-V3g"/>
                                                 <constraint firstAttribute="trailing" secondItem="ymW-9A-0xc" secondAttribute="trailing" constant="16" id="OgX-Dp-2m4"/>
                                                 <constraint firstItem="YdO-Au-Oj9" firstAttribute="width" secondItem="ymW-9A-0xc" secondAttribute="width" id="cKM-rd-Nev"/>
-                                                <constraint firstItem="0pV-CR-39d" firstAttribute="leading" secondItem="Q11-1q-Mye" secondAttribute="leading" constant="15" id="gYW-Zi-SVh"/>
                                                 <constraint firstItem="YdO-Au-Oj9" firstAttribute="leading" secondItem="Q11-1q-Mye" secondAttribute="leading" constant="15" id="h9m-Ph-HJ5"/>
                                                 <constraint firstItem="ymW-9A-0xc" firstAttribute="centerY" secondItem="Q11-1q-Mye" secondAttribute="centerY" id="rEW-HZ-blZ"/>
-                                                <constraint firstAttribute="bottom" secondItem="0pV-CR-39d" secondAttribute="bottom" constant="-1" id="ubI-kN-fWZ"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
@@ -197,7 +177,7 @@
                                             </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="57" id="X0y-5c-hHr">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="57" id="X0y-5c-hHr" customClass="SettingsViewCell" customModule="ThunderBoard" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="382" width="375" height="57"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="X0y-5c-hHr" id="kD4-al-VFI">
@@ -224,26 +204,16 @@
                                                         <action selector="motionModelDidChange:" destination="wn4-bo-hC8" eventType="valueChanged" id="zvE-HI-oGI"/>
                                                     </connections>
                                                 </segmentedControl>
-                                                <view alpha="0.18000000715255737" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rt2-7q-U3b" userLabel="Separator">
-                                                    <rect key="frame" x="15" y="56" width="360" height="1"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="1" id="FgD-No-H99"/>
-                                                    </constraints>
-                                                </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Rt2-7q-U3b" firstAttribute="leading" secondItem="kD4-al-VFI" secondAttribute="leading" constant="15" id="B4e-Cl-0t3"/>
                                                 <constraint firstAttribute="trailing" secondItem="lkx-Rm-ttT" secondAttribute="trailing" constant="16" id="BQs-5Q-Dpd"/>
                                                 <constraint firstItem="lkx-Rm-ttT" firstAttribute="centerY" secondItem="kD4-al-VFI" secondAttribute="centerY" id="SNS-5W-hLe"/>
                                                 <constraint firstItem="Kjw-OI-2FA" firstAttribute="leading" secondItem="kD4-al-VFI" secondAttribute="leading" constant="15" id="X8C-VY-wt8"/>
-                                                <constraint firstAttribute="trailing" secondItem="Rt2-7q-U3b" secondAttribute="trailing" id="db3-gU-t71"/>
                                                 <constraint firstItem="Kjw-OI-2FA" firstAttribute="centerY" secondItem="kD4-al-VFI" secondAttribute="centerY" id="g8F-y5-H3S"/>
-                                                <constraint firstAttribute="bottom" secondItem="Rt2-7q-U3b" secondAttribute="bottom" id="gkG-k3-bgG"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="57" id="R09-Ht-1dJ">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="57" id="R09-Ht-1dJ" customClass="SettingsViewCell" customModule="ThunderBoard" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="439" width="375" height="57"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="R09-Ht-1dJ" id="pwG-Pe-kP1">
@@ -314,7 +284,6 @@
                         <outlet property="emailLabel" destination="wAH-ay-XL2" id="OQa-2R-puL"/>
                         <outlet property="measurementsControl" destination="h07-R0-byY" id="EuX-sO-lzf"/>
                         <outlet property="measurementsLabel" destination="Qeg-Pa-bNG" id="vZY-5I-RGD"/>
-                        <outlet property="measurementsSeparator" destination="N3g-7f-FMs" id="HnA-X2-Fa2"/>
                         <outlet property="motionModelControl" destination="lkx-Rm-ttT" id="U2s-Op-S9L"/>
                         <outlet property="motionModelLabel" destination="Kjw-OI-2FA" id="Ipe-pU-N5g"/>
                         <outlet property="nameLabel" destination="XIP-eV-3s1" id="S7A-Tn-7oT"/>
@@ -548,7 +517,7 @@
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NotificationSettingsDeviceCell" rowHeight="52" id="Mst-K7-As9" customClass="NotificationSettingsDeviceCell" customModule="ThunderBoard" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="114" width="375" height="52"/>
+                                        <rect key="frame" x="0.0" y="113.5" width="375" height="52"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Mst-K7-As9" id="DlL-Gj-Dxn">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>

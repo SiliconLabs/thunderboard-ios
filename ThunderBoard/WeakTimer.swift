@@ -1,6 +1,6 @@
 //
 //  WeakTimer.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -24,7 +24,7 @@ class WeakTimer : NSObject {
     init(interval: NSTimeInterval, repeats: Bool, action: WeakTimerBlock) {
         super.init()
         let target = WeakTimerObserver(action: action)
-        timer = NSTimer(timeInterval: interval, target: target, selector: Selector("timerFired"), userInfo: nil, repeats: repeats)
+        timer = NSTimer(timeInterval: interval, target: target, selector: #selector(WeakTimerObserver.timerFired), userInfo: nil, repeats: repeats)
     }
     
     deinit {

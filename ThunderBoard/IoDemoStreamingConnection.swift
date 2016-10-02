@@ -1,6 +1,6 @@
 //
 //  IoDemoStreamingConnection.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -9,7 +9,7 @@ import Foundation
 
 protocol IoDemoStreamingDataSource : class {
     func currentInputStates() -> [Bool]     // state of buttons
-    func currentOutputStates() -> [Bool]    // state of LEDs
+    func currentOutputStates() -> [LedState]    // state of LEDs
 }
 
 class IoDemoStreamingConnection : DemoStreamingConnection {
@@ -41,7 +41,7 @@ class IoDemoStreamingConnection : DemoStreamingConnection {
         let labels = [ "ledb", "ledg" ]
         for (index, output) in outputs.enumerate() {
             if index < labels.count {
-                data[labels[index]] = output ? Int(1) : Int(0)
+                data[labels[index]] = output.on ? Int(1) : Int(0)
             }
         }
         

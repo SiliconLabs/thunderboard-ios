@@ -1,14 +1,15 @@
 //
 //  SimulatedDevice.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
 
 import Foundation
 
-class SimulatedDevice : Device, DemoConfiguration, CustomDebugStringConvertible {
+class SimulatedDevice : Device, DemoConfiguration, Equatable, CustomDebugStringConvertible {
     
+    private (set) var model: DeviceModel
     var name: String?
     var deviceIdentifier: DeviceId? {
         didSet {
@@ -16,34 +17,47 @@ class SimulatedDevice : Device, DemoConfiguration, CustomDebugStringConvertible 
         }
     }
     var RSSI: Int?
-    var batteryLevel: Int?
     var firmwareVersion: String?
     var connectionState: DeviceConnectionState {
         didSet {
             switch connectionState {
             case .Disconnected:
                 break
+                
             case .Connecting:
                 break
+                
             case .Connected:
                 delay(1) {
-                    self.batteryLevel = 95
+                    self.power = [
+                        .USB,
+                        .AA(99),
+                        .AA(70),
+                        .CoinCell(27),
+                        .CoinCell(13),
+                        .CoinCell(5),
+                    ].random()
                     self.firmwareVersion = "1.0.0";
                     self.notifyConnectedDelegate()
                 }
-                break
             }
         }
     }
+    
+    private (set) var power: PowerSource = .Unknown
+    private (set) var capabilities: Set<DeviceCapability> = []
+    
     weak var connectedDelegate: ConnectedDeviceDelegate?
-    
     weak var simulatedScanner: SimulatedDeviceScanner?
-    
     weak var demoConnection: DemoConnection?
     
-    init() {
-        name = "Simulated"
-        RSSI = -40
+    init(name: String, identifier: DeviceId, capabilities: Set<DeviceCapability>, rssi: Int? = nil, model: DeviceModel? = .React) {
+        self.model = model ?? .React
+        self.name = name
+        self.deviceIdentifier = identifier
+        self.capabilities = capabilities
+        self.RSSI = rssi ?? -40
+
         connectionState = .Disconnected
         
         delay(2.0) {
@@ -53,11 +67,7 @@ class SimulatedDevice : Device, DemoConfiguration, CustomDebugStringConvertible 
     }
     
     private func notifyConnectedDelegate() {
-        self.connectedDelegate?.connectedDeviceUpdated(self.name!, RSSI: self.RSSI, battery: self.batteryLevel, identifier: self.deviceIdentifier, firmwareVersion: self.firmwareVersion)
-    }
-    
-    func demoConfiguration() -> DemoConfiguration {
-        return self
+        self.connectedDelegate?.connectedDeviceUpdated(self.name!, RSSI: self.RSSI, power: self.power, identifier: self.deviceIdentifier, firmwareVersion: self.firmwareVersion)
     }
     
     typealias CalibrationCompletion = ( () -> Void )
@@ -74,7 +84,7 @@ class SimulatedDevice : Device, DemoConfiguration, CustomDebugStringConvertible 
     }
     
     var debugDescription: String {
-        get { return "\(name): \(deviceIdentifier)" }
+        get { return "\(name): \(deviceIdentifier) \(capabilities) \(power)" }
     }
     
     //MARK: - Private
@@ -87,7 +97,7 @@ class SimulatedDevice : Device, DemoConfiguration, CustomDebugStringConvertible 
     //MARK: - DemoConfiguration
     
     weak var configurationDelegate: DemoConfigurationDelegate?
-    func configureForDemo(demo: ThunderBoardDemo) {
+    func configureForDemo(demo: ThunderboardDemo) {
 
         switch demo {
         case .IO:
@@ -115,7 +125,7 @@ class SimulatedDevice : Device, DemoConfiguration, CustomDebugStringConvertible 
     
     private func configureIoDemo() {
         self.configurationDelegate?.configuringIoDemo()
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.2 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
+        delay(0.2) {
             let connection = SimulatedIoDemoConnection(device: self)
             self.configurationDelegate?.ioDemoReady(connection)
             self.demoConnection = connection
@@ -125,7 +135,7 @@ class SimulatedDevice : Device, DemoConfiguration, CustomDebugStringConvertible 
     private func configureEnvironmentDemo() {
         self.configurationDelegate?.configuringEnvironmentDemo()
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
+        delay(0.5) {
             let connection = SimulatedEnvironmentDemoConnection(device: self)
             self.configurationDelegate?.environmentDemoReady(connection)
             self.demoConnection = connection
@@ -135,10 +145,21 @@ class SimulatedDevice : Device, DemoConfiguration, CustomDebugStringConvertible 
     private func configureMotionDemo() {
         self.configurationDelegate?.configuringMotionDemo()
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
+        delay(0.5) {
             let connection = SimulatedMotionDemoConnection(device: self)
             self.configurationDelegate?.motionDemoReady(connection)
             self.demoConnection = connection
         }
+    }
+}
+
+func ==(lhs: SimulatedDevice, rhs: SimulatedDevice) -> Bool {
+    return lhs.deviceIdentifier == rhs.deviceIdentifier
+}
+
+extension Array {
+    func random() -> Element {
+        let randomIndex = Int(rand()) % count
+        return self[randomIndex]
     }
 }

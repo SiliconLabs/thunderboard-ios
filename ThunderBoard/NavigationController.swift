@@ -1,6 +1,6 @@
 //
 //  NavigationController.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -10,7 +10,8 @@ import UIKit
 class NavigationController: UINavigationController {
 
     var connectedDeviceView: ConnectedDeviceBarView!
-    
+
+    private let connectedDeviceBarHeight: CGFloat = 64
     private let connectionLostTitle = "Connection Lost"
     private let connectionDismiss   = "Dismiss"
     private func connectionLostMessage(deviceName: String) -> String {
@@ -50,8 +51,8 @@ class NavigationController: UINavigationController {
         self.showConnectedDeviceBar()
     }
     
-    func updateConnectedDevice(name: String, battery: Int?, firmwareVersion: String?) {
-        self.updateDeviceInfo(name, battery: battery, firmware: firmwareVersion)
+    func updateConnectedDevice(name: String, power: PowerSource, firmwareVersion: String?) {
+        self.updateDeviceInfo(name, power: power, firmware: firmwareVersion)
     }
     
     func hideConnectedDevice() {
@@ -70,52 +71,18 @@ class NavigationController: UINavigationController {
     
     private func setupConnectedDeviceBar() {
         
-        connectedDeviceView = ConnectedDeviceBarView.loadFromNib()
+        connectedDeviceView = ConnectedDeviceBarView()
         
-        connectedDeviceView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.4)
+        connectedDeviceView.backgroundColor = StyleColor.white
         connectedDeviceView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(connectedDeviceView)
         
-        // height
-        self.view.addConstraint(NSLayoutConstraint(
-            item: connectedDeviceView,
-            attribute: .Height,
-            relatedBy: .Equal,
-            toItem: nil,
-            attribute: .NotAnAttribute,
-            multiplier: 1,
-            constant: 64)
-        )
-        
-        // width
-        self.view.addConstraint(NSLayoutConstraint(
-            item: connectedDeviceView,
-            attribute: .Leading,
-            relatedBy: .Equal,
-            toItem: self.view,
-            attribute: .Leading,
-            multiplier: 1,
-            constant: 0)
-        )
-        self.view.addConstraint(NSLayoutConstraint(
-            item: connectedDeviceView,
-            attribute: .Trailing,
-            relatedBy: .Equal,
-            toItem: self.view,
-            attribute: .Trailing,
-            multiplier: 1,
-            constant: 0)
-        )
-        
-        // anchor to bottom
-        self.view.addConstraint(NSLayoutConstraint(
-            item: connectedDeviceView,
-            attribute: .Bottom,
-            relatedBy: .Equal,
-            toItem: self.view,
-            attribute: NSLayoutAttribute.Bottom,
-            multiplier: 1,
-            constant: 0))
+        NSLayoutConstraint.activateConstraints([
+            connectedDeviceView.heightAnchor.constraintEqualToConstant(connectedDeviceBarHeight),
+            connectedDeviceView.leadingAnchor.constraintEqualToAnchor(self.view.leadingAnchor),
+            connectedDeviceView.trailingAnchor.constraintEqualToAnchor(self.view.trailingAnchor),
+            connectedDeviceView.bottomAnchor.constraintEqualToAnchor(self.view.bottomAnchor),
+        ])
     }
     
     //MARK:- Internal
@@ -128,16 +95,11 @@ class NavigationController: UINavigationController {
         self.connectedDeviceView.hidden = false
     }
     
-    private func updateDeviceInfo(name: String, battery: Int?, firmware: String?) {
-        self.connectedDeviceView.backgroundColor = StyleColor.footerGray
-        self.connectedDeviceView.connectedToLabel.tb_setText("CONNECTED TO", style: StyleText.subtitle2)
-        self.connectedDeviceView.deviceNameLabel.tb_setText(name, style: StyleText.deviceName2)
+    private func updateDeviceInfo(name: String, power: PowerSource, firmware: String?) {
         
-        if let battery = battery {
-            self.connectedDeviceView.batteryStatusLabel?.tb_setText("\(battery)%", style: StyleText.numbers1)
-
+        func updateBatteryLevel(level: Int) {
             var image: UIImage?
-            switch battery {
+            switch level {
             case 0...10:
                 image = UIImage(named: "icn_signal_0")
             case 11...25:
@@ -151,11 +113,31 @@ class NavigationController: UINavigationController {
             }
             
             self.connectedDeviceView.batteryStatusImage.image = image
+            self.connectedDeviceView.batteryStatusLabel.tb_setText("\(level)%", style: StyleText.numbers1)
         }
-        else {
+        
+        self.connectedDeviceView.connectedToLabel.tb_setText("CONNECTED TO", style: StyleText.subtitle2)
+        self.connectedDeviceView.deviceNameLabel.tb_setText(name, style: StyleText.deviceName2)
+        
+        switch power {
+        case .Unknown:
             self.connectedDeviceView.batteryStatusImage.image = UIImage(named: "icn_signal_unknown")
-            self.connectedDeviceView.batteryStatusLabel?.tb_setText(String.tb_placeholderText(), style: StyleText.numbers1)
+            self.connectedDeviceView.batteryStatusLabel.tb_setText(String.tb_placeholderText(), style: StyleText.numbers1)
+            
+        case .USB:
+            self.connectedDeviceView.batteryStatusImage.image = UIImage(named: "icn_usb")
+            self.connectedDeviceView.batteryStatusLabel.text = ""
+            
+        case .AA(let level):
+            updateBatteryLevel(level)
+            
+        case .CoinCell(let level):
+            updateBatteryLevel(level)
+            
+        case .GenericBattery(let level):
+            updateBatteryLevel(level)
         }
+
         
         if let firmware = firmware {
             self.connectedDeviceView.firmwareVersionLabel.tb_setText(firmware, style: StyleText.subtitle2)
@@ -204,6 +186,7 @@ extension UINavigationController {
     
     enum NavigationBarStyle {
         case Transparent
+        case DemoSelection
         case IO
         case Motion
         case Environment
@@ -227,17 +210,20 @@ extension UINavigationController {
         case .Transparent:
             image = UIImage()   // clear
             
+        case .DemoSelection:
+            image = UIImage.tb_imageWithColor(StyleColor.terbiumGreen, size: CGSizeMake(1, 1))
+            
         case .IO:
-            image = UIImage.tb_imageWithColor(StyleColor.yellow, size: CGSizeMake(1, 1))
+            image = UIImage.tb_imageWithColor(StyleColor.terbiumGreen, size: CGSizeMake(1, 1))
             
         case .Motion:
-            image = UIImage.tb_imageWithColor(StyleColor.bromineOrange, size: CGSizeMake(1, 1))
+            image = UIImage.tb_imageWithColor(StyleColor.terbiumGreen, size: CGSizeMake(1, 1))
             
         case .Environment:
             image = UIImage.tb_imageWithColor(StyleColor.terbiumGreen, size: CGSizeMake(1, 1))
             
         case .Settings:
-            image = UIImage.tb_imageWithColor(StyleColor.blue, size: CGSizeMake(1, 1))
+            image = UIImage.tb_imageWithColor(StyleColor.terbiumGreen, size: CGSizeMake(1, 1))
         }
 
         self.navigationBar.setBackgroundImage(image, forBarMetrics: UIBarMetrics.Default)

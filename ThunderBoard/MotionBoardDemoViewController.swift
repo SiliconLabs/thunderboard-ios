@@ -1,6 +1,6 @@
 //
 //  MotionBoardDemoViewController.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -27,7 +27,7 @@ class MotionBoardDemoViewController : MotionDemoViewController {
         motionView.setModelScene("Thunderboard_React_031716_obj.obj", initialOrientation: initialOrientation)
     }
     
-    override func modelTranformMatrixForOrientation(orientation: ThunderBoardInclination) -> SCNMatrix4 {
+    override func modelTranformMatrixForOrientation(orientation: ThunderboardInclination) -> SCNMatrix4 {
         let modelIdentity = motionView.modelIdentity
         
         var transform = SCNMatrix4Rotate(modelIdentity, -orientation.x.tb_toRadian(), 0, 0, 1)

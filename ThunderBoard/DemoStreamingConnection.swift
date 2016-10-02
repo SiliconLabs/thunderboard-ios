@@ -1,6 +1,6 @@
 //
 //  DemoStreamingConnection.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -248,7 +248,7 @@ class DemoStreamingConnection : DemoStreaming {
         session.childByAppendingPath("startTime").setValue(NSNumber(longLong: startTime))
         
         // Contact Info
-        let settings = ThunderBoardSettings()
+        let settings = ThunderboardSettings()
         let contactInfo = session.childByAppendingPath("contactInfo")
 
         if let userName = settings.userName {

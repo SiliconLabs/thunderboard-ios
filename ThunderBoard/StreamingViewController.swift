@@ -1,6 +1,6 @@
 //
 //  StreamingViewController.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -39,9 +39,9 @@ class StreamingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = StyleColor.darkGray
+        self.view.backgroundColor = StyleColor.gray
         self.statusMessage?.style = StyleText.streamingLabel
-        self.streamingSwitch?.onTintColor = StyleColor.blue
+        self.streamingSwitch?.onTintColor = StyleColor.terbiumGreen
         updateStreamingModeDisplay()
     }
     

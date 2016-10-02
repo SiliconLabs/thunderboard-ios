@@ -1,6 +1,6 @@
 //
 //  MotionDemoStreamingConnection.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -10,9 +10,9 @@ import Firebase
 
 protocol MotionDemoStreamingDataSource : class {
     
-    func currentAcceleration() -> ThunderBoardVector
-    func currentOrientation() -> ThunderBoardInclination
-    func currentPosition() -> ThunderBoardWheel
+    func currentAcceleration() -> ThunderboardVector
+    func currentOrientation() -> ThunderboardInclination
+    func currentPosition() -> ThunderboardWheel
 }
 
 class MotionDemoStreamingConnection : DemoStreamingConnection {

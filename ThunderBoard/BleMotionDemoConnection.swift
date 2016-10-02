@@ -1,6 +1,6 @@
 //
 //  BleMotionDemoConnection.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -48,6 +48,9 @@ class BleMotionDemoConnection: MotionDemoConnection {
         case CBUUID.CSCControlPoint:
             notifyCSCControlPoint(characteristic)
             
+        case CBUUID.SenseRGBOutput:
+            notifyColorUpdated(characteristic)
+            
         default:
             log.debug("unknown UUID: \(characteristic.UUID)")
             break
@@ -77,10 +80,14 @@ class BleMotionDemoConnection: MotionDemoConnection {
         self.connectionDelegate?.startedRevolutionsReset()
     }
     
+    func readLedColor() {
+        self.bleDevice.readValuesForCharacteristic(CBUUID.SenseRGBOutput)
+    }
+    
     // Internal
     
     private func notifyRotation(characteristic: CBCharacteristic) {
-        if let cscMeasurement:ThunderBoardCSCMeasurement = characteristic.tb_cscMeasurementValue() {
+        if let cscMeasurement:ThunderboardCSCMeasurement = characteristic.tb_cscMeasurementValue() {
             
             let revolutions = cscMeasurement.revolutionsSinceConnecting
             let elapsedTime = cscMeasurement.secondsSinceConnecting
@@ -118,8 +125,20 @@ class BleMotionDemoConnection: MotionDemoConnection {
         }
     }
     
+    private func notifyColorUpdated(characteristic: CBCharacteristic) {
+        guard let ledState = characteristic.tb_analogLedState() else {
+            return
+        }
+        
+        switch ledState {
+        case .RGB(let on, let color):
+            connectionDelegate?.ledColorUpdated(on, color: color)
+        default:
+            break
+        }
+    }
+    
     private func notifyCSCControlPoint(characteristic: CBCharacteristic) {
         self.connectionDelegate?.finishedRevolutionsReset()
     }
-    
 }

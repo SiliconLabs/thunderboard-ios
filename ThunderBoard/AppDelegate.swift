@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         log.info("launchOptions=\(launchOptions) background=\(background.rawValue)")
 
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        self.window?.tintColor = StyleColor.terbiumGreen
         self.applicationPresenter = ApplicationPresenter(window: self.window)
         self.applicationPresenter?.showDeviceSelection()
         self.window?.makeKeyAndVisible()

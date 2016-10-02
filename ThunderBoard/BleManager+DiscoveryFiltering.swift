@@ -1,6 +1,6 @@
 //
 //  BleManager+DiscoveryFiltering.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -9,12 +9,11 @@ import CoreBluetooth
 
 extension BleManager {
     
-    func isSensorBoard(peripheral: CBPeripheral) -> Bool {
-
-        if let name = peripheral.name {
-            return name.containsString("Thunder")
+    func isThunderboard(peripheral: CBPeripheral) -> Bool {
+        guard let name = peripheral.name else {
+            return false
         }
         
-        return false
+        return name.hasPrefix("Thunder") || name.hasPrefix("TBS")
     }
 }

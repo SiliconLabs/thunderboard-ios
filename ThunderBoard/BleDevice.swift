@@ -1,6 +1,6 @@
 //
 //  DiscoveredDevice.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -14,6 +14,8 @@ class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
         get { return "name=\(name) identifier=\(deviceIdentifier) RSSI=\(RSSI) connectionState=\(connectionState)" }
     }
     
+    private (set) var model: DeviceModel = .Unknown
+    
     var name: String? {
         didSet {
             notifyConnectedDelegate()
@@ -25,12 +27,14 @@ class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
         }
     }
     
-    var batteryLevel: Int? {
+    private var knownPowerSource: PowerSource?
+    private var knownBatteryLevel: Int?
+    private (set) var power: PowerSource = .Unknown {
         didSet {
             notifyConnectedDelegate()
         }
     }
-    
+
     var firmwareVersion: String? {
         didSet {
             notifyConnectedDelegate()
@@ -57,6 +61,8 @@ class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
         }
     }
 
+    private (set) var capabilities: Set<DeviceCapability> = []
+
     var cbPeripheral: CBPeripheral!
 
     init(peripheral: CBPeripheral) {
@@ -74,9 +80,10 @@ class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
             return
         }
         
-        for (_, characteristic) in characteristics.enumerate() {
-            self.cbPeripheral?.readValueForCharacteristic(characteristic)
-        }
+        characteristics.forEach({
+            log.debug("reading characteristic \($0)")
+            self.cbPeripheral?.readValueForCharacteristic($0)
+        })
     }
 
     func writeValueForCharacteristic(uuid: CBUUID, value: NSData) {
@@ -84,9 +91,10 @@ class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
             return
         }
         
-        for (_, characteristic) in characteristics.enumerate() {
-            self.cbPeripheral.writeValue(value, forCharacteristic: characteristic, type: .WithResponse)
-        }
+        characteristics.forEach({
+            log.debug("writing value to characteristic \($0)")
+            self.cbPeripheral.writeValue(value, forCharacteristic: $0, type: .WithResponse)
+        })
     }
     
     //MARK:- ConnectedDevice
@@ -99,7 +107,7 @@ class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
     
     private func notifyConnectedDelegate() {
         if let name = self.name {
-            self.connectedDelegate?.connectedDeviceUpdated(name, RSSI: self.RSSI, battery: self.batteryLevel, identifier: self.deviceIdentifier, firmwareVersion: self.firmwareVersion)
+            self.connectedDelegate?.connectedDeviceUpdated(name, RSSI: self.RSSI, power: self.power, identifier: self.deviceIdentifier, firmwareVersion: self.firmwareVersion)
         }
     }
     
@@ -111,10 +119,6 @@ class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
         self.configurationDelegate?.deviceIdentifierUpdated(identifier)
     }
     
-    func demoConfiguration() -> DemoConfiguration {
-        return self
-    }
-    
     //MARK:- DemoConfiguration
     
     typealias CharacteristicHook = ((characteristic: CBCharacteristic) -> Void)
@@ -123,7 +127,7 @@ class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
     internal var characteristicDidWriteHook: CharacteristicHook?
     weak var configurationDelegate: DemoConfigurationDelegate?
     
-    func configureForDemo(demo: ThunderBoardDemo) {
+    func configureForDemo(demo: ThunderboardDemo) {
         switch demo {
         case .IO:
             configureIoDemo()
@@ -146,11 +150,7 @@ class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
     }
     
     func findCharacteristics(uuid: CBUUID, properties: CBCharacteristicProperties) -> [CBCharacteristic]? {
-        guard let characteristics = allCharacteristics() else {
-            return nil
-        }
-        
-        return characteristics.filter({
+        return allCharacteristics.filter({
             return $0.UUID == uuid && ($0.properties.rawValue & properties.rawValue == properties.rawValue)
         })
     }
@@ -163,45 +163,118 @@ class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
         return characteristics.first
     }
     
-    func allCharacteristics() -> [CBCharacteristic]? {
-        guard let services = self.cbPeripheral.services else {
-            return nil
-        }
-        
+    var allCharacteristics: [CBCharacteristic] {
         var result = Array<CBCharacteristic>()
-        for service in services {
-            guard let characteristics = service.characteristics else {
-                continue
-            }
-            
-            for characteristic in characteristics {
-                result.append(characteristic)
-            }
-        }
+        self.cbPeripheral.services?.forEach({
+            $0.characteristics?.forEach({
+                result.append($0)
+            })
+        })
         
         return result
     }
     
-    func enumerateCharacteristics(block: (characteristic: CBCharacteristic) -> Void) {
-        
-        guard let characteristics = allCharacteristics() else {
-            return
-        }
-        
-        let _ = characteristics.filter({
-            block(characteristic: $0)
-            return false
-        })
-    }
-    
     private func reportConnectedDevice() {
-        let settings = ThunderBoardSettings()
+        let settings = ThunderboardSettings()
         guard let name = self.name, identifier = self.deviceIdentifier else {
             return
         }
         
         let device = NotificationDevice(name: name, identifier: identifier)
         settings.addConnectedDevice(device)
+    }
+    
+    private func updateBatteryLevel(level: Int) {
+        knownBatteryLevel = level
+        updatePower()
+    }
+    
+    private func updateKnownPower(power: PowerSource) {
+        knownPowerSource = power
+        updatePower()
+    }
+    
+    private func updatePower() {
+        guard let knownPower = knownPowerSource, knownbattery = knownBatteryLevel else {
+            log.debug("known power information not available -- cannot update power")
+            return
+        }
+
+        switch knownPower {
+        case .Unknown:
+            break
+        case .USB:
+            power = .USB
+        case .GenericBattery:
+            power = .GenericBattery(knownbattery)
+        case .AA:
+            power = .AA(knownbattery)
+        case .CoinCell:
+            power = .CoinCell(knownbattery)
+        }
+    }
+    
+    private func updateCapabilities(characteristics: [CBCharacteristic]) {
+        // map characteristics to capabilities
+        capabilities = capabilities.union(characteristics.flatMap({ (characteristic: CBCharacteristic) -> DeviceCapability? in
+            switch characteristic.UUID {
+                
+            case CBUUID.Digital:
+                if characteristic.tb_supportsWrite() {
+                    return .DigitalOutput
+                }
+                
+                return .DigitalInput
+                
+            case CBUUID.SenseRGBOutput:
+                return .RGBOutput
+
+            case CBUUID.Temperature:
+                return .Temperature
+                
+            case CBUUID.Humidity:
+                return .Humidity
+                
+            case CBUUID.AmbientLight:
+                return .AmbientLight
+                
+            case CBUUID.UVIndex:
+                return .UVIndex
+
+            case CBUUID.Pressure:
+                return .AirPressure
+                
+            case CBUUID.Command:
+                return .Calibration
+
+            case CBUUID.AccelerationMeasurement:
+                return .Acceleration
+                
+            case CBUUID.OrientationMeasurement:
+                return .Orientation
+                
+            case CBUUID.CSCMeasurement:
+                return .Revolutions
+                
+            case CBUUID.SoundLevelCustom:
+                return .SoundLevel
+
+            case CBUUID.SenseAirQualityCarbonDioxide:
+                return .AirQualityCO2
+                
+            case CBUUID.SenseAirQualityVolatileOrganicCompounds:
+                return .AirQualityVOC
+                
+            case CBUUID.PowerSourceCharacteristicCustom:
+                return .PowerSource
+                
+            default:
+                return nil
+            }
+            
+        }))
+        
+        log.debug("updated capabilities: \(capabilities)")
     }
     
     //MARK:- Characteristic Helpers
@@ -249,12 +322,18 @@ class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
     //MARK:- CBPeripheralDelegate (Services)
     
     func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
+        // discover all characteristics
+        peripheral.services?.forEach({
+            peripheral.discoverCharacteristics(nil, forService: $0)
+        })
         
-        // discover battery characteristics
-        if let services = peripheral.services {
-            for service: CBService in services {
-                peripheral.discoverCharacteristics(nil, forService: service)
-            }
+        // if the custom power source service is available, we'll wait for
+        // its characteristic to be read. otherwise, we can assume battery power
+        if peripheral.services?.filter({ $0.UUID == CBUUID.PowerSourceServiceCustom }).count == 0 {
+            updateKnownPower(.GenericBattery(0))
+        }
+        else {
+            updateKnownPower(.Unknown)
         }
     }
     
@@ -264,18 +343,28 @@ class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
         guard let characteristics = service.characteristics else {
             return
         }
+        
+        log.debug("service: \(service.UUID) characteristics: \(service.characteristics)")
+        
+        // update capabilities based on characteristics
+        updateCapabilities(characteristics)
 
-        for characteristic in characteristics {
-            // read all supported values
-            if characteristic.tb_supportsRead() {
-                peripheral.readValueForCharacteristic(characteristic)
-            }
+        characteristics.forEach({
             
-            // setup battery monitoring
-            if characteristic.UUID == CBUUID.BatteryLevel {
-                peripheral.setNotifyValue(true, forCharacteristic: characteristic)
+            switch $0.UUID {
+            case CBUUID.BatteryLevel:
+                peripheral.setNotifyValue(true, forCharacteristic: $0)
+                
+            case CBUUID.PowerSourceCharacteristicCustom:
+                peripheral.readValueForCharacteristic($0)
+                
+            default:
+                // read all supported values
+                if $0.tb_supportsRead() {
+                    peripheral.readValueForCharacteristic($0)
+                }
             }
-        }
+        })
     }
     
     func peripheral(peripheral: CBPeripheral, didWriteValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
@@ -288,32 +377,39 @@ class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
         dispatch_main_sync {
-            if characteristic.UUID == CBUUID.BatteryLevel {
-                if let value = characteristic.tb_int8Value() {
-                    self.batteryLevel = Int(value)
-                }
-            }
             
-            if characteristic.UUID == CBUUID.ModelNumber {
+            switch characteristic.UUID {
+            case CBUUID.BatteryLevel:
+                if let value = characteristic.tb_int8Value() {
+                    self.updateBatteryLevel(Int(value))
+                }
+                
+            case CBUUID.ModelNumber:
                 if let model = characteristic.tb_stringValue() {
                     log.info("model: \(model)")
+                    
+                    switch model.uppercaseString {
+                    case "RD-0057":
+                        self.model = .React
+                    case "BRD4160A":
+                        self.model = .Sense
+                    default:
+                        self.model = .Unknown
+                    }
                 }
-            }
-            
-            if characteristic.UUID == CBUUID.FirmwareRevision {
+                
+            case CBUUID.FirmwareRevision:
                 if let value = characteristic.tb_stringValue() {
                     log.info("Firmware Version: \(value)")
                     self.firmwareVersion = value
                 }
-            }
-            
-            if characteristic.UUID == CBUUID.HardwareRevision {
+                
+            case CBUUID.HardwareRevision:
                 if let value = characteristic.tb_stringValue() {
                     log.info("Hardware Revision: \(value)")
                 }
-            }
-            
-            if characteristic.UUID == CBUUID.SystemIdentifier {
+                
+            case CBUUID.SystemIdentifier:
                 if let value = characteristic.tb_hexStringValue() {
                     log.info("System ID: \(value)")
                 }
@@ -321,13 +417,38 @@ class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
                 if let systemId = characteristic.tb_uint64value() {
                     let uniqueIdentifier = systemId.bigEndian & 0xFFFFFF
                     self.deviceIdentifier = DeviceId(uniqueIdentifier)
-
+                    
                     log.info("Unique ID \(uniqueIdentifier)")
                     
                     self.reportConnectedDevice()
                 }
+                
+            case CBUUID.PowerSourceCharacteristicCustom:
+                if let value = characteristic.tb_uint8Value() {
+                    //    <!-- 0x00 : POWER_SOURCE_TYPE_UNKNOWN   -->
+                    //    <!-- 0x01 : POWER_SOURCE_TYPE_USB       -->
+                    //    <!-- 0x02 : POWER_SOURCE_TYPE_AA        -->
+                    //    <!-- 0x03 : POWER_SOURCE_TYPE_AAA       -->
+                    //    <!-- 0x04 : POWER_SOURCE_TYPE_COIN_CELL -->
+                    log.debug("power source: \(value)")
+                    switch value {
+                    case 1:
+                        self.knownPowerSource = .USB
+                    case 2, 3:
+                        self.knownPowerSource = .AA(0)
+                    case 4:
+                        self.knownPowerSource = .CoinCell(0)
+                    default:
+                        break
+                    }
+                    
+                    self.updatePower()
+                }
+                
+            default:
+                break
             }
-            
+
             if error == nil {
                 self.characteristicUpdateHook?(characteristic: characteristic)
                 self.demoConnectionCharacteristicValueUpdated?(characteristic: characteristic)

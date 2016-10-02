@@ -1,6 +1,6 @@
 //
 //  SimulatedNotificationManager.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -14,7 +14,7 @@ class SimulatedNotificationManager : NotificationManager {
         set (newValue) { settings.beaconNotifications = newValue }
     }
     
-    private let settings = ThunderBoardSettings()
+    private let settings = ThunderboardSettings()
     weak var delegate: NotificationManagerDelegate?
     weak var presenter: NotificationPresenter?
     

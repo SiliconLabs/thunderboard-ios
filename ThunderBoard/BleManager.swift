@@ -1,6 +1,6 @@
 //
 //  BleManager.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -78,21 +78,24 @@ class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConne
     }
 
     func connect(device: Device) {
-        let bleDevice = device as! BleDevice
+        guard let device = device as? BleDevice else {
+            fatalError()
+        }
+        
         if self.peripheralPendingConnection == nil {
             device.connectionState = .Connecting
-            self.central?.connectPeripheral(bleDevice.cbPeripheral!, options: nil)
+            self.central?.connectPeripheral(device.cbPeripheral!, options: nil)
             self.startConnectionTimer()
         }
     }
     
     func isConnectedToDevice(device: Device) -> Bool {
-        guard let bleDevice = device as? BleDevice else {
-            return false
+        guard let device = device as? BleDevice else {
+            fatalError()
         }
         
         let peripherals = self.connectedPeripherals
-        return peripherals.contains(bleDevice.cbPeripheral)
+        return peripherals.contains(device.cbPeripheral)
     }
     
     func disconnectAllDevices() {
@@ -107,7 +110,7 @@ class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConne
     //MARK: Connection Timer
     private var connectionTimer: NSTimer?
     private func startConnectionTimer() {
-        self.connectionTimer = NSTimer.scheduledTimerWithTimeInterval(connectionTimeout, target: self, selector: Selector("connectionTimeoutFired"), userInfo: nil, repeats: false)
+        self.connectionTimer = NSTimer.scheduledTimerWithTimeInterval(connectionTimeout, target: self, selector: #selector(connectionTimeoutFired), userInfo: nil, repeats: false)
     }
     
     private func stopConnectionTimer() {
@@ -226,7 +229,7 @@ class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConne
         
         // RSSI value 127 is Apple-reserved and indicates the RSSI value could not be read.
         if RSSI.integerValue != 127 {
-            if isSensorBoard(peripheral) {
+            if isThunderboard(peripheral) {
                 let device = bleDeviceForPeripheral(peripheral)
                 device.RSSI = RSSI.integerValue
                 
@@ -249,6 +252,17 @@ class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConne
         }
         
         expectingDisconnect = false
+        
+        delay(5) {
+            peripheral.services?.forEach({ (service) in
+                print("---------------------------------------------------")
+                print("      Service: \(service.UUID.UUIDString) (\(service.UUID))")
+                service.characteristics?.forEach({ (characteristic) in
+                    print("          Characteristic: \(characteristic.UUID.UUIDString) properties \(characteristic.properties)")
+                })
+            })
+
+        }
     }
     
     

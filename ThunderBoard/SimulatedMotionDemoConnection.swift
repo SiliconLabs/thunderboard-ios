@@ -1,6 +1,6 @@
 //
 //  SimulatedMotionDemoConnection.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -49,6 +49,10 @@ class SimulatedMotionDemoConnection: MotionDemoConnection {
         }
     }
     
+    func readLedColor() {
+        // NO-OP - simulated device randomly updates
+    }
+    
     //MARK: - Private
 
     private var currentSample               = 0
@@ -61,8 +65,9 @@ class SimulatedMotionDemoConnection: MotionDemoConnection {
             self.simulateAccelerationData()
             self.simulateOrientation()
             self.simulateRotation()
+            self.simulateColor()
             
-            self.currentSample += 2
+            self.currentSample += 5
             if self.currentSample > 180 {
                 self.currentSample = -180
             }
@@ -77,18 +82,23 @@ class SimulatedMotionDemoConnection: MotionDemoConnection {
     }
     
     func simulateOrientation() {
-        connectionDelegate?.orientationUpdated(ThunderBoardInclination(x: 0, y: 0, z: 90))
-//        connectionDelegate?.orientationUpdated(ThunderBoardInclination(x: 0, y: 10, z: Float(currentSample)))
+//        connectionDelegate?.orientationUpdated(ThunderboardInclination(x: 0, y: -65, z: 0))  // Thunderboard-React Model screenshot
+//        connectionDelegate?.orientationUpdated(ThunderboardInclination(x: 0, y: 0, z: 90)) // Pinewood Derby model screenshot
+        connectionDelegate?.orientationUpdated(ThunderboardInclination(x: 0, y: Float(currentSample), z: 0))
     }
     
     func simulateRotation() {
         connectionDelegate?.rotationUpdated(cumulativeRotations, elapsedTime: elapsedTime)
     }
     
-    private func randomOrientationVector() -> ThunderBoardInclination {
+    func simulateColor() {
+        connectionDelegate?.ledColorUpdated(false, color: LedRgb.random())
+    }
+    
+    private func randomOrientationVector() -> ThunderboardInclination {
         let scale: Degree = 360
         
-        let vector = ThunderBoardInclination(
+        let vector = ThunderboardInclination(
             x: randomFloat() * scale - (scale / 2),
             y: randomFloat() * scale - (scale / 2),
             z: randomFloat() * scale - (scale / 2)
@@ -97,9 +107,9 @@ class SimulatedMotionDemoConnection: MotionDemoConnection {
         return vector
     }
     
-    private func randomAccelerationVector() -> ThunderBoardVector {
+    private func randomAccelerationVector() -> ThunderboardVector {
         let scale: α = 2
-        let vector = ThunderBoardVector(
+        let vector = ThunderboardVector(
             x: randomFloat() * scale - (scale / 2),
             y: randomFloat() * scale - (scale / 2),
             z: randomFloat() * scale - (scale / 2)
@@ -109,5 +119,13 @@ class SimulatedMotionDemoConnection: MotionDemoConnection {
     
     private func randomFloat() -> Float {
         return ceilf(Float(random())/Float(RAND_MAX) * 100) / 100
+    }
+}
+
+extension LedRgb {
+    static func random() -> LedRgb {
+        return LedRgb(red: Float(arc4random()) / Float(UINT32_MAX),
+                      green: Float(arc4random()) / Float(UINT32_MAX),
+                      blue: Float(arc4random()) / Float(UINT32_MAX))
     }
 }

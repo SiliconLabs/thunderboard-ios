@@ -1,6 +1,6 @@
 //
 //  ButtonSpinner.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -196,8 +196,7 @@ class ButtonAnimationTrackLayer: CALayer {
         if filling {
             reverse()
         } else {
-            let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayDuration * Double(NSEC_PER_SEC)))
-            dispatch_after(delayTime, dispatch_get_main_queue()) {
+            delay(delayDuration) {
                 self.fill()
             }
         }
@@ -314,10 +313,10 @@ class ButtonSpinner: UIView {
     private func commonSetup() {
         
         let trackColors = [
-            StyleColor.yellow,
-            StyleColor.gold,
-            StyleColor.bromineOrange,
-            StyleColor.redOrange
+            StyleColor.brightGreen,
+            StyleColor.terbiumGreen,
+            StyleColor.mediumGreen,
+            StyleColor.darkGreen
         ]
         
         let start = -π / 2.0

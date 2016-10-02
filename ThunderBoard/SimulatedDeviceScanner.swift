@@ -1,6 +1,6 @@
 //
 //  SimulatedDeviceScanner.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -9,6 +9,7 @@ import Foundation
 
 class SimulatedDeviceScanner : DeviceScanner, DeviceConnection {
     
+    private var discoveryTimer: WeakTimer?
     init() {
         delay(1) {
             // simulate delayed Bluetooth initialization
@@ -26,9 +27,6 @@ class SimulatedDeviceScanner : DeviceScanner, DeviceConnection {
 //        }
     }
     
-    //MARK: - Runtime Configuration
-    let numberDevicesFound = 1
-    
     //MARK: - Simulated API
     
     func simulateLostConnection(device: SimulatedDevice) {
@@ -42,11 +40,14 @@ class SimulatedDeviceScanner : DeviceScanner, DeviceConnection {
     func startScanning() {
         if powerState == .Enabled {
             scanningDelegate?.startedScanning()
-            simulateDiscoveredDevice()
+            discoveryTimer = WeakTimer.scheduledTimer(0.1, repeats: true, action: { [weak self] in
+                self?.simulateDiscoveredDevice()
+            })
         }
     }
     
     func stopScanning() {
+        discoveryTimer = nil
         scanningDelegate?.stoppedScanning()
     }
     
@@ -55,11 +56,14 @@ class SimulatedDeviceScanner : DeviceScanner, DeviceConnection {
     weak var connectionDelegate: DeviceConnectionDelegate?
     var currentDevice: Device?
     func connect(device: Device) {
+        guard let device = device as? SimulatedDevice else {
+            fatalError()
+        }
+        
         currentDevice = device
         device.connectionState = .Connecting
 
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.8 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
-            
+        delay(0.8) {
             device.connectionState = .Connected
             self.connectionDelegate?.connectedToDevice(device)
             self.applicationDelegate?.transportConnectedToDevice(device)
@@ -113,18 +117,39 @@ class SimulatedDeviceScanner : DeviceScanner, DeviceConnection {
         self.scanningDelegate?.transportPowerStateUpdated(powerState)
     }
     
-    private func simulateDiscoveredDevice() {
+    private lazy var discoveredDevices: [SimulatedDevice] = {
+        let reactCapabilities: Set<DeviceCapability> = [
+            .Temperature,
+            .Humidity,
+            .AmbientLight,
+            .UVIndex,
+        ]
         
-        for i in 0..<numberDevicesFound {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.4 + (Double(i) * 0.7) * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
-                
-                let device = SimulatedDevice()
-                device.name = "Thunder React #0005877\(i)"
-                device.deviceIdentifier = DeviceId(i)
-                device.simulatedScanner = self
-                self.scanningDelegate?.discoveredDevice(device)
-            }
-        }
-
+        let senseCapabilities: Set<DeviceCapability> = [
+            .Temperature,
+            .Humidity,
+            .AmbientLight,
+            .UVIndex,
+            .AirQualityCO2,
+            .AirQualityVOC,
+            .AirPressure,
+            .SoundLevel,
+            .RGBOutput,
+        ]
+        
+        let devices: [SimulatedDevice] = [
+            SimulatedDevice(name: "Thunderboard-React #58771", identifier: DeviceId(1), capabilities: reactCapabilities),
+            SimulatedDevice(name: "Thunderboard-Sense #58772", identifier: DeviceId(2), capabilities: senseCapabilities, model: .Sense),
+        ]
+        
+        return devices
+    }()
+    
+    private func simulateDiscoveredDevice() {
+        discoveredDevices.forEach({
+            $0.simulatedScanner = self
+            $0.RSSI = (-1 * Int(rand()) % 100)
+            self.scanningDelegate?.discoveredDevice($0)
+        })
     }
 }

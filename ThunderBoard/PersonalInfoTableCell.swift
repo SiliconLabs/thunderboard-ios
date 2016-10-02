@@ -1,6 +1,6 @@
 //
 //  PersonalInfoTableCell.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -17,7 +17,7 @@ class PersonalInfoTableCell : UITableViewCell, UITextFieldDelegate {
         setupClearButton()
 
         // cursor color
-        textField?.tintColor = StyleColor.blue
+        textField?.tintColor = StyleColor.terbiumGreen
         textField?.delegate = self
         
         log.debug("\(textField?.subviews)")
@@ -32,10 +32,9 @@ class PersonalInfoTableCell : UITableViewCell, UITextFieldDelegate {
             path.addLineToPoint(CGPointMake(rect.width, 0))
             path.lineWidth = 1
             
-            StyleColor.white.colorWithAlphaComponent(0.18).setStroke()
+            StyleColor.lightGray.setStroke()
             path.stroke()
         }
-        
     }
     
     private func setupClearButton() {
@@ -43,7 +42,7 @@ class PersonalInfoTableCell : UITableViewCell, UITextFieldDelegate {
         let button = UIButton(frame: CGRectMake(0, 0, 18, 18))
         let image = UIImage(named: "icn_settings_textfield_clear")!
         button.setImage(image, forState: .Normal)
-        button.addTarget(self, action: Selector("clearButtonTapped"), forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(clearButtonTapped), forControlEvents: .TouchUpInside)
         
         textField?.rightViewMode = .WhileEditing
         textField?.rightView = button

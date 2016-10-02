@@ -1,6 +1,6 @@
 //
 //  PersonalInfoViewController.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -24,7 +24,7 @@ class PersonalInfoViewController: UITableViewController {
     private let emailText = "EMAIL"
     private let phoneText = "PHONE"
     
-    private let settings = ThunderBoardSettings()
+    private let settings = ThunderboardSettings()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,11 +45,10 @@ class PersonalInfoViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         guard let infoCell = cell as? PersonalInfoTableCell else {
-            log.error("invalid cell")
-            return
+            fatalError("invalid cell class")
         }
         
-        infoCell.backgroundColor = StyleColor.mediumGray
+        infoCell.backgroundColor = StyleColor.white
         infoCell.drawSeparator = !tableView.tb_isFirstCell(indexPath)
         
         if tableView.tb_isLastCell(indexPath) {
@@ -74,8 +73,8 @@ class PersonalInfoViewController: UITableViewController {
     
     func setupAppearance() {
         automaticallyAdjustsScrollViewInsets = true
-        view.backgroundColor = StyleColor.siliconGray
-        tableView?.backgroundColor = StyleColor.siliconGray
+        view.backgroundColor = StyleColor.lightGray
+        tableView?.backgroundColor = StyleColor.lightGray
         
         nameLabel.tb_setText(nameText,   style: StyleText.subtitle2)
         nameTextField.textColor = StyleText.main1.color
@@ -95,8 +94,8 @@ class PersonalInfoViewController: UITableViewController {
     }
     
     func setupNavButtons() {
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "btn_navbar_close"), style: UIBarButtonItemStyle.Done, target: self, action: Selector("handleCancel"))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "btn_navbar_done_active"), style: UIBarButtonItemStyle.Done, target: self, action: Selector("handleSave"))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "btn_navbar_close"), style: UIBarButtonItemStyle.Done, target: self, action: #selector(handleCancel))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "btn_navbar_done_active"), style: UIBarButtonItemStyle.Done, target: self, action: #selector(handleSave))
     }
     
     //MARK: Action Handlers

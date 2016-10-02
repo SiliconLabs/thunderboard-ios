@@ -1,6 +1,6 @@
 //
 //  DeviceSelectionViewController.swift
-//  ThunderBoard
+//  Thunderboard
 //
 //  Copyright © 2016 Silicon Labs. All rights reserved.
 //
@@ -21,12 +21,9 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
     
     var presenter: DemoSelectionPresenter?
 
-    @IBOutlet var backgroundImageTopLayout: NSLayoutConstraint?
-    @IBOutlet var backgroundImageBottomLayout: NSLayoutConstraint?
-    @IBOutlet var messagingContainerHeight: NSLayoutConstraint?
+    @IBOutlet var messageContainerTopLayout: NSLayoutConstraint?
+    
     @IBOutlet var deviceTableHeight: NSLayoutConstraint?
-    @IBOutlet var taglineLabel: UILabel?
-    @IBOutlet var poweredByLabel: UILabel?
     @IBOutlet var mmLogo: UIImageView?
     
     private let initialAnimationHold    = NSTimeInterval(1.3)
@@ -39,24 +36,22 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
     @IBOutlet weak var logoImage: UIImageView?
     @IBOutlet weak var tableView: UITableView? {
         didSet {
-            self.tableView?.backgroundColor = StyleColor.siliconGray
+            self.tableView?.backgroundColor = StyleColor.white
             self.tableView?.separatorStyle = .None
         }
     }
     @IBOutlet weak var messagingViewContainer: UIView? {
         didSet {
-            self.messagingViewContainer?.backgroundColor = StyleColor.siliconGray
+            self.messagingViewContainer?.backgroundColor = StyleColor.white
         }
     }
     
     @IBOutlet weak var userMessageLabel: UILabel?
     @IBOutlet weak var spinner: Spinner? {
         didSet {
-            if let spinner = self.spinner {
-                spinner.trackColor = StyleColor.footerGray
-                spinner.lineColor = StyleColor.blue
-                spinner.lineWidth = 2
-            }
+            self.spinner?.trackColor = StyleColor.lightGray
+            self.spinner?.lineColor = StyleColor.terbiumGreen
+            self.spinner?.lineWidth = 2
         }
     }
     @IBOutlet weak var bluetoothDisabledAlert: UIImageView?
@@ -75,7 +70,7 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = StyleColor.siliconGray
+        self.view.backgroundColor = StyleColor.terbiumGreen
         self.title = ""
     }
     
@@ -124,9 +119,9 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
     }
 
     func updateData(cell: DeviceTableViewCell, device:DiscoveredDeviceDisplay) {
-        cell.backgroundColor = StyleColor.siliconGray
+        cell.backgroundColor = StyleColor.white
         cell.selectedBackgroundView = UIView()
-        cell.selectedBackgroundView?.backgroundColor = StyleColor.footerGray
+        cell.selectedBackgroundView?.backgroundColor = StyleColor.lightGray
         cell.nameLabel.tb_setText(device.name, style: StyleText.deviceName)
         
         if device.connecting {
@@ -134,8 +129,8 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
             cell.rssiLabel.hidden = true
             cell.connectingSpinner.hidden = false
             
-            cell.connectingSpinner.trackColor = StyleColor.footerGray
-            cell.connectingSpinner.lineColor = StyleColor.blue
+            cell.connectingSpinner.trackColor = StyleColor.lightGray
+            cell.connectingSpinner.lineColor = StyleColor.terbiumGreen
             cell.connectingSpinner.startAnimating(StyleAnimations.spinnerDuration)
         }
         else {
@@ -167,7 +162,6 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
             cell.connectingSpinner.stopAnimating()
             cell.connectingSpinner.hidden = true
         }
-
     }
 
     //MARK: - UITableView Delegate
@@ -192,7 +186,7 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
                 self.bluetoothDisabledAlert?.hidden = false
                 self.tableView?.hidden = true
                 makeSpinnerVisible(false)
-                self.userMessageLabel?.tb_setText(bluetoothIsDisabledString, style: StyleText.deviceName3)
+                self.userMessageLabel?.tb_setText(bluetoothIsDisabledString, style: StyleText.deviceListStatus)
                 animateInitialTransition()
                 
             case .Searching:
@@ -200,7 +194,7 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
                 self.bluetoothDisabledAlert?.hidden = true
                 self.tableView?.hidden = true
                 makeSpinnerVisible(true)
-                self.userMessageLabel?.tb_setText(lookingForDevices, style: StyleText.deviceName3)
+                self.userMessageLabel?.tb_setText(lookingForDevices, style: StyleText.deviceListStatus)
                 animateInitialTransition()
                 
             case .NoDevicesFound:
@@ -208,7 +202,7 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
                 self.bluetoothDisabledAlert?.hidden = true
                 self.tableView?.hidden = true
                 makeSpinnerVisible(true)
-                self.userMessageLabel?.tb_setText(noDevicesFoundString, style: StyleText.deviceName3)
+                self.userMessageLabel?.tb_setText(noDevicesFoundString, style: StyleText.deviceListStatus)
                 animateInitialTransition()
 
             case .DevicesFound:
@@ -248,12 +242,8 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
     }
     
     private func makeSpinnerVisible(visible: Bool) {
-        guard let spinner = self.spinner else {
-            return
-        }
-        
-        visible ? spinner.startAnimating(StyleAnimations.spinnerDuration) : spinner.stopAnimating()
-        spinner.hidden = !visible
+        visible ? spinner?.startAnimating(StyleAnimations.spinnerDuration) : spinner?.stopAnimating()
+        spinner?.hidden = !visible
     }
     
     private func showDemoListWithConfiguration(configuration: DemoConfiguration) {
@@ -296,17 +286,15 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
             delay(initialAnimationHold) {
                 NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
                     UIView.animateWithDuration(self.initialAnimationFade, animations: {
-                        self.taglineLabel?.alpha = 0.0
-                        self.poweredByLabel?.alpha = 0.0
                         self.mmLogo?.alpha = 0.0
                         
                     }, completion: { (complete) -> Void in
                         if complete {
                             // animate into default state
                             self.view.layoutIfNeeded()
-                            self.backgroundImageTopLayout?.constant = -1 * CGFloat(self.bottomSectionSmallHeight)
-                            self.backgroundImageBottomLayout?.constant = CGFloat(self.bottomSectionSmallHeight)
-
+                            
+                            self.messageContainerTopLayout?.constant = -1 * CGFloat(self.bottomSectionSmallHeight)
+                            
                             UIView.animateWithDuration(self.initialAnimationSlide, animations: {
                                 self.view.layoutIfNeeded()
                             })
