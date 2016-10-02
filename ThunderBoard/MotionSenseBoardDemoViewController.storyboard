@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="yhU-dU-ZoX">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <scenes>
+        <!--Motion Demo View Controller-->
+        <scene sceneID="Ia8-OL-gL1">
+            <objects>
+                <viewController storyboardIdentifier="MotionSenseBoardDemoViewController" id="yhU-dU-ZoX" userLabel="Motion Demo View Controller" customClass="MotionSenseBoardDemoViewController" customModule="ThunderBoard" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="51E-3m-6De"/>
+                        <viewControllerLayoutGuide type="bottom" id="Dg2-8p-UJH"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ffk-3D-sIA" customClass="MotionDemoView" customModule="ThunderBoard" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <sceneKitView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" sceneName="TB_Sense_Lowpoly2.dae" translatesAutoresizingMaskIntoConstraints="NO" id="npJ-af-LkU" userLabel="3D Model">
+                                <rect key="frame" x="0.0" y="92" width="375" height="375"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="npJ-af-LkU" secondAttribute="height" multiplier="1:1" id="kJR-mr-1k3"/>
+                                </constraints>
+                            </sceneKitView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RLM-5d-gAd" userLabel="Streaming View">
+                                <rect key="frame" x="0.0" y="20" width="375" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="fAj-XW-HZx"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="WIr-0m-Gn9" kind="embed" identifier="streamingSegue" id="Eqg-oC-XIA"/>
+                                </connections>
+                            </containerView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Adl-5S-8p5">
+                                <rect key="frame" x="53" y="483" width="100" height="110"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwn-I5-PQX" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="8" y="8" width="92" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="X:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5rT-sW-0KN" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="8" y="38" width="16" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Z:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dpp-A5-gWH" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="8" y="91" width="16" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h8a-Kq-4gA" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="50" y="38" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MKf-ig-no2" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="50" y="64" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9qB-eq-1cS" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="50" y="91" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Y:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ban-IB-KiJ" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="8" y="65" width="14.5" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="bwn-I5-PQX" firstAttribute="leading" secondItem="Adl-5S-8p5" secondAttribute="leading" constant="8" id="7bQ-K6-iYf"/>
+                                    <constraint firstItem="5rT-sW-0KN" firstAttribute="leading" secondItem="bwn-I5-PQX" secondAttribute="leading" id="AG3-xW-f5d"/>
+                                    <constraint firstItem="Dpp-A5-gWH" firstAttribute="top" secondItem="ban-IB-KiJ" secondAttribute="bottom" constant="6" id="C2J-kb-I6o"/>
+                                    <constraint firstAttribute="trailing" secondItem="bwn-I5-PQX" secondAttribute="trailing" id="Efu-1B-YQ6"/>
+                                    <constraint firstItem="bwn-I5-PQX" firstAttribute="top" secondItem="Adl-5S-8p5" secondAttribute="top" constant="8" id="IHv-9M-VbU"/>
+                                    <constraint firstItem="MKf-ig-no2" firstAttribute="baseline" secondItem="ban-IB-KiJ" secondAttribute="baseline" id="IJw-Wf-uqV"/>
+                                    <constraint firstAttribute="height" constant="110" id="K6R-Ah-Swe"/>
+                                    <constraint firstAttribute="trailing" secondItem="h8a-Kq-4gA" secondAttribute="trailing" constant="8" id="PGk-C6-fzc"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="RiW-NA-0Nz"/>
+                                    <constraint firstAttribute="trailing" secondItem="MKf-ig-no2" secondAttribute="trailing" constant="8" id="WJo-9i-U0d"/>
+                                    <constraint firstItem="ban-IB-KiJ" firstAttribute="leading" secondItem="bwn-I5-PQX" secondAttribute="leading" id="YKl-fF-ewd"/>
+                                    <constraint firstItem="h8a-Kq-4gA" firstAttribute="baseline" secondItem="5rT-sW-0KN" secondAttribute="baseline" id="aaO-iR-cva"/>
+                                    <constraint firstItem="ban-IB-KiJ" firstAttribute="top" secondItem="5rT-sW-0KN" secondAttribute="bottom" constant="6" id="b1E-J9-YHJ"/>
+                                    <constraint firstItem="Dpp-A5-gWH" firstAttribute="leading" secondItem="bwn-I5-PQX" secondAttribute="leading" id="eut-He-34b"/>
+                                    <constraint firstItem="5rT-sW-0KN" firstAttribute="top" secondItem="bwn-I5-PQX" secondAttribute="bottom" constant="9" id="fOq-7Q-7TA"/>
+                                    <constraint firstItem="9qB-eq-1cS" firstAttribute="baseline" secondItem="Dpp-A5-gWH" secondAttribute="baseline" id="gyV-X2-2uT"/>
+                                    <constraint firstAttribute="trailing" secondItem="9qB-eq-1cS" secondAttribute="trailing" constant="8" id="sdm-v0-fMV"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pRu-Pk-OOX">
+                                <rect key="frame" x="222" y="483" width="100" height="110"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TGZ-Z7-3wd" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="8" y="8" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="X:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6wx-W8-mtQ" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="8" y="38" width="16" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Z:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7cF-9P-BKo" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="8" y="92" width="16" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tia-Bs-ocb" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="50" y="38" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZpK-4l-aYI" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="50" y="65" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E8Q-xl-eSu" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="50" y="92" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Y:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hja-7A-Bi1" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="8" y="65" width="14.5" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="TGZ-Z7-3wd" firstAttribute="top" secondItem="pRu-Pk-OOX" secondAttribute="top" constant="8" id="2AW-KM-2K9"/>
+                                    <constraint firstItem="hja-7A-Bi1" firstAttribute="top" secondItem="6wx-W8-mtQ" secondAttribute="bottom" constant="6" id="AON-KR-he4"/>
+                                    <constraint firstItem="ZpK-4l-aYI" firstAttribute="baseline" secondItem="hja-7A-Bi1" secondAttribute="baseline" id="Ev7-0T-OjY"/>
+                                    <constraint firstItem="E8Q-xl-eSu" firstAttribute="baseline" secondItem="7cF-9P-BKo" secondAttribute="baseline" id="HaU-Di-Heb"/>
+                                    <constraint firstAttribute="trailing" secondItem="ZpK-4l-aYI" secondAttribute="trailing" constant="8" id="IHC-iB-a6f"/>
+                                    <constraint firstItem="7cF-9P-BKo" firstAttribute="leading" secondItem="TGZ-Z7-3wd" secondAttribute="leading" id="M6L-lg-OxG"/>
+                                    <constraint firstItem="6wx-W8-mtQ" firstAttribute="top" secondItem="TGZ-Z7-3wd" secondAttribute="bottom" constant="9" id="MIW-Vg-uNi"/>
+                                    <constraint firstAttribute="trailing" secondItem="E8Q-xl-eSu" secondAttribute="trailing" constant="8" id="TED-wQ-ROZ"/>
+                                    <constraint firstItem="hja-7A-Bi1" firstAttribute="leading" secondItem="TGZ-Z7-3wd" secondAttribute="leading" id="XAC-KP-GeT"/>
+                                    <constraint firstItem="6wx-W8-mtQ" firstAttribute="leading" secondItem="TGZ-Z7-3wd" secondAttribute="leading" id="Yn8-6Z-Ktu"/>
+                                    <constraint firstItem="Tia-Bs-ocb" firstAttribute="baseline" secondItem="6wx-W8-mtQ" secondAttribute="baseline" id="ce4-oD-paA"/>
+                                    <constraint firstItem="6wx-W8-mtQ" firstAttribute="leading" secondItem="pRu-Pk-OOX" secondAttribute="leading" constant="8" id="gsV-NE-gJm"/>
+                                    <constraint firstAttribute="trailing" secondItem="Tia-Bs-ocb" secondAttribute="trailing" constant="8" id="h8E-nv-fSb"/>
+                                    <constraint firstItem="7cF-9P-BKo" firstAttribute="top" secondItem="hja-7A-Bi1" secondAttribute="bottom" constant="6" id="kDv-dO-M1S"/>
+                                    <constraint firstItem="hja-7A-Bi1" firstAttribute="leading" secondItem="pRu-Pk-OOX" secondAttribute="leading" constant="8" id="n9Z-he-h7T"/>
+                                    <constraint firstItem="7cF-9P-BKo" firstAttribute="leading" secondItem="pRu-Pk-OOX" secondAttribute="leading" constant="8" id="oHO-gY-Jc1"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ysh-QO-dIa" customClass="MotionDemoCalibrateButton" customModule="ThunderBoard" customModuleProvider="target">
+                                <rect key="frame" x="53" y="427" width="120" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="MNa-L2-tPD"/>
+                                    <constraint firstAttribute="height" constant="40" id="NOv-eQ-9Rb"/>
+                                </constraints>
+                                <state key="normal" title="Button">
+                                    <color key="titleColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="calibrateButtonPressed:" destination="yhU-dU-ZoX" eventType="touchUpInside" id="2kV-8p-cWF"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="pRu-Pk-OOX" firstAttribute="bottom" secondItem="Adl-5S-8p5" secondAttribute="bottom" id="8u6-9O-tND"/>
+                            <constraint firstItem="RLM-5d-gAd" firstAttribute="top" secondItem="51E-3m-6De" secondAttribute="bottom" id="9Pn-r8-6oQ"/>
+                            <constraint firstItem="RLM-5d-gAd" firstAttribute="leading" secondItem="Ffk-3D-sIA" secondAttribute="leading" id="H4g-eE-KF4"/>
+                            <constraint firstItem="Adl-5S-8p5" firstAttribute="top" relation="greaterThanOrEqual" secondItem="npJ-af-LkU" secondAttribute="bottom" constant="8" id="IYA-Et-pYU"/>
+                            <constraint firstAttribute="trailing" secondItem="RLM-5d-gAd" secondAttribute="trailing" id="JMk-Cd-eKD"/>
+                            <constraint firstItem="pRu-Pk-OOX" firstAttribute="top" secondItem="Adl-5S-8p5" secondAttribute="top" id="PD3-ZZ-0kd"/>
+                            <constraint firstItem="Adl-5S-8p5" firstAttribute="width" relation="lessThanOrEqual" secondItem="Ffk-3D-sIA" secondAttribute="width" multiplier="0.43" id="QLr-ql-AAn"/>
+                            <constraint firstItem="Dg2-8p-UJH" firstAttribute="top" secondItem="Adl-5S-8p5" secondAttribute="bottom" constant="74" id="VRx-aP-Ucu"/>
+                            <constraint firstItem="pRu-Pk-OOX" firstAttribute="centerX" secondItem="Ffk-3D-sIA" secondAttribute="centerX" multiplier="1.45" id="XlO-dC-DeU"/>
+                            <constraint firstItem="Adl-5S-8p5" firstAttribute="centerX" secondItem="Ffk-3D-sIA" secondAttribute="centerX" multiplier="0.55" id="bFt-5P-lyO"/>
+                            <constraint firstItem="npJ-af-LkU" firstAttribute="top" secondItem="RLM-5d-gAd" secondAttribute="bottom" constant="8" id="kgQ-Zk-HDv"/>
+                            <constraint firstItem="Adl-5S-8p5" firstAttribute="top" secondItem="npJ-af-LkU" secondAttribute="bottom" priority="750" constant="10" id="lGJ-an-Ch5"/>
+                            <constraint firstItem="pRu-Pk-OOX" firstAttribute="centerY" secondItem="Adl-5S-8p5" secondAttribute="centerY" id="n2d-va-A2l"/>
+                            <constraint firstItem="pRu-Pk-OOX" firstAttribute="width" secondItem="Adl-5S-8p5" secondAttribute="width" id="nea-hb-99O"/>
+                            <constraint firstItem="ysh-QO-dIa" firstAttribute="bottom" secondItem="npJ-af-LkU" secondAttribute="bottom" id="qyt-Ee-Z1y"/>
+                            <constraint firstItem="Adl-5S-8p5" firstAttribute="leading" secondItem="ysh-QO-dIa" secondAttribute="leading" id="vJe-uB-8A1"/>
+                            <constraint firstItem="npJ-af-LkU" firstAttribute="width" relation="lessThanOrEqual" secondItem="Ffk-3D-sIA" secondAttribute="width" id="vvF-Ld-adn"/>
+                            <constraint firstItem="npJ-af-LkU" firstAttribute="centerX" secondItem="Ffk-3D-sIA" secondAttribute="centerX" id="xkE-Xv-8Ty"/>
+                            <constraint firstItem="ysh-QO-dIa" firstAttribute="leading" secondItem="npJ-af-LkU" secondAttribute="leading" id="yZc-BV-8gE"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="yZc-BV-8gE"/>
+                            </mask>
+                        </variation>
+                        <connections>
+                            <outlet property="accelerationLabel" destination="TGZ-Z7-3wd" id="60d-RM-Xaz"/>
+                            <outlet property="accelerationXLabel" destination="6wx-W8-mtQ" id="H3J-Sl-Tjc"/>
+                            <outlet property="accelerationXValue" destination="Tia-Bs-ocb" id="fMK-wu-yyt"/>
+                            <outlet property="accelerationYLabel" destination="hja-7A-Bi1" id="DSH-Ch-z1T"/>
+                            <outlet property="accelerationYValue" destination="ZpK-4l-aYI" id="WiU-dz-2KQ"/>
+                            <outlet property="accelerationZLabel" destination="7cF-9P-BKo" id="EcT-Jz-WaB"/>
+                            <outlet property="accelerationZValue" destination="E8Q-xl-eSu" id="Zcm-t8-1M1"/>
+                            <outlet property="calibrateButton" destination="ysh-QO-dIa" id="lgI-dt-akk"/>
+                            <outlet property="carModelView" destination="npJ-af-LkU" id="cVb-NL-W8K"/>
+                            <outlet property="orientationLabel" destination="bwn-I5-PQX" id="oVx-J8-mTr"/>
+                            <outlet property="orientationXLabel" destination="5rT-sW-0KN" id="9Cx-qe-wDq"/>
+                            <outlet property="orientationXValue" destination="h8a-Kq-4gA" id="UW5-LY-BNu"/>
+                            <outlet property="orientationYLabel" destination="ban-IB-KiJ" id="XGx-5w-Udq"/>
+                            <outlet property="orientationYValue" destination="MKf-ig-no2" id="H3H-0f-zbd"/>
+                            <outlet property="orientationZLabel" destination="Dpp-A5-gWH" id="pMy-aU-hdi"/>
+                            <outlet property="orientationZValue" destination="9qB-eq-1cS" id="LRM-j9-aYe"/>
+                        </connections>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KSN-Iz-VRR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2111.5" y="-403.5"/>
+        </scene>
+        <!--Streaming View Controller-->
+        <scene sceneID="W9N-01-0CH">
+            <objects>
+                <viewController id="WIr-0m-Gn9" customClass="StreamingViewController" customModule="ThunderBoard" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jTn-3D-4tL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2619.5" y="-403"/>
+        </scene>
+    </scenes>
+</document>

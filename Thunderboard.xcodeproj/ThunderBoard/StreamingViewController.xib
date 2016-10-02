@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15A263e" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StreamingViewController" customModule="ThunderBoard" customModuleProvider="target">
+            <connections>
+                <outlet property="shareButton" destination="WRQ-XL-IAM" id="1iV-OF-VIF"/>
+                <outlet property="statusMessage" destination="kzq-1N-ZBK" id="r0d-Tu-RFV"/>
+                <outlet property="streamingSwitch" destination="LTn-KP-6ZG" id="a0F-IG-tmX"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LTn-KP-6ZG">
+                    <rect key="frame" x="536" y="552" width="51" height="31"/>
+                    <animations/>
+                    <connections>
+                        <action selector="switchValueChanged:" destination="-1" eventType="valueChanged" id="oUK-W2-G8o"/>
+                    </connections>
+                </switch>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WRQ-XL-IAM">
+                    <rect key="frame" x="496" y="553" width="32" height="30"/>
+                    <animations/>
+                    <state key="normal" image="btn_streaming_share"/>
+                    <connections>
+                        <action selector="shareButtonTapped:" destination="-1" eventType="touchUpInside" id="EXA-cu-ha3"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kzq-1N-ZBK" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                    <rect key="frame" x="15" y="567" width="42" height="20.5"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="WRQ-XL-IAM" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="kzq-1N-ZBK" secondAttribute="trailing" constant="15" id="25D-NN-WYS"/>
+                <constraint firstItem="LTn-KP-6ZG" firstAttribute="leading" secondItem="WRQ-XL-IAM" secondAttribute="trailing" constant="8" id="7HR-Ew-OUG"/>
+                <constraint firstItem="WRQ-XL-IAM" firstAttribute="baseline" secondItem="kzq-1N-ZBK" secondAttribute="baseline" id="B4n-MB-4nX"/>
+                <constraint firstItem="kzq-1N-ZBK" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="Dks-X9-dIL"/>
+                <constraint firstItem="LTn-KP-6ZG" firstAttribute="baseline" secondItem="kzq-1N-ZBK" secondAttribute="baseline" id="Rw6-nD-6M6"/>
+                <constraint firstAttribute="bottom" secondItem="kzq-1N-ZBK" secondAttribute="baseline" constant="17" id="iT0-EE-7lj"/>
+                <constraint firstAttribute="trailing" secondItem="LTn-KP-6ZG" secondAttribute="trailing" constant="15" id="xkX-zf-9eA"/>
+            </constraints>
+        </view>
+    </objects>
+    <resources>
+        <image name="btn_streaming_share" width="32" height="30"/>
+    </resources>
+</document>

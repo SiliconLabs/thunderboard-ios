@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A263e" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EnvironmentCellViewController" customModule="ThunderBoard" customModuleProvider="target">
+            <connections>
+                <outlet property="backgroundTileView" destination="UiZ-ex-cQr" id="fXf-aQ-8Q5"/>
+                <outlet property="imageView" destination="A9J-G5-fw6" id="djn-U5-kfN"/>
+                <outlet property="titleLabel" destination="vew-L1-oqt" id="ruI-Bh-yNk"/>
+                <outlet property="valueLabel" destination="Is7-ey-IkG" id="J08-Xg-Opv"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT" customClass="EnvironmentCellView" customModule="ThunderBoard" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="144" height="335"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UiZ-ex-cQr">
+                    <rect key="frame" x="0.0" y="96" width="144" height="144"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Is7-ey-IkG" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                            <rect key="frame" x="51" y="113" width="42" height="21"/>
+                            <animations/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" misplaced="YES" image="icn_demo_ambient_light" translatesAutoresizingMaskIntoConstraints="NO" id="A9J-G5-fw6">
+                            <rect key="frame" x="28" y="16" width="89" height="89"/>
+                            <animations/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="A9J-G5-fw6" secondAttribute="height" multiplier="1:1" id="p8V-Pn-Qfb"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="Is7-ey-IkG" firstAttribute="top" secondItem="A9J-G5-fw6" secondAttribute="bottom" constant="8" id="3zY-YA-j10"/>
+                        <constraint firstItem="A9J-G5-fw6" firstAttribute="centerX" secondItem="UiZ-ex-cQr" secondAttribute="centerX" id="9DX-8w-WMW"/>
+                        <constraint firstAttribute="bottom" secondItem="Is7-ey-IkG" secondAttribute="baseline" constant="15" id="Czt-xY-g7k"/>
+                        <constraint firstItem="Is7-ey-IkG" firstAttribute="centerX" secondItem="UiZ-ex-cQr" secondAttribute="centerX" id="OMa-Uq-bom"/>
+                        <constraint firstItem="A9J-G5-fw6" firstAttribute="top" secondItem="UiZ-ex-cQr" secondAttribute="top" constant="16" id="UN3-AO-q84"/>
+                        <constraint firstAttribute="width" secondItem="UiZ-ex-cQr" secondAttribute="height" multiplier="1:1" id="yPu-au-dpG"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Temperature" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vew-L1-oqt" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="70" width="144" height="21"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <animations/>
+            <constraints>
+                <constraint firstItem="UiZ-ex-cQr" firstAttribute="trailing" secondItem="vew-L1-oqt" secondAttribute="trailing" id="Pnz-bP-RSe"/>
+                <constraint firstItem="UiZ-ex-cQr" firstAttribute="top" secondItem="vew-L1-oqt" secondAttribute="baseline" constant="10" id="RrX-UR-7ho"/>
+                <constraint firstAttribute="trailing" secondItem="UiZ-ex-cQr" secondAttribute="trailing" id="UG1-X9-aPS"/>
+                <constraint firstItem="vew-L1-oqt" firstAttribute="top" relation="greaterThanOrEqual" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Vou-qg-5bk"/>
+                <constraint firstItem="UiZ-ex-cQr" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="afQ-bf-wyn"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="UiZ-ex-cQr" secondAttribute="bottom" id="bsI-4Y-BjA"/>
+                <constraint firstItem="UiZ-ex-cQr" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" priority="750" id="gYF-6W-4dc"/>
+                <constraint firstItem="UiZ-ex-cQr" firstAttribute="leading" secondItem="vew-L1-oqt" secondAttribute="leading" id="i4g-u0-dH1"/>
+                <constraint firstItem="UiZ-ex-cQr" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="u63-93-X68"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="510" y="366.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icn_demo_ambient_light" width="100" height="100"/>
+    </resources>
+</document>
