@@ -9,73 +9,73 @@ import Foundation
 
 class IsgdShortener : UrlShortener {
     
-    func shortenUrl(url: String, completion: ((url: String?, error: NSError?) -> Void)) {
-
-
-        let allowedCharacters = NSCharacterSet.URLQueryAllowedCharacterSet()
+    func shortenUrl(_ url: String, completion: @escaping ((_ url: String?, _ error: NSError?) -> Void)) {
         
-        guard let escapedUrl = url.stringByAddingPercentEncodingWithAllowedCharacters(allowedCharacters) else {
+        let allowedCharacters = NSCharacterSet.urlQueryAllowed
+        
+        guard let escapedUrl = url.addingPercentEncoding(withAllowedCharacters: allowedCharacters) else {
             log.error("Failed to escape URL \(url)")
-            completion(url: nil, error: ErrorFactory.shortenerRequestCreationFailure())
+            completion(nil, ErrorFactory.shortenerRequestCreationFailure())
             return
         }
-
+        
         guard let requestUrl = NSURL(string: "https://is.gd/create.php?format=json&url=\(escapedUrl)") else {
             log.error("Failed to create request URL for shortener")
-            completion(url: nil, error: ErrorFactory.shortenerRequestCreationFailure())
+            completion(nil, ErrorFactory.shortenerRequestCreationFailure())
             return
         }
         
-        let request = NSMutableURLRequest(URL: requestUrl)
-        request.HTTPMethod = "POST"
-
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
-
+        let request = NSMutableURLRequest(url: requestUrl as URL)
+        request.httpMethod = "POST"
+        
+        let task = URLSession.shared.dataTask(with: request as URLRequest) { (data: Data?, response: URLResponse?, error: Error?) -> Void in
+            
             // is.gd returns 200 even when there are errors - need to parse the body
             // { "errorcode": 1, "errormessage": "Please enter a valid URL to shorten" }
-
+            
             // Error code 1 - there was a problem with the original long URL provided
             // Error code 2 - there was a problem with the short URL provided (for custom short URLs)
             // Error code 3 - our rate limit was exceeded (your app should wait before trying again)
             // Error code 4 - any other error (includes potential problems with our service such as a maintenance period)
-
-            guard let httpResponse = response as! NSHTTPURLResponse? else {
+            
+            guard let httpResponse = response as! HTTPURLResponse? else {
                 log.error("API did not respond to request")
-                return completion(url: nil, error: ErrorFactory.shortenerNoResponseError())
+                completion(nil, ErrorFactory.shortenerNoResponseError())
+                return
             }
             
             guard let jsonData = data else {
-                completion(url:nil, error: ErrorFactory.shortenerInvalidDataError())
+                completion(nil, ErrorFactory.shortenerInvalidDataError())
                 return
             }
-
+            
             if httpResponse.statusCode != 200 {
                 log.error("Unexpected HTTP response from shortener API: \(httpResponse.statusCode)")
-                completion(url: nil, error: ErrorFactory.shortenerResponseError(httpResponse.statusCode))
+                completion(nil, ErrorFactory.shortenerResponseError(httpResponse.statusCode))
             }
-
+            
             do {
-                let json = try NSJSONSerialization.JSONObjectWithData(jsonData, options: NSJSONReadingOptions(rawValue: 0)) as! Dictionary<String, AnyObject>
-
+                let json = try JSONSerialization.jsonObject(with: jsonData, options: JSONSerialization.ReadingOptions(rawValue: 0)) as! Dictionary<String, AnyObject>
+                
                 if let errorCode = json["errorcode"] as! Int? {
                     log.error("is.gd returned internal error code \(errorCode)")
                     let error = ErrorFactory.shortenerResponseError(errorCode)
-                    completion(url: nil, error: error)
+                    completion(nil, error)
                 }
                     
                 else if let shortUrl = json["shorturl"] as! String? {
-                    completion(url: shortUrl, error: nil)
+                    completion(shortUrl, nil)
                 }
                     
                 else {
                     let error = ErrorFactory.shortenerInvalidDataError()
-                    completion(url: nil, error: error)
+                    completion(nil, error)
                 }
             }
             catch {
-                completion(url: nil, error: ErrorFactory.shortenerDeserializationError())
+                completion(nil, ErrorFactory.shortenerDeserializationError())
             }
-
+            
         }
         
         task.resume()

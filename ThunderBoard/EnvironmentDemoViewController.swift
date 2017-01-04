@@ -11,28 +11,28 @@ class EnvironmentDemoViewController: DemoViewController, EnvironmentDemoInteract
 
     @IBOutlet var collectionView: UICollectionView!
     var interaction: EnvironmentDemoInteraction?
-    private var dataSource = EnvironmentDemoCollectionViewDataSource()
+    fileprivate var dataSource = EnvironmentDemoCollectionViewDataSource()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Environment"
         
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 7)
-        collectionView.backgroundColor = UIColor.clearColor()
+        collectionView.backgroundColor = UIColor.clear
         collectionView.dataSource = dataSource
         collectionView.delegate = self
         dataSource.registerCells(collectionView)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.tb_setNavigationBarStyleForDemo(.Environment)
+        self.navigationController?.tb_setNavigationBarStyleForDemo(.environment)
         self.interaction?.updateView()
     }
     
     // MARK: - EnvironmentDemoInteractionOutput
 
-    func updatedEnvironmentData(data: EnvironmentData, capabilities: Set<DeviceCapability>) {
+    func updatedEnvironmentData(_ data: EnvironmentData, capabilities: Set<DeviceCapability>) {
         dataSource.updateData(data, capabilities: capabilities)
         collectionView.reloadData()
     }    

@@ -21,7 +21,7 @@ extension UIApplication {
         }
     }
     
-    func tb_stringForBundleVersionKey(key: String) -> String {
+    func tb_stringForBundleVersionKey(_ key: String) -> String {
         if let version = self.tb_applicationInfoPlistEntry(key) as? String {
             return version
         }
@@ -29,7 +29,7 @@ extension UIApplication {
         return "???"
     }
     
-    func tb_applicationInfoPlistEntry(key: String) -> AnyObject? {
-        return NSBundle.mainBundle().infoDictionary?[key]
+    func tb_applicationInfoPlistEntry(_ key: String) -> AnyObject? {
+        return Bundle.main.infoDictionary?[key] as AnyObject?
     }
 }

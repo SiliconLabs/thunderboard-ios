@@ -23,13 +23,13 @@ class PersonalInfoTableCell : UITableViewCell, UITextFieldDelegate {
         log.debug("\(textField?.subviews)")
     }
     
-    override func drawRect(rect: CGRect) {
-        super.drawRect(rect)
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
         
         if drawSeparator {
             let path = UIBezierPath()
-            path.moveToPoint(CGPointMake(15, 0))
-            path.addLineToPoint(CGPointMake(rect.width, 0))
+            path.move(to: CGPoint(x: 15, y: 0))
+            path.addLine(to: CGPoint(x: rect.width, y: 0))
             path.lineWidth = 1
             
             StyleColor.lightGray.setStroke()
@@ -37,18 +37,18 @@ class PersonalInfoTableCell : UITableViewCell, UITextFieldDelegate {
         }
     }
     
-    private func setupClearButton() {
+    fileprivate func setupClearButton() {
 
-        let button = UIButton(frame: CGRectMake(0, 0, 18, 18))
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
         let image = UIImage(named: "icn_settings_textfield_clear")!
-        button.setImage(image, forState: .Normal)
-        button.addTarget(self, action: #selector(clearButtonTapped), forControlEvents: .TouchUpInside)
+        button.setImage(image, for: UIControlState())
+        button.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
         
-        textField?.rightViewMode = .WhileEditing
+        textField?.rightViewMode = .whileEditing
         textField?.rightView = button
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         log.debug("\(textField.subviews)")
     }
     

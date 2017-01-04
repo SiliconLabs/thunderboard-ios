@@ -9,18 +9,18 @@ import UIKit
 
 class MotionDemoCalibrateButton: UIButton {
 
-    private let normalColor = StyleColor.terbiumGreen
-    private let highlightColor = StyleColor.mediumGreen
+    fileprivate let normalColor = StyleColor.terbiumGreen
+    fileprivate let highlightColor = StyleColor.mediumGreen
     
-    override var highlighted: Bool {
+    override var isHighlighted: Bool {
         get {
-            return super.highlighted
+            return super.isHighlighted
         }
         
         set {
             let color = newValue ? highlightColor : normalColor
-            self.layer.borderColor = color.CGColor
-            super.highlighted = newValue
+            self.layer.borderColor = color.cgColor
+            super.isHighlighted = newValue
         }
     }
 
@@ -30,13 +30,13 @@ class MotionDemoCalibrateButton: UIButton {
         self.layer.borderWidth = 1
         self.layer.cornerRadius = 2
         
-        self.layer.borderColor = normalColor.CGColor
+        self.layer.borderColor = normalColor.cgColor
         
         let title = StyleText.buttonLabel.tweakColor(color: normalColor).attributedString("CALIBRATE")
-        self.setAttributedTitle(title, forState: .Normal)
+        self.setAttributedTitle(title, for: UIControlState())
         
         let highlightedTitle = StyleText.buttonLabel.tweakColor(color: highlightColor).attributedString("CALIBRATE")
-        self.setAttributedTitle(highlightedTitle, forState: .Highlighted)
+        self.setAttributedTitle(highlightedTitle, for: .highlighted)
     }
     
 }

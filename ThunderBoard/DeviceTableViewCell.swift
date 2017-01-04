@@ -15,13 +15,13 @@ class DeviceTableViewCell: UITableViewCell {
 
     var drawSeparator: Bool = false
     
-    override func drawRect(rect: CGRect) {
-        super.drawRect(rect)
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
         
         if drawSeparator {
             let path = UIBezierPath()
-            path.moveToPoint(CGPointMake(15, 0))
-            path.addLineToPoint(CGPointMake(rect.width, 0))
+            path.move(to: CGPoint(x: 15, y: 0))
+            path.addLine(to: CGPoint(x: rect.width, y: 0))
             path.lineWidth = 1
             
             StyleColor.lightGray.setStroke()

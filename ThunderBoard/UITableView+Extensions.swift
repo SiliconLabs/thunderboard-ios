@@ -8,7 +8,7 @@
 import UIKit
 
 extension UITableView {
-    func tb_isLastCell(indexPath: NSIndexPath) -> Bool {
+    func tb_isLastCell(_ indexPath: IndexPath) -> Bool {
         guard let dataSource = self.dataSource else {
             return false
         }
@@ -17,7 +17,7 @@ extension UITableView {
         return indexPath.row == (count - 1)
     }
     
-    func tb_isFirstCell(indexPath: NSIndexPath) -> Bool {
+    func tb_isFirstCell(_ indexPath: IndexPath) -> Bool {
         return indexPath.row == 0
     }
 }

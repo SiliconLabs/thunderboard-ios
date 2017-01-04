@@ -7,17 +7,17 @@
 
 import Foundation
 
-let ThunderboardBeaconId = NSUUID(UUIDString: "CEF797DA-2E91-4EA4-A424-F45082AC0682")!
+let ThunderboardBeaconId = UUID(uuidString: "CEF797DA-2E91-4EA4-A424-F45082AC0682")!
 
 enum ThunderboardDemo: Int {
-    case Motion
-    case Environment
-    case IO
+    case motion
+    case environment
+    case io
 }
 
 enum MotionDemoModel: Int {
-    case Board
-    case Car
+    case board
+    case car
 }
 
 typealias Degree      = Float
@@ -28,14 +28,14 @@ typealias Inches      = Float
 typealias Feet        = Float
 
 enum LedState {
-    case Digital(Bool, LedStaticColor)
-    case RGB(Bool, LedRgb)
+    case digital(Bool, LedStaticColor)
+    case rgb(Bool, LedRgb)
 }
 
 enum LedStaticColor {
-    case Red
-    case Green
-    case Blue
+    case red
+    case green
+    case blue
 }
 
 struct LedRgb {
@@ -47,31 +47,31 @@ struct LedRgb {
 extension LedState {
     func toggle() -> LedState {
         switch self {
-        case .Digital(let on, let color):
-            return .Digital(!on, color)
-        case .RGB(let on, let color):
-            return .RGB(!on, color)
+        case .digital(let on, let color):
+            return .digital(!on, color)
+        case .rgb(let on, let color):
+            return .rgb(!on, color)
         }
     }
     
-    func setColor(color: LedRgb) -> LedState {
+    func setColor(_ color: LedRgb) -> LedState {
         switch self {
-        case .Digital:
+        case .digital:
             return self
-        case .RGB(let on, _):
-            return .RGB(on, color)
+        case .rgb(let on, _):
+            return .rgb(on, color)
         }
     }
     
-    func setColor(red: Float, green: Float, blue: Float) -> LedState {
+    func setColor(_ red: Float, green: Float, blue: Float) -> LedState {
         return setColor(LedRgb(red: red, green: green, blue: blue))
     }
     
     var on: Bool {
         switch self {
-        case .Digital(let on, _):
+        case .digital(let on, _):
             return on
-        case .RGB(let on, _):
+        case .rgb(let on, _):
             return on
         }
     }
@@ -82,21 +82,21 @@ extension Degree {
         return self * Float(M_PI) / 180.0
     }
     
-    func tb_toString(maximumDecimalPlaces: Int, minimumDecimalPlaces: Int = 0) -> String? {
-        let formatter = NSNumberFormatter()
-        formatter.numberStyle = .DecimalStyle
+    func tb_toString(_ maximumDecimalPlaces: Int, minimumDecimalPlaces: Int = 0) -> String? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
         formatter.minimumFractionDigits = minimumDecimalPlaces
         formatter.maximumFractionDigits = maximumDecimalPlaces
-        return formatter.stringFromNumber(NSNumber(float: self))
+        return formatter.string(from: NSNumber(value: self as Float))
     }
 }
 
 extension Double {
-    func tb_toString(precision: Int) -> String? {
-        let formatter = NSNumberFormatter()
-        formatter.numberStyle = .DecimalStyle
+    func tb_toString(_ precision: Int) -> String? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = precision
-        return formatter.stringFromNumber(NSNumber(double: self))
+        return formatter.string(from: NSNumber(value: self as Double))
     }
 }
 
@@ -146,27 +146,27 @@ struct ThunderboardVector {
 
 struct ThunderboardCSCMeasurement {
     let revolutionsSinceConnecting: UInt
-    let secondsSinceConnecting:     NSTimeInterval
+    let secondsSinceConnecting:     TimeInterval
     
     init() {
         revolutionsSinceConnecting  = 0;
         secondsSinceConnecting = 0;
     }
     
-    init(revolutions: UInt, seconds: NSTimeInterval) {
+    init(revolutions: UInt, seconds: TimeInterval) {
         revolutionsSinceConnecting  = revolutions
         secondsSinceConnecting      = seconds
     }
 }
 
 enum MeasurementUnits: Int {
-    case Metric
-    case Imperial
+    case metric
+    case imperial
 }
 
 enum TemperatureUnits: Int {
-    case Celsius
-    case Fahrenheit
+    case celsius
+    case fahrenheit
 }
 
 typealias Temperature = Double
@@ -182,10 +182,6 @@ extension Temperature {
     var tb_FahrenheitValue: Temperature {
         // T(°F) = T(°C) × 9/5 + 32
         get { return (self * (9/5)) + 32 }
-    }
-
-    func tb_roundToTenths() -> Temperature {
-        return round(self * 10.0) / 10.0
     }
 }
 
@@ -213,12 +209,12 @@ struct VolatileOrganicCompoundsReading {
 struct ThunderboardWheel {
     var diameter:                               Meters
     var revolutionsSinceConnecting:             UInt           = 0
-    var secondsSinceConnecting:                 NSTimeInterval = 0
+    var secondsSinceConnecting:                 TimeInterval = 0
 
-    private let rotationTimeOut:                UInt           = 12
-    private var previousSecondsSinceConnecting: NSTimeInterval = 0
-    private var previousRevolutions:            UInt           = 0
-    private let secondsPerMinute:               Float          = 60
+    fileprivate let rotationTimeOut:                UInt           = 12
+    fileprivate var previousSecondsSinceConnecting: TimeInterval = 0
+    fileprivate var previousRevolutions:            UInt           = 0
+    fileprivate let secondsPerMinute:               Float          = 60
     
     var distance: Meters {
         
@@ -255,9 +251,9 @@ struct ThunderboardWheel {
         self.diameter = diameter
     }
 
-    private var countOfRepeatedSameValues: UInt = 0
+    fileprivate var countOfRepeatedSameValues: UInt = 0
     
-    mutating func updateRevolutions(cumulativeRevolutions: UInt, cumulativeSecondsSinceConnecting: NSTimeInterval) {
+    mutating func updateRevolutions(_ cumulativeRevolutions: UInt, cumulativeSecondsSinceConnecting: TimeInterval) {
         if cumulativeRevolutions != revolutionsSinceConnecting {
             previousSecondsSinceConnecting = secondsSinceConnecting
             previousRevolutions            = revolutionsSinceConnecting
@@ -280,7 +276,7 @@ struct ThunderboardWheel {
         previousSecondsSinceConnecting = 0
     }
     
-    private func deltaRevolutions() -> UInt {
+    fileprivate func deltaRevolutions() -> UInt {
         var delta: UInt = 0
         if revolutionsSinceConnecting > previousRevolutions {
             delta = revolutionsSinceConnecting - previousRevolutions
@@ -288,7 +284,7 @@ struct ThunderboardWheel {
         return delta
     }
     
-    private func deltaSeconds() -> NSTimeInterval {
+    fileprivate func deltaSeconds() -> TimeInterval {
         return secondsSinceConnecting - previousSecondsSinceConnecting
     }
 }

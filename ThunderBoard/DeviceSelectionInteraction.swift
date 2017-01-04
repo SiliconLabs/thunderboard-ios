@@ -10,17 +10,17 @@ import Foundation
 protocol DeviceSelectionInteractionOutput : class {
     
     // power
-    func bleEnabled(enabled: Bool)
+    func bleEnabled(_ enabled: Bool)
     
     // scanning
-    func bleScanning(scanning: Bool)
+    func bleScanning(_ scanning: Bool)
     func bleScanningListUpdated()
-    func bleDeviceUpdated(device: DiscoveredDeviceDisplay, index: Int)
+    func bleDeviceUpdated(_ device: DiscoveredDeviceDisplay, index: Int)
     
     // connection
-    func interactionShowConnectionInProgress(index: Int)
-    func interactionShowConnectionTimedOut(deviceName: String)
-    func interactionShowConnectionDemos(configuration: DemoConfiguration)
+    func interactionShowConnectionInProgress(_ index: Int)
+    func interactionShowConnectionTimedOut(_ deviceName: String)
+    func interactionShowConnectionDemos(_ configuration: DemoConfiguration)
 }
 
 struct DiscoveredDeviceDisplay {
@@ -31,21 +31,21 @@ struct DiscoveredDeviceDisplay {
 
 struct DiscoveredDevice {
     let device: Device
-    let latestDiscovery: NSDate
+    let latestDiscovery: Date
 }
 
 class DeviceSelectionInteraction : DeviceScannerDelegate, DeviceConnectionDelegate {
     
-    private var deviceScanner: DeviceScanner?
-    private var deviceConnector: DeviceConnection?
-    private var interactionOutput: DeviceSelectionInteractionOutput?
-    private var discoveredDevices = Array<DiscoveredDevice>()
+    fileprivate var deviceScanner: DeviceScanner?
+    fileprivate var deviceConnector: DeviceConnection?
+    fileprivate var interactionOutput: DeviceSelectionInteractionOutput?
+    fileprivate var discoveredDevices = Array<DiscoveredDevice>()
     
-    private var autoConnectDeviceName: String?
-    private var abandonAutoConnectTimer: WeakTimer?
-    private var expiredDiscoveryTimer: WeakTimer?
-    private let expirationDuration: NSTimeInterval = 10
-    private let updateThrottle = Throttle(interval: 0.75)
+    fileprivate var autoConnectDeviceName: String?
+    fileprivate var abandonAutoConnectTimer: WeakTimer?
+    fileprivate var expiredDiscoveryTimer: WeakTimer?
+    fileprivate let expirationDuration: TimeInterval = 10
+    fileprivate let updateThrottle = Throttle(interval: 0.75)
     
     var settingsPresenter: SettingsPresenter?
     
@@ -74,12 +74,12 @@ class DeviceSelectionInteraction : DeviceScannerDelegate, DeviceConnectionDelega
         self.expiredDiscoveryTimer = nil
     }
     
-    func automaticallyConnectToDevice(identifier: String) {
+    func automaticallyConnectToDevice(_ identifier: String) {
         log.info("\(identifier)")
         setupAutoConnection(identifier)
     }
     
-    func connectToDevice(index: Int) {
+    func connectToDevice(_ index: Int) {
         if index < self.discoveredDevices.count {
             self.deviceConnector?.connect(self.discoveredDevices[index].device)
             self.interactionOutput?.interactionShowConnectionInProgress(index)
@@ -88,8 +88,8 @@ class DeviceSelectionInteraction : DeviceScannerDelegate, DeviceConnectionDelega
         }
     }
     
-    func connectToDevice(device: Device) {
-        if let index = self.discoveredDevices.indexOf({ $0.device.deviceIdentifier == device.deviceIdentifier }) {
+    func connectToDevice(_ device: Device) {
+        if let index = self.discoveredDevices.index(where: { $0.device.deviceIdentifier == device.deviceIdentifier }) {
             connectToDevice(index)
         }
     }
@@ -98,10 +98,10 @@ class DeviceSelectionInteraction : DeviceScannerDelegate, DeviceConnectionDelega
         return self.discoveredDevices.count
     }
     
-    func deviceAtIndex(index: Int) -> DiscoveredDeviceDisplay? {
+    func deviceAtIndex(_ index: Int) -> DiscoveredDeviceDisplay? {
         if self.discoveredDevices.count > index {
             let device = self.discoveredDevices[index].device
-            return DiscoveredDeviceDisplay(name: device.name!, RSSI: device.RSSI, connecting: device.connectionState == .Connecting)
+            return DiscoveredDeviceDisplay(name: device.name!, RSSI: device.RSSI, connecting: device.connectionState == .connecting)
         }
         
         return nil
@@ -113,22 +113,22 @@ class DeviceSelectionInteraction : DeviceScannerDelegate, DeviceConnectionDelega
     
     //MARK:- Internal
     
-    private func notifyPowerState(state: DeviceTransportState) {
+    fileprivate func notifyPowerState(_ state: DeviceTransportState) {
         switch (state) {
-        case .Disabled:
+        case .disabled:
             self.interactionOutput?.bleEnabled(false)
-        case .Enabled:
+        case .enabled:
             self.interactionOutput?.bleEnabled(true)
         }
     }
     
-    private func clearDeviceList() {
+    fileprivate func clearDeviceList() {
         self.discoveredDevices.removeAll()
     }
     
-    private func indexOfDevice(device: Device) -> Int {
+    fileprivate func indexOfDevice(_ device: Device) -> Int {
 
-        for (index, d) in self.discoveredDevices.enumerate() {
+        for (index, d) in self.discoveredDevices.enumerated() {
             // Note: cannot use .identifier here because it isn't populated until connection
             if d.device.name == device.name {
                 return index
@@ -138,10 +138,10 @@ class DeviceSelectionInteraction : DeviceScannerDelegate, DeviceConnectionDelega
         return NSNotFound
     }
     
-    private func expiredDiscoveryTask() {
+    fileprivate func expiredDiscoveryTask() {
         let validDevices = self.discoveredDevices.filter({
-            let now = NSDate()
-            let lastTime = now.timeIntervalSinceDate($0.latestDiscovery)
+            let now = Date()
+            let lastTime = now.timeIntervalSince($0.latestDiscovery)
             return lastTime < expirationDuration
         })
 
@@ -153,7 +153,7 @@ class DeviceSelectionInteraction : DeviceScannerDelegate, DeviceConnectionDelega
     
     //MARK: - Internal (Auto Connection)
     
-    private func setupAutoConnection(identifier: String) {
+    fileprivate func setupAutoConnection(_ identifier: String) {
         autoConnectDeviceName = identifier
         abandonAutoConnectTimer = WeakTimer.scheduledTimer(5, repeats: false, action: { [weak self] () -> Void in
             log.info("Abandoning attempts to connect to \(identifier) - timeout")
@@ -163,7 +163,7 @@ class DeviceSelectionInteraction : DeviceScannerDelegate, DeviceConnectionDelega
         attemptAutoConnection()
     }
     
-    private func attemptAutoConnection() {
+    fileprivate func attemptAutoConnection() {
         guard let name = autoConnectDeviceName else {
             return
         }
@@ -189,7 +189,7 @@ class DeviceSelectionInteraction : DeviceScannerDelegate, DeviceConnectionDelega
         }
     }
     
-    private func abandonAutoConnectionDevice() {
+    fileprivate func abandonAutoConnectionDevice() {
         autoConnectDeviceName = nil
         abandonAutoConnectTimer?.stop()
         abandonAutoConnectTimer = nil
@@ -197,14 +197,14 @@ class DeviceSelectionInteraction : DeviceScannerDelegate, DeviceConnectionDelega
     
     //MARK:- DeviceScannerDelegate
     
-    func transportPowerStateUpdated(state: DeviceTransportState) {
+    func transportPowerStateUpdated(_ state: DeviceTransportState) {
 
         notifyPowerState(state)
         
         switch (state) {
-        case .Disabled:
+        case .disabled:
             stopScanning()
-        case .Enabled:
+        case .enabled:
             startScanning()
         }
     }
@@ -213,10 +213,10 @@ class DeviceSelectionInteraction : DeviceScannerDelegate, DeviceConnectionDelega
         self.interactionOutput?.bleScanning(true)
     }
     
-    func discoveredDevice(device: Device) {
+    func discoveredDevice(_ device: Device) {
 
         let index = indexOfDevice(device)
-        let discovered = DiscoveredDevice(device: device, latestDiscovery: NSDate())
+        let discovered = DiscoveredDevice(device: device, latestDiscovery: Date())
         
         if index == NSNotFound {
             discoveredDevices.append(discovered)
@@ -240,7 +240,7 @@ class DeviceSelectionInteraction : DeviceScannerDelegate, DeviceConnectionDelega
     
     //MARK:- DeviceConnectionDelegate
     
-    func connectedToDevice(device: Device) {
+    func connectedToDevice(_ device: Device) {
         interactionOutput?.interactionShowConnectionDemos(device)
     }
     
@@ -248,7 +248,7 @@ class DeviceSelectionInteraction : DeviceScannerDelegate, DeviceConnectionDelega
         // NO-OP - presenter is also notified, and is responsible for this notification
     }
     
-    func connectionToDeviceTimedOut(device: Device) {
+    func connectionToDeviceTimedOut(_ device: Device) {
         guard let name = device.name else {
             self.interactionOutput?.interactionShowConnectionTimedOut("")
             return

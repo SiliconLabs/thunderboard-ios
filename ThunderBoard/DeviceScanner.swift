@@ -16,6 +16,6 @@ protocol DeviceScanner: class {
 
 protocol DeviceScannerDelegate: DeviceTransportPowerDelegate {
     func startedScanning()
-    func discoveredDevice(device: Device)
+    func discoveredDevice(_ device: Device)
     func stoppedScanning()
 }

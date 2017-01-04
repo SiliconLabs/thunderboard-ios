@@ -33,10 +33,10 @@ class MotionSenseBoardDemoViewController : MotionDemoViewController {
         ])
     }
     
-    override func modelTranformMatrixForOrientation(orientation: ThunderboardInclination) -> SCNMatrix4 {
+    override func modelTranformMatrixForOrientation(_ orientation: ThunderboardInclination) -> SCNMatrix4 {
         let modelIdentity = motionView.modelIdentity
         
-        var transform = SCNMatrix4Rotate(modelIdentity, -orientation.x.tb_toRadian(), 1, 0, 0)
+        var transform = SCNMatrix4Rotate(modelIdentity!, -orientation.x.tb_toRadian(), 1, 0, 0)
         transform = SCNMatrix4Rotate(transform, -orientation.y.tb_toRadian(), 0, 1, 0)
         transform = SCNMatrix4Rotate(transform, orientation.z.tb_toRadian(), 0, 0, 1)
         
@@ -45,20 +45,20 @@ class MotionSenseBoardDemoViewController : MotionDemoViewController {
     
     // MARK: - Private
     
-    private func locateMaterialsNamed(names: [String]) -> [SCNMaterial] {
-        let lowercaseNames = names.map({ $0.lowercaseString })
-        func recurseNode(node: SCNNode) -> [SCNMaterial] {
+    fileprivate func locateMaterialsNamed(_ names: [String]) -> [SCNMaterial] {
+        let lowercaseNames = names.map({ $0.lowercased() })
+        func recurseNode(_ node: SCNNode) -> [SCNMaterial] {
             var results: [SCNMaterial] = []
 
             node.childNodes.forEach({ (child) in
                 if let _ = child.geometry {
                     
                     child.childNodes.forEach({
-                        results.appendContentsOf(recurseNode($0))
+                        results.append(contentsOf: recurseNode($0))
                     })
                     
                     child.geometry?.materials.forEach({ (material) in
-                        guard let materialName = material.name?.lowercaseString else {
+                        guard let materialName = material.name?.lowercased() else {
                             return
                         }
 
@@ -68,7 +68,7 @@ class MotionSenseBoardDemoViewController : MotionDemoViewController {
                     })
                 }
                 
-                results.appendContentsOf(recurseNode(child))
+                results.append(contentsOf: recurseNode(child))
             })
             
             return results

@@ -28,22 +28,22 @@ protocol MotionDemoConnectionDelegate: class {
     func startedRevolutionsReset()
     func finishedRevolutionsReset()
     
-    func orientationUpdated(inclination: ThunderboardInclination)
-    func accelerationUpdated(vector: ThunderboardVector)
-    func rotationUpdated(revolutions: UInt, elapsedTime: NSTimeInterval)
-    func ledColorUpdated(on: Bool, color: LedRgb)
+    func orientationUpdated(_ inclination: ThunderboardInclination)
+    func accelerationUpdated(_ vector: ThunderboardVector)
+    func rotationUpdated(_ revolutions: UInt, elapsedTime: TimeInterval)
+    func ledColorUpdated(_ on: Bool, color: LedRgb)
 }
 
 extension MotionDemoConnection {
     var capabilities: Set<DeviceCapability> {
         let environmentCapabilities: Set<DeviceCapability> = [
-            .Acceleration,
-            .Orientation,
-            .Calibration,
-            .Revolutions,
-            .RGBOutput,
+            .acceleration,
+            .orientation,
+            .calibration,
+            .revolutions,
+            .rgbOutput,
         ]
         
-        return device.capabilities.intersect(environmentCapabilities)
+        return device.capabilities.intersection(environmentCapabilities)
     }
 }

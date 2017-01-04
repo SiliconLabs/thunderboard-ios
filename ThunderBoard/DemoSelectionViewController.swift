@@ -12,7 +12,7 @@ class DemoSelectionViewController: UIViewController, UITableViewDataSource, UITa
     @IBOutlet var historyButton: UIBarButtonItem?
     @IBOutlet var tableView: UITableView? {
         didSet {
-            self.tableView?.backgroundColor = UIColor.clearColor()
+            self.tableView?.backgroundColor = UIColor.clear
         }
     }
     
@@ -21,14 +21,14 @@ class DemoSelectionViewController: UIViewController, UITableViewDataSource, UITa
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = StyleColor.lightGray
-        self.tableView?.backgroundColor = UIColor.clearColor()
+        self.tableView?.backgroundColor = UIColor.clear
         self.title = "Thunderboard"
         self.tb_removeTitleFromBackButton()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.tb_setNavigationBarStyleForDemo(.DemoSelection)
+        self.navigationController?.tb_setNavigationBarStyleForDemo(.demoSelection)
         
         // (roughly) center the table view content in the view
         guard let table = self.tableView else {
@@ -36,14 +36,14 @@ class DemoSelectionViewController: UIViewController, UITableViewDataSource, UITa
         }
         
         let available = self.view.frame.size.height - (64 * 2)
-        let content = tableView(table, heightForRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0)) * CGFloat(tableView(table, numberOfRowsInSection: 0))
+        let content = tableView(table, heightForRowAt: IndexPath(row: 0, section: 0)) * CGFloat(tableView(table, numberOfRowsInSection: 0))
         let inset = (available - content) / 2
         
         table.contentInset = UIEdgeInsets(top: inset, left: 0, bottom: 0, right: 0)
         table.reloadData()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         interaction?.resetDemoConfiguration()
     }
@@ -58,17 +58,17 @@ class DemoSelectionViewController: UIViewController, UITableViewDataSource, UITa
     
     //MARK:- Internal
     
-    private func configureCell(cell: DemoTableViewCell, demo: ThunderboardDemo) {
+    fileprivate func configureCell(_ cell: DemoTableViewCell, demo: ThunderboardDemo) {
         switch(demo) {
-        case .IO:
+        case .io:
             cell.demoName.tb_setText("I/O", style: StyleText.demoTitle)
             cell.demoImage.image = UIImage(named: "icn_demo_io_unsel")
 
-        case .Motion:
+        case .motion:
             cell.demoName.tb_setText("Motion", style: StyleText.demoTitle)
             cell.demoImage.image = UIImage(named: "icn_demo_motion_unsel")
             
-        case .Environment:
+        case .environment:
             cell.demoName.tb_setText("Environment", style: StyleText.demoTitle)
             cell.demoImage.image = UIImage(named: "icn_demo_environmental_unsel")
         }
@@ -76,8 +76,8 @@ class DemoSelectionViewController: UIViewController, UITableViewDataSource, UITa
         cell.demoSpinner.lineColor = StyleColor.terbiumGreen
         cell.demoSpinner.trackColor = StyleColor.lightGray
         
-        cell.accessoryType = .None
-        cell.backgroundColor = UIColor.clearColor()
+        cell.accessoryType = .none
+        cell.backgroundColor = UIColor.clear
         cell.selectedBackgroundView = UIView()
         cell.selectedBackgroundView?.backgroundColor = StyleColor.mediumGreen
         
@@ -87,37 +87,37 @@ class DemoSelectionViewController: UIViewController, UITableViewDataSource, UITa
 
     //MARK:- UITableViewDataSource
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 3
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("demoCell") as! DemoTableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "demoCell") as! DemoTableViewCell
         configureCell(cell, demo: ThunderboardDemo(rawValue: indexPath.row)!)
         return cell
     }
     
     //MARK:- UITableViewDelegate
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         
         let demo = ThunderboardDemo(rawValue: indexPath.row)!
         interaction?.configureForDemo(demo)
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 98
     }
     
     //MARK:- DemoSelectionInteractionOutput
     
-    func showConfiguringDemo(demo: ThunderboardDemo) {
+    func showConfiguringDemo(_ demo: ThunderboardDemo) {
         self.tableView?.reloadData()
     }
     
-    func enableDemoHistory(enabled: Bool) {
-        self.historyButton?.enabled = enabled
+    func enableDemoHistory(_ enabled: Bool) {
+        self.historyButton?.isEnabled = enabled
     }
 }
 

@@ -8,22 +8,22 @@ import Foundation
 
 class Throttle {
     typealias ThrottleBlock = () -> ()
-    private var queuedActions: Dictionary<String, ThrottleBlock> = [:]
-    var interval: NSTimeInterval
+    fileprivate var queuedActions: Dictionary<String, ThrottleBlock> = [:]
+    var interval: TimeInterval
     
-    init(interval: NSTimeInterval) {
+    init(interval: TimeInterval) {
         self.interval = interval
     }
     
-    func run(block: ThrottleBlock) {
+    func run(_ block: @escaping ThrottleBlock) {
         run("default", block: block)
     }
     
-    func run(key: String, block: ThrottleBlock) {
+    func run(_ key: String, block: @escaping ThrottleBlock) {
         dispatch_main_async {
             if self.queuedActions[key] == nil {
                 delay(self.interval) {
-                    if let action = self.queuedActions.removeValueForKey(key) {
+                    if let action = self.queuedActions.removeValue(forKey: key) {
                         action()
                     }
                 }

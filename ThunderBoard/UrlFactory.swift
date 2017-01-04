@@ -7,9 +7,9 @@
 
 import Foundation
 
-extension NSURL {
-    static func tb_urlForDemoHistory(device: DeviceId) -> NSURL {
+extension URL {
+    static func tb_urlForDemoHistory(_ device: DeviceId) -> URL {
         let host = ApplicationConfig.FirebaseDemoHost
-        return NSURL(string: "https://\(host)/#/\(device)/sessions")!
+        return URL(string: "https://\(host)/#/\(device)/sessions")!
     }
 }

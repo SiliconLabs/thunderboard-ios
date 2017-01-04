@@ -8,16 +8,16 @@
 import Foundation
 
 extension Device {
-    func ledColor(index: Int) -> LedStaticColor {
+    func ledColor(_ index: Int) -> LedStaticColor {
         // There isn't a way to query the Thunderboard devices for their LED
         // colors, so this is table for known configurations.
         switch self.model {
-        case .React:
-            return [ LedStaticColor.Blue, LedStaticColor.Green ][index]
-        case .Sense:
-            return [ LedStaticColor.Red, LedStaticColor.Green ][index]
-        case .Unknown:
-            return .Green
+        case .react:
+            return [ LedStaticColor.blue, LedStaticColor.green ][index]
+        case .sense:
+            return [ LedStaticColor.red, LedStaticColor.green ][index]
+        case .unknown:
+            return .green
         }
     }
 }

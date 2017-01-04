@@ -14,11 +14,11 @@ protocol DemoStreaming {
 }
 
 protocol DemoStreamingOutput : class {
-    func streamingEnabled(enabled: Bool)
-    func streamStarting(longUrl: String)
-    func streamStarted(shortUrl: String)
-    func streamFailedToStart(error: NSError)
-    func streamEncounteredError(error: NSError)
+    func streamingEnabled(_ enabled: Bool)
+    func streamStarting(_ longUrl: String)
+    func streamStarted(_ shortUrl: String)
+    func streamFailedToStart(_ error: NSError)
+    func streamEncounteredError(_ error: NSError)
     func streamHeartbeat()
     func streamStopped()
 }

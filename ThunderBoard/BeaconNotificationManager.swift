@@ -18,9 +18,9 @@ class BeaconNotificationManager : NSObject, NotificationManager, CLLocationManag
         set (newValue) { enableNotifications(newValue) }
     }
     
-    private let settings = ThunderboardSettings()
-    private var clManager: CLLocationManager?
-    private var connectedDevices: [Device]?
+    fileprivate let settings = ThunderboardSettings()
+    fileprivate var clManager: CLLocationManager?
+    fileprivate var connectedDevices: [Device]?
     
     override init() {
         super.init()
@@ -29,7 +29,7 @@ class BeaconNotificationManager : NSObject, NotificationManager, CLLocationManag
     
     //MARK: - NotificationManager
     
-    func enableNotifications(enable: Bool) {
+    func enableNotifications(_ enable: Bool) {
         
         if enable {
             clManager = CLLocationManager()
@@ -44,7 +44,7 @@ class BeaconNotificationManager : NSObject, NotificationManager, CLLocationManag
             // stop monitoring regions
             if let regions = clManager?.monitoredRegions {
                 for region in regions {
-                    clManager?.stopMonitoringForRegion(region)
+                    clManager?.stopMonitoring(for: region)
                 }
             }
             
@@ -57,15 +57,15 @@ class BeaconNotificationManager : NSObject, NotificationManager, CLLocationManag
         dumpDebugInformation()
     }
     
-    func allowDevice(device: NotificationDevice) {
+    func allowDevice(_ device: NotificationDevice) {
         let beacon = regionForDevice(device)
-        clManager?.startMonitoringForRegion(beacon)
+        clManager?.startMonitoring(for: beacon)
         dumpDebugInformation()
     }
     
-    func removeDevice(device: NotificationDevice) {
+    func removeDevice(_ device: NotificationDevice) {
         let region = regionForDevice(device)
-        clManager?.stopMonitoringForRegion(region)
+        clManager?.stopMonitoring(for: region)
         
         removePreviousDevice(device)
         
@@ -115,32 +115,32 @@ class BeaconNotificationManager : NSObject, NotificationManager, CLLocationManag
         return devices.other
     }
     
-    func setConnectedDevices(devices: [Device]) {
+    func setConnectedDevices(_ devices: [Device]) {
         connectedDevices = devices
     }
 
     //MARK: - Private
 
-    private func requestLocationServicesAccess() {
+    fileprivate func requestLocationServicesAccess() {
         clManager?.requestAlwaysAuthorization()
     }
     
-    private func locationServicesAllowed() {
+    fileprivate func locationServicesAllowed() {
         settings.beaconNotifications = true
         self.delegate?.notificationsEnabled(true)
     }
     
-    private func locationServicesDenied() {
+    fileprivate func locationServicesDenied() {
         settings.beaconNotifications = false
         self.delegate?.locationServicesNotAllowed()
     }
     
-    private func notificationsDisabled() {
+    fileprivate func notificationsDisabled() {
         settings.beaconNotifications = false
         self.delegate?.notificationsEnabled(false)
     }
     
-    private func allDevices() -> (allowed: [NotificationDevice], other: [NotificationDevice]) {
+    fileprivate func allDevices() -> (allowed: [NotificationDevice], other: [NotificationDevice]) {
         
         // Find all devices in the "connected history"
         let pastDevices = previouslyConnectedDevices()
@@ -154,20 +154,20 @@ class BeaconNotificationManager : NSObject, NotificationManager, CLLocationManag
         return (allowed: beaconDevices, other: otherDevices)
     }
     
-    private func deviceWithId(deviceId: DeviceId) -> NotificationDevice? {
+    fileprivate func deviceWithId(_ deviceId: DeviceId) -> NotificationDevice? {
         let devices = previouslyConnectedDevices()
         return devices.filter({ $0.identifier == deviceId }).first
     }
     
-    private func previouslyConnectedDevices() -> [NotificationDevice] {
+    fileprivate func previouslyConnectedDevices() -> [NotificationDevice] {
         return settings.connectedDevices
     }
     
-    private func removePreviousDevice(device: NotificationDevice) {
+    fileprivate func removePreviousDevice(_ device: NotificationDevice) {
         settings.removeConnectedDevice(device)
     }
     
-    private func regionMonitoredDevices() -> [NotificationDevice] {
+    fileprivate func regionMonitoredDevices() -> [NotificationDevice] {
         guard let regions = clManager?.monitoredRegions else {
             return []
         }
@@ -187,20 +187,20 @@ class BeaconNotificationManager : NSObject, NotificationManager, CLLocationManag
         })
     }
     
-    private func deviceIdentifierForRegion(region: CLBeaconRegion) -> DeviceId {
-        guard let major = region.major?.longLongValue, minor = region.minor?.longLongValue else {
+    fileprivate func deviceIdentifierForRegion(_ region: CLBeaconRegion) -> DeviceId {
+        guard let major = region.major?.int64Value, let minor = region.minor?.int64Value else {
             return 0
         }
 
         return DeviceId((major << 16) + minor)
     }
     
-    private func regionForDevice(device: NotificationDevice) -> CLBeaconRegion {
+    fileprivate func regionForDevice(_ device: NotificationDevice) -> CLBeaconRegion {
         let deviceId = device.identifier
         let major = CLBeaconMajorValue( (deviceId >> 16) & 0xFFFF )
         let minor = CLBeaconMinorValue( deviceId & 0xFFFF )
         let identifier = "\(device.identifier)"
-        let beacon = CLBeaconRegion(proximityUUID: ThunderboardBeaconId, major: major, minor: minor, identifier: identifier)
+        let beacon = CLBeaconRegion(proximityUUID: ThunderboardBeaconId as UUID, major: major, minor: minor, identifier: identifier)
         beacon.notifyEntryStateOnDisplay = true
         beacon.notifyOnEntry = true
         beacon.notifyOnExit = true
@@ -208,50 +208,50 @@ class BeaconNotificationManager : NSObject, NotificationManager, CLLocationManag
         return beacon
     }
     
-    private func requestStateForMonitoredRegions() {
+    fileprivate func requestStateForMonitoredRegions() {
         guard let regions = clManager?.monitoredRegions else {
             return
         }
         
         for region in regions {
             if let beacon = region as? CLBeaconRegion {
-                clManager?.requestStateForRegion(beacon)
+                clManager?.requestState(for: beacon)
             }
         }
     }
     
-    private func dumpDebugInformation() {
+    fileprivate func dumpDebugInformation() {
         let regions = clManager?.monitoredRegions
         log.debug("monitored regions: \(regions)")
     }
     
     //MARK: - CLLocationManagerDelegate
     
-    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         log.info("Authorization status changed: \(status.rawValue)")
         
         switch status {
-        case .AuthorizedAlways, .AuthorizedWhenInUse:
+        case .authorizedAlways, .authorizedWhenInUse:
             locationServicesAllowed()
             
-        case .Denied, .Restricted:
+        case .denied, .restricted:
             locationServicesDenied()
             
-        case .NotDetermined:
+        case .notDetermined:
             // NO-OP: decision from the user forthcoming
             break
         }
     }
 
-    func locationManager(manager: CLLocationManager, didStartMonitoringForRegion region: CLRegion) {
+    func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
         log.debug("\(region)")
     }
     
-    func locationManager(manager: CLLocationManager, monitoringDidFailForRegion region: CLRegion?, withError error: NSError) {
+    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
         log.error("\(region) error \(error)")
     }
     
-    func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         // entered region
         log.info("\(region)")
         guard let beacon = region as? CLBeaconRegion else {
@@ -260,8 +260,8 @@ class BeaconNotificationManager : NSObject, NotificationManager, CLLocationManag
         }
         
         // only send notification if we're in the background
-        let application = UIApplication.sharedApplication()
-        if application.applicationState != .Active {
+        let application = UIApplication.shared
+        if application.applicationState != .active {
             let deviceId = deviceIdentifierForRegion(beacon)
             if let device = deviceWithId(deviceId) {
                 log.info("detected device id \(deviceId)")
@@ -273,24 +273,24 @@ class BeaconNotificationManager : NSObject, NotificationManager, CLLocationManag
         }
     }
     
-    func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         // exited region
         log.info("\(region)")
     }
     
-    func locationManager(manager: CLLocationManager, didDetermineState state: CLRegionState, forRegion region: CLRegion) {
+    func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
         // determined state
         switch state {
-        case .Inside:
+        case .inside:
             log.info("didDetermineState: .Inside")
-        case .Outside:
+        case .outside:
             log.info("didDetermineState: .Outside")
-        case .Unknown:
+        case .unknown:
             log.info("didDetermineState: .Unknown")
         }
     }
     
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         log.error("\(error)")
     }
     

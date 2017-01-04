@@ -12,19 +12,19 @@ import HockeySDK
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    private var applicationPresenter: ApplicationPresenter?
+    fileprivate var applicationPresenter: ApplicationPresenter?
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
         if let hockeyToken = ApplicationConfig.HockeyToken {
-            BITHockeyManager.sharedHockeyManager().configureWithIdentifier(hockeyToken)
-            BITHockeyManager.sharedHockeyManager().startManager()
+            BITHockeyManager.shared().configure(withIdentifier: hockeyToken)
+            BITHockeyManager.shared().start()
         }
 
         let background = application.applicationState
         log.info("launchOptions=\(launchOptions) background=\(background.rawValue)")
 
-        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window?.tintColor = StyleColor.terbiumGreen
         self.applicationPresenter = ApplicationPresenter(window: self.window)
         self.applicationPresenter?.showDeviceSelection()
@@ -33,25 +33,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+    func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
         log.info("notification=\(notification) userInfo=\(notification.userInfo)")
         handleLocalNotification(notification)
     }
     
-    func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
+    func application(_ application: UIApplication, handleActionWithIdentifier identifier: String?, for notification: UILocalNotification, completionHandler: @escaping () -> Void) {
         log.info("identifier=\(identifier) notification=\(notification) userInfo=\(notification.userInfo)")
         handleLocalNotification(notification)
         completionHandler()
     }
     
-    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
+    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
         log.debug("notificationSettings: \(notificationSettings)")
-        NSNotificationCenter.defaultCenter().postNotificationName(UserNotificationSettingsUpdatedEvent, object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: UserNotificationSettingsUpdatedEvent), object: nil)
     }
     
     //MARK: - Private
     
-    private func handleLocalNotification(notification: UILocalNotification) {
+    fileprivate func handleLocalNotification(_ notification: UILocalNotification) {
         log.info("notification=\(notification)")
         
         if let name = notification.userInfo?["deviceName"] as? String {

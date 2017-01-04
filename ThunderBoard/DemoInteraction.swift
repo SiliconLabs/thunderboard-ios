@@ -18,12 +18,12 @@ protocol DemoStreamingInteraction {
 }
 
 protocol DemoStreamingInteractionOutput : class {
-    func streamingEnabled(enabled: Bool)
+    func streamingEnabled(_ enabled: Bool)
     func streamStarted()
     func streamStarting()
     func streamOperational()
     func streamStopped()
-    func showStreamingError(error: NSError)
+    func showStreamingError(_ error: NSError)
 }
 
 extension DemoStreamingInteraction where Self: DemoStreamingOutput  {
@@ -48,19 +48,19 @@ extension DemoStreamingInteraction where Self: DemoStreamingOutput  {
     
     //MARK: - DemoStreamingDelegate
     
-    func streamingEnabled(enabled: Bool) {
+    func streamingEnabled(_ enabled: Bool) {
         streamingOutput?.streamingEnabled(enabled)
     }
     
-    func streamStarting(longUrl: String) {
+    func streamStarting(_ longUrl: String) {
         streamingOutput?.streamStarting()
     }
     
-    func streamStarted(url: String) {
+    func streamStarted(_ url: String) {
         streamingOutput?.streamStarted()
     }
     
-    func streamFailedToStart(error: NSError) {
+    func streamFailedToStart(_ error: NSError) {
         streamingOutput?.streamStopped()
     }
     
@@ -68,7 +68,7 @@ extension DemoStreamingInteraction where Self: DemoStreamingOutput  {
         streamingOutput?.streamStopped()
     }
     
-    func streamEncounteredError(error: NSError) {
+    func streamEncounteredError(_ error: NSError) {
         streamingOutput?.showStreamingError(error)
     }
     

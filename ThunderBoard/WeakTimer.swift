@@ -11,20 +11,20 @@ typealias WeakTimerBlock = (() -> Void)
 
 class WeakTimer : NSObject {
     
-    private var timer: NSTimer?
+    fileprivate var timer: Timer?
     
     //MARK: -
     
-    class func scheduledTimer(interval: NSTimeInterval, repeats: Bool, action: WeakTimerBlock) -> WeakTimer {
+    class func scheduledTimer(_ interval: TimeInterval, repeats: Bool, action: @escaping WeakTimerBlock) -> WeakTimer {
         let result = WeakTimer(interval: interval, repeats: repeats, action: action)
         result.start()
         return result
     }
     
-    init(interval: NSTimeInterval, repeats: Bool, action: WeakTimerBlock) {
+    init(interval: TimeInterval, repeats: Bool, action: @escaping WeakTimerBlock) {
         super.init()
         let target = WeakTimerObserver(action: action)
-        timer = NSTimer(timeInterval: interval, target: target, selector: #selector(WeakTimerObserver.timerFired), userInfo: nil, repeats: repeats)
+        timer = Timer(timeInterval: interval, target: target, selector: #selector(WeakTimerObserver.timerFired), userInfo: nil, repeats: repeats)
     }
     
     deinit {
@@ -33,7 +33,7 @@ class WeakTimer : NSObject {
     
     func start() {
         if let timer = timer {
-            NSRunLoop.mainRunLoop().addTimer(timer, forMode: NSRunLoopCommonModes)
+            RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
         }
     }
     
@@ -43,10 +43,10 @@ class WeakTimer : NSObject {
     
     //MARK: - Internal
     
-    private class WeakTimerObserver : NSObject {
+    fileprivate class WeakTimerObserver : NSObject {
         var actionBlock: WeakTimerBlock?
         
-        init(action: WeakTimerBlock) {
+        init(action: @escaping WeakTimerBlock) {
             self.actionBlock = action
             super.init()
         }

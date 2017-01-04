@@ -9,9 +9,9 @@ import UIKit
 
 public let π = M_PI
 
-class ButtonAnimationTrackLayer: CALayer {
+class ButtonAnimationTrackLayer: CALayer, CAAnimationDelegate {
     
-    private let trackLayer = CAShapeLayer()
+    fileprivate let trackLayer = CAShapeLayer()
     
     override init() {
         super.init()
@@ -23,7 +23,7 @@ class ButtonAnimationTrackLayer: CALayer {
         commonSetup()
     }
     
-    override init(layer: AnyObject) {
+    override init(layer: Any) {
         super.init(layer: layer)
     }
     
@@ -33,7 +33,7 @@ class ButtonAnimationTrackLayer: CALayer {
         }
     }
     
-    var trackColor: UIColor = UIColor.redColor() {
+    var trackColor: UIColor = UIColor.red {
         didSet {
             setupTrack()
         }
@@ -57,15 +57,15 @@ class ButtonAnimationTrackLayer: CALayer {
     var rotationDuration: Double = 2
     
     enum AnimationDirection {
-        case Clockwise
-        case Counterclockwise
+        case clockwise
+        case counterclockwise
     }
-    var direction: AnimationDirection = .Clockwise
+    var direction: AnimationDirection = .clockwise
     
-    private var animating = false
-    private var filling = false
-    private var starting = false
-    private var stopping = false
+    fileprivate var animating = false
+    fileprivate var filling = false
+    fileprivate var starting = false
+    fileprivate var stopping = false
     
     var currentAngle : CGFloat?
     var currentPath : UIBezierPath?
@@ -90,33 +90,33 @@ class ButtonAnimationTrackLayer: CALayer {
     func start() {
         setupPath(false)
         
-        trackLayer.removeAnimationForKey("stroke")
+        trackLayer.removeAnimation(forKey: "stroke")
         
         let strokeEndAnim = CABasicAnimation(keyPath: "strokeEnd")
         strokeEndAnim.fromValue = 1.0
         strokeEndAnim.toValue = 0.02
         strokeEndAnim.duration = 0.7
         strokeEndAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
-        strokeEndAnim.removedOnCompletion = false
+        strokeEndAnim.isRemovedOnCompletion = false
         strokeEndAnim.delegate = self
         
         trackLayer.strokeEnd = 0.02
-        trackLayer.addAnimation(strokeEndAnim, forKey: "stroke")
+        trackLayer.add(strokeEndAnim, forKey: "stroke")
     }
     
     func stop() {
-        trackLayer.removeAnimationForKey("stroke")
+        trackLayer.removeAnimation(forKey: "stroke")
 
         let strokeEndAnim = CABasicAnimation(keyPath: "strokeColor")
-        strokeEndAnim.fromValue = trackColor.CGColor
-        strokeEndAnim.toValue = StyleColor.gray.CGColor
+        strokeEndAnim.fromValue = trackColor.cgColor
+        strokeEndAnim.toValue = StyleColor.gray.cgColor
         strokeEndAnim.duration = 0.5
         strokeEndAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-        strokeEndAnim.removedOnCompletion = false
+        strokeEndAnim.isRemovedOnCompletion = false
         strokeEndAnim.delegate = self
         
-        trackLayer.strokeColor = StyleColor.gray.CGColor
-        trackLayer.addAnimation(strokeEndAnim, forKey: "stroke")
+        trackLayer.strokeColor = StyleColor.gray.cgColor
+        trackLayer.add(strokeEndAnim, forKey: "stroke")
     }
     
     func rotate() {
@@ -127,9 +127,9 @@ class ButtonAnimationTrackLayer: CALayer {
         animation.toValue = 2.0 * π
         animation.repeatCount = HUGE
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
-        animation.removedOnCompletion = false
+        animation.isRemovedOnCompletion = false
         
-        self.addAnimation(animation, forKey: "rotation")
+        self.add(animation, forKey: "rotation")
     }
     
     func fill() {
@@ -137,18 +137,18 @@ class ButtonAnimationTrackLayer: CALayer {
         
         setupPath(true)
         
-        trackLayer.removeAnimationForKey("stroke")
+        trackLayer.removeAnimation(forKey: "stroke")
         
         let strokeEndAnim = CABasicAnimation(keyPath: "strokeEnd")
         strokeEndAnim.fromValue = 0.02
         strokeEndAnim.toValue = 1.0
         strokeEndAnim.duration = fillDuration
         strokeEndAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
-        strokeEndAnim.removedOnCompletion = false
+        strokeEndAnim.isRemovedOnCompletion = false
         strokeEndAnim.delegate = self
         
         trackLayer.strokeEnd = 1.0
-        trackLayer.addAnimation(strokeEndAnim, forKey: "stroke")
+        trackLayer.add(strokeEndAnim, forKey: "stroke")
     }
     
     func reverse() {
@@ -156,21 +156,21 @@ class ButtonAnimationTrackLayer: CALayer {
         
         setupPath(false)
         
-        trackLayer.removeAnimationForKey("stroke")
+        trackLayer.removeAnimation(forKey: "stroke")
         
         let strokeEndAnim = CABasicAnimation(keyPath: "strokeEnd")
         strokeEndAnim.fromValue = 1.0
         strokeEndAnim.toValue = 0.02
         strokeEndAnim.duration = reverseDuration
         strokeEndAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-        strokeEndAnim.removedOnCompletion = false
+        strokeEndAnim.isRemovedOnCompletion = false
         strokeEndAnim.delegate = self
         
         trackLayer.strokeEnd = 0.02
-        trackLayer.addAnimation(strokeEndAnim, forKey: "stroke")
+        trackLayer.add(strokeEndAnim, forKey: "stroke")
     }
     
-    override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         if starting {
             animating = true
             starting = false
@@ -202,29 +202,29 @@ class ButtonAnimationTrackLayer: CALayer {
         }
     }
     
-    private func commonSetup() {
+    fileprivate func commonSetup() {
         self.addSublayer(trackLayer)
         setupTrack()
     }
     
-    private func setupTrack() {
+    fileprivate func setupTrack() {
         trackLayer.frame = bounds
-        trackLayer.fillColor = UIColor.clearColor().CGColor
+        trackLayer.fillColor = UIColor.clear.cgColor
         trackLayer.lineCap = "round"
-        trackLayer.strokeColor = trackColor.CGColor
+        trackLayer.strokeColor = trackColor.cgColor
         trackLayer.strokeStart = 0.0
         trackLayer.strokeEnd = 1.0
         
         if (animating == false) {
-            trackLayer.strokeColor = StyleColor.gray.CGColor
+            trackLayer.strokeColor = StyleColor.gray.cgColor
         }
     }
     
-    private func setupPath(clockwise : Bool) {
+    fileprivate func setupPath(_ clockwise : Bool) {
         
         if (clockwise == false) {
             if let path = currentPath {
-                trackLayer.path = path.bezierPathByReversingPath().CGPath
+                trackLayer.path = path.reversing().cgPath
                 return
             }
         }
@@ -244,7 +244,7 @@ class ButtonAnimationTrackLayer: CALayer {
         currentAngle = endAngle
         
         let bezierPath : UIBezierPath = {
-            return UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds)),
+            return UIBezierPath(arcCenter: CGPoint(x: bounds.midX, y: bounds.midY),
                 radius: (self.bounds.size.width - lineWidth) / 2,
                 startAngle: startAngle,
                 endAngle: endAngle,
@@ -253,7 +253,7 @@ class ButtonAnimationTrackLayer: CALayer {
         
         currentPath = bezierPath
         
-        trackLayer.path = bezierPath.CGPath
+        trackLayer.path = bezierPath.cgPath
     }
     
     override var frame: CGRect {
@@ -266,7 +266,7 @@ class ButtonAnimationTrackLayer: CALayer {
 
 class ButtonSpinner: UIView {
     
-    private let tracks = [
+    fileprivate let tracks = [
         ButtonAnimationTrackLayer(),
         ButtonAnimationTrackLayer(),
         ButtonAnimationTrackLayer(),
@@ -283,7 +283,7 @@ class ButtonSpinner: UIView {
         commonSetup()
     }
     
-    private var isAnimating = false
+    fileprivate var isAnimating = false
     
     func startAnimating() {
         if isAnimating == false {
@@ -303,14 +303,14 @@ class ButtonSpinner: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        for (index, track) in tracks.enumerate() {
+        for (index, track) in tracks.enumerated() {
             let inset = 16 + (10 * index)
-            track.frame = CGRectInset(self.bounds, CGFloat(inset), CGFloat(inset))
-            track.anchorPoint = CGPointMake(0.5, 0.5)
+            track.frame = self.bounds.insetBy(dx: CGFloat(inset), dy: CGFloat(inset))
+            track.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         }
     }
     
-    private func commonSetup() {
+    fileprivate func commonSetup() {
         
         let trackColors = [
             StyleColor.brightGreen,
@@ -329,7 +329,7 @@ class ButtonSpinner: UIView {
         let reverseTimings = [ 0.5, 0.6, 0.5, 0.7 ]
         let rotationTimings = [ 1.0, 1.0 + 1.0 / 3.0, 2.0, 4.0 ]
         
-        for (index, track) in tracks.enumerate() {
+        for (index, track) in tracks.enumerated() {
             track.delayDuration = delayTimings[index]
             track.fillDuration = fillTimings[index]
             track.reverseDuration = reverseTimings[index]
@@ -342,6 +342,6 @@ class ButtonSpinner: UIView {
             self.layer.addSublayer(track)
         }
         
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.clear
     }
 }

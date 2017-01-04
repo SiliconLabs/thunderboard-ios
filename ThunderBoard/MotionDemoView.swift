@@ -56,7 +56,7 @@ class MotionDemoView : UIView {
 
     var scene: SCNScene!
     var modelIdentity: SCNMatrix4!
-    private let rotationAction = "rotationAction"
+    fileprivate let rotationAction = "rotationAction"
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -65,7 +65,7 @@ class MotionDemoView : UIView {
     
     //MARK: - Public
     
-    func setModelScene(named: String, initialOrientation: SCNMatrix4) {
+    func setModelScene(_ named: String, initialOrientation: SCNMatrix4) {
         scene = SCNScene(named: named)!
         modelIdentity = initialOrientation
         setup3dModel()
@@ -73,7 +73,7 @@ class MotionDemoView : UIView {
 
     //MARK: - Internal
     
-    private func setupView() {
+    fileprivate func setupView() {
         
         self.scrollView?.alwaysBounceVertical = false
         self.contentView?.backgroundColor = StyleColor.lightGray
@@ -85,7 +85,7 @@ class MotionDemoView : UIView {
         setupDistance()
     }
     
-    private func setup3dModel() {
+    fileprivate func setup3dModel() {
         
         let cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
@@ -93,7 +93,7 @@ class MotionDemoView : UIView {
         cameraNode.position = SCNVector3(x: 0, y: 0, z: 10)
         
         let omniLight = SCNLight()
-        omniLight.type = SCNLightTypeOmni
+        omniLight.type = SCNLight.LightType.omni
         
         let omniLightNode = SCNNode()
         omniLightNode.light = omniLight
@@ -104,8 +104,8 @@ class MotionDemoView : UIView {
         self.carModelView?.allowsCameraControl = false
     }
     
-    private func setupOrientation() {
-        self.orientationAccelerationContainer?.backgroundColor = UIColor.clearColor()
+    fileprivate func setupOrientation() {
+        self.orientationAccelerationContainer?.backgroundColor = UIColor.clear
         self.orientationLabel?.tb_setText("ORIENTATION", style: StyleText.header2)
         self.orientationXLabel?.tb_setText("X:", style: StyleText.numbers1)
         self.orientationYLabel?.tb_setText("Y:", style: StyleText.numbers1)
@@ -117,7 +117,7 @@ class MotionDemoView : UIView {
         }
     }
     
-    private func setupAcceleration() {
+    fileprivate func setupAcceleration() {
         self.accelerationLabel?.tb_setText("ACCELERATION", style: StyleText.header2)
         self.accelerationXLabel?.tb_setText("X:", style: StyleText.numbers1)
         self.accelerationYLabel?.tb_setText("Y:", style: StyleText.numbers1)
@@ -129,14 +129,14 @@ class MotionDemoView : UIView {
         }
     }
     
-    private func setupWheel() {
+    fileprivate func setupWheel() {
         self.wheelLabel?.tb_setText("WHEEL", style: StyleText.header2)
         self.wheelDiameterLabel?.tb_setText("DIA.:", style: StyleText.numbers1)
         self.wheelDiameterValue?.style = StyleText.subtitle1
         self.wheelDiameterValue?.text  = String.tb_placeholderText() + " cm"
     }
     
-    private func setupSpeed() {
+    fileprivate func setupSpeed() {
         self.speedLabel?.tb_setText("SPEED", style: StyleText.header2)
         speedContainer?.tb_applyCommonRoundedCornerWithShadowStyle()
         self.speedContainer?.backgroundColor = StyleColor.white
@@ -152,7 +152,7 @@ class MotionDemoView : UIView {
         }
     }
     
-    private func setupDistance() {
+    fileprivate func setupDistance() {
         self.distanceLabel?.tb_setText("DISTANCE", style: StyleText.header2)
         distanceContainer?.tb_applyCommonRoundedCornerWithShadowStyle()
         self.distanceContainer?.backgroundColor = StyleColor.white

@@ -8,18 +8,18 @@
 import UIKit
 import SafariServices
 
-typealias PresentationRoles = protocol<DeviceSelectionPresenter, DemoSelectionPresenter, DemoPresenter, DemoStreamSharePresenter, NotificationPresenter, DemoHistoryPresenter, SettingsPresenter>
+typealias PresentationRoles = DeviceSelectionPresenter & DemoSelectionPresenter & DemoPresenter & DemoStreamSharePresenter & NotificationPresenter & DemoHistoryPresenter & SettingsPresenter
 class ApplicationPresenter : NSObject, DeviceTransportApplicationDelegate, ConnectedDeviceDelegate, PresentationRoles {
 
     var navigationController: NavigationController?
     var notificationManager: NotificationManager!
 
-    private var factory = ViewControllerFactory()
-    private var deviceViewController: DeviceSelectionViewController?
-    private var deviceScanner: DeviceScanner!
-    private var deviceConnector: DeviceConnection!
-    private var deviceSelectionInteraction: DeviceSelectionInteraction?
-    private var deviceId: DeviceId?
+    fileprivate var factory = ViewControllerFactory()
+    fileprivate var deviceViewController: DeviceSelectionViewController?
+    fileprivate var deviceScanner: DeviceScanner!
+    fileprivate var deviceConnector: DeviceConnection!
+    fileprivate var deviceSelectionInteraction: DeviceSelectionInteraction?
+    fileprivate var deviceId: DeviceId?
 
     init(window: UIWindow?) {
 
@@ -56,31 +56,31 @@ class ApplicationPresenter : NSObject, DeviceTransportApplicationDelegate, Conne
         window?.rootViewController = self.navigationController
     }
     
-    func connectToNearbyDevice(identifier: String) {
+    func connectToNearbyDevice(_ identifier: String) {
         deviceSelectionInteraction?.automaticallyConnectToDevice(identifier)
     }
     
     //MARK: - BleApplicationDelegate
     
-    func transportPowerStateUpdated(state: DeviceTransportState) {
+    func transportPowerStateUpdated(_ state: DeviceTransportState) {
         deviceSelectionInteraction?.transportPowerStateUpdated(state)
     }
     
-    func transportConnectedToDevice(device: Device) {
+    func transportConnectedToDevice(_ device: Device) {
         device.connectedDelegate = self
         self.navigationController?.updateConnectedDevice(device.name ?? String.tb_placeholderText(), power: device.power, firmwareVersion: device.firmwareVersion)
         self.navigationController?.showConnectedDevice()
         notificationManager?.setConnectedDevices([device])
     }
     
-    func transportDisconnectedFromDevice(device: Device) {
+    func transportDisconnectedFromDevice(_ device: Device) {
         self.deviceId = nil
         device.connectedDelegate = nil
         self.navigationController?.hideConnectedDevice()
         notificationManager?.setConnectedDevices([])
     }
     
-    func transportLostConnectionToDevice(device: Device) {
+    func transportLostConnectionToDevice(_ device: Device) {
         if let deviceName = device.name {
             self.navigationController?.showLostConnectionAlert(deviceName)
         }
@@ -88,7 +88,7 @@ class ApplicationPresenter : NSObject, DeviceTransportApplicationDelegate, Conne
     
     //MARK:- ConnectedDeviceDelegate
     
-    func connectedDeviceUpdated(name: String, RSSI: Int?, power: PowerSource, identifier: DeviceId?, firmwareVersion: String?) {
+    func connectedDeviceUpdated(_ name: String, RSSI: Int?, power: PowerSource, identifier: DeviceId?, firmwareVersion: String?) {
         self.navigationController?.updateConnectedDevice(name, power: power, firmwareVersion: firmwareVersion)
         self.deviceId = identifier
         self.navigationController?.showConnectedDevice()
@@ -97,12 +97,12 @@ class ApplicationPresenter : NSObject, DeviceTransportApplicationDelegate, Conne
     //MARK: - DeviceSelectionPresenter
     
     func showDeviceSelection() {
-        self.navigationController?.popToRootViewControllerAnimated(true)
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     //MARK: - DemoSelectionPresenter
     
-    func showDemoSelection(configuration: DemoConfiguration) {
+    func showDemoSelection(_ configuration: DemoConfiguration) {
         let historyPresenter = self
         let demoView = factory.demoSelectionViewController(configuration, demoPresenter: self, settingsPresenter: self, historyPresenter: historyPresenter, notificationManager: notificationManager)
         
@@ -111,31 +111,31 @@ class ApplicationPresenter : NSObject, DeviceTransportApplicationDelegate, Conne
     
     //MARK: - DemoPresenter
     
-    func showEnvironmentDemo(connection: EnvironmentDemoConnection) {
+    func showEnvironmentDemo(_ connection: EnvironmentDemoConnection) {
         let demo = factory.environmentDemoViewController(connection)
         self.navigationController?.pushViewController(demo, animated: true)
     }
     
-    func showIoDemo(connection: IoDemoConnection) {
+    func showIoDemo(_ connection: IoDemoConnection) {
         let demo = factory.ioDemoViewController(connection)
         self.navigationController?.pushViewController(demo, animated: true)
     }
 
-    func showMotionDemo(connection: MotionDemoConnection) {
+    func showMotionDemo(_ connection: MotionDemoConnection) {
         
         var demo: MotionDemoViewController!
         let settings = ThunderboardSettings()
         
         switch connection.device.model {
-        case .React: fallthrough
-        case .Unknown:
+        case .react: fallthrough
+        case .unknown:
             switch settings.motionDemoModel {
-            case .Board:
+            case .board:
                 demo = factory.motionBoardDemoViewController(connection)
-            case .Car:
+            case .car:
                 demo = factory.motionCarDemoViewController(connection)
             }
-        case .Sense:
+        case .sense:
             demo = factory.motionSenseBoardDemoViewController(connection)
         }
         
@@ -146,7 +146,7 @@ class ApplicationPresenter : NSObject, DeviceTransportApplicationDelegate, Conne
     
     //MARK: - NotificationPresenter
     
-    func showDetectedDevice(device: NotificationDevice) {
+    func showDetectedDevice(_ device: NotificationDevice) {
             
         let note = UILocalNotification()
         
@@ -157,18 +157,18 @@ class ApplicationPresenter : NSObject, DeviceTransportApplicationDelegate, Conne
             "deviceIdentifier" : device.identifier.toString()
         ]
         
-        UIApplication.sharedApplication().presentLocalNotificationNow(note)
+        UIApplication.shared.presentLocalNotificationNow(note)
     }
     
     //MARK: - DemoStreamSharePresenter
     
-    func shareDemoUrl(url: String) {
+    func shareDemoUrl(_ url: String) {
         log.debug("share url: \(url)")
         let provider = SharingActivityProvider(url: url)
         
         let safari = SafariActivity()
         let activity = UIActivityViewController(activityItems: [provider], applicationActivities: [safari])
-        self.navigationController?.presentViewController(activity, animated: true, completion: nil)
+        self.navigationController?.present(activity, animated: true, completion: nil)
     }
     
     //MARK: - DemoHistoryPresenter
@@ -179,14 +179,14 @@ class ApplicationPresenter : NSObject, DeviceTransportApplicationDelegate, Conne
             return
         }
         
-        let url = NSURL.tb_urlForDemoHistory(device)
-        UIApplication.sharedApplication().openURL(url)
+        let url = URL.tb_urlForDemoHistory(device)
+        UIApplication.shared.openURL(url)
     }
     
     //MARK: - SettingsPresenter
     
     func showSettings() {
         let settings = factory.settingsViewController(notificationManager)
-        self.navigationController?.presentViewController(settings, animated: true, completion: nil)
+        self.navigationController?.present(settings, animated: true, completion: nil)
     }
 }

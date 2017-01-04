@@ -9,43 +9,43 @@ import UIKit
 
 class SafariActivity : UIActivity {
     
-    private var url: NSURL?
+    fileprivate var url: URL?
     
-    override func activityType() -> String? {
-        return "com.silab.activity.safari"
+    override var activityType : UIActivityType? {
+        return UIActivityType(rawValue: "com.silab.activity.safari")
     }
     
-    override func activityTitle() -> String? {
+    override var activityTitle : String? {
         return "Safari"
     }
     
-    override func activityImage() -> UIImage? {
+    override var activityImage : UIImage? {
         return UIImage(named: "safari")
     }
     
-    override func canPerformWithActivityItems(activityItems: [AnyObject]) -> Bool {
+    override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
         return true
     }
     
-    override func prepareWithActivityItems(activityItems: [AnyObject]) {
-        let urls = filterUrls(activityItems)
+    override func prepare(withActivityItems activityItems: [Any]) {
+        let urls = filterUrls(activityItems as [AnyObject])
         
         if let url = urls.first {
             self.url = url
         }
     }
     
-    override func performActivity() {
+    override func perform() {
         if let url = self.url {
-            UIApplication.sharedApplication().openURL(url)
+            UIApplication.shared.openURL(url)
         }
     }
     
     //MARK: - Private
     
-    private func filterUrls(activityItems: [AnyObject]) -> [NSURL] {
+    fileprivate func filterUrls(_ activityItems: [AnyObject]) -> [URL] {
         let urls = activityItems.filter({
-            if let _ = $0 as? NSURL {
+            if let _ = $0 as? URL {
                 return true
             }
             
@@ -57,12 +57,12 @@ class SafariActivity : UIActivity {
         })
         
         return urls.map({
-            if let url = $0 as? NSURL {
+            if let url = $0 as? URL {
                 return url
             }
             else {
                 let urlString = $0 as! String
-                return NSURL(string: urlString)!
+                return URL(string: urlString)!
             }
 
         })

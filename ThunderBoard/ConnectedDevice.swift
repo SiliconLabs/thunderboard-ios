@@ -8,5 +8,5 @@
 import Foundation
 
 protocol ConnectedDeviceDelegate: class {
-    func connectedDeviceUpdated(name: String, RSSI: Int?, power: PowerSource, identifier: DeviceId?, firmwareVersion: String?)
+    func connectedDeviceUpdated(_ name: String, RSSI: Int?, power: PowerSource, identifier: DeviceId?, firmwareVersion: String?)
 }

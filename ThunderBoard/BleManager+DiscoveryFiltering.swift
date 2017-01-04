@@ -9,7 +9,7 @@ import CoreBluetooth
 
 extension BleManager {
     
-    func isThunderboard(peripheral: CBPeripheral) -> Bool {
+    func isThunderboard(_ peripheral: CBPeripheral) -> Bool {
         guard let name = peripheral.name else {
             return false
         }

@@ -9,13 +9,13 @@ import Foundation
 
 protocol DeviceConnection: class {
     weak var connectionDelegate: DeviceConnectionDelegate? { get set }
-    func connect(device: Device)
+    func connect(_ device: Device)
     func disconnectAllDevices()
-    func isConnectedToDevice(device: Device) -> Bool
+    func isConnectedToDevice(_ device: Device) -> Bool
 }
 
 protocol DeviceConnectionDelegate: class {
-    func connectedToDevice(device: Device)
-    func connectionToDeviceTimedOut(device: Device)
+    func connectedToDevice(_ device: Device)
+    func connectionToDeviceTimedOut(_ device: Device)
     func connectionToDeviceFailed()
 }

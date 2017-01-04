@@ -8,5 +8,5 @@
 import Foundation
 
 protocol DemoStreamSharePresenter : class {
-    func shareDemoUrl(url: String)
+    func shareDemoUrl(_ url: String)
 }

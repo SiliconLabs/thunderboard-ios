@@ -25,10 +25,10 @@ class ConnectedDeviceBarView: UIView {
     }
     
     convenience init() {
-        self.init(frame: CGRectZero)
+        self.init(frame: CGRect.zero)
     }
     
-    private func commonInit() {
+    fileprivate func commonInit() {
         addSubview(connectedToLabel)
         addSubview(deviceNameLabel)
         addSubview(batteryStatusLabel)
@@ -38,34 +38,34 @@ class ConnectedDeviceBarView: UIView {
         subviews.forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
         
         let leadingMargin: CGFloat = 15
-        NSLayoutConstraint.activateConstraints([
+        NSLayoutConstraint.activate([
             
             // CONNECTED TO
-            connectedToLabel.leadingAnchor.constraintEqualToAnchor(self.leadingAnchor, constant: leadingMargin),
-            connectedToLabel.bottomAnchor.constraintEqualToAnchor(deviceNameLabel.topAnchor, constant: 2),
-            connectedToLabel.trailingAnchor.constraintEqualToAnchor(self.trailingAnchor),
+            connectedToLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: leadingMargin),
+            connectedToLabel.bottomAnchor.constraint(equalTo: deviceNameLabel.topAnchor, constant: 2),
+            connectedToLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             
             // DEVICE NAME
-            deviceNameLabel.leadingAnchor.constraintEqualToAnchor(self.leadingAnchor, constant: leadingMargin),
-            deviceNameLabel.centerYAnchor.constraintEqualToAnchor(self.centerYAnchor),
+            deviceNameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: leadingMargin),
+            deviceNameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             
             // FIRMWARE VERSION
-            firmwareVersionLabel.leadingAnchor.constraintEqualToAnchor(self.leadingAnchor, constant: leadingMargin),
-            firmwareVersionLabel.topAnchor.constraintEqualToAnchor(deviceNameLabel.lastBaselineAnchor, constant: 2),
-            firmwareVersionLabel.trailingAnchor.constraintEqualToAnchor(self.trailingAnchor),
+            firmwareVersionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: leadingMargin),
+            firmwareVersionLabel.topAnchor.constraint(equalTo: deviceNameLabel.lastBaselineAnchor, constant: 2),
+            firmwareVersionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             
             // BATTERY %
-            batteryStatusLabel.leadingAnchor.constraintEqualToAnchor(deviceNameLabel.trailingAnchor, constant: 15),
-            batteryStatusLabel.trailingAnchor.constraintEqualToAnchor(batteryStatusImage.leadingAnchor, constant: -8),
-            batteryStatusLabel.firstBaselineAnchor.constraintEqualToAnchor(deviceNameLabel.firstBaselineAnchor),
+            batteryStatusLabel.leadingAnchor.constraint(equalTo: deviceNameLabel.trailingAnchor, constant: 15),
+            batteryStatusLabel.trailingAnchor.constraint(equalTo: batteryStatusImage.leadingAnchor, constant: -8),
+            batteryStatusLabel.firstBaselineAnchor.constraint(equalTo: deviceNameLabel.firstBaselineAnchor),
             
             // BATTERY IMAGE
-            batteryStatusImage.widthAnchor.constraintEqualToConstant(39),
-            batteryStatusImage.trailingAnchor.constraintEqualToAnchor(self.trailingAnchor, constant: -15),
-            batteryStatusImage.centerYAnchor.constraintEqualToAnchor(deviceNameLabel.centerYAnchor, constant: 1),
+            batteryStatusImage.widthAnchor.constraint(equalToConstant: 39),
+            batteryStatusImage.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
+            batteryStatusImage.centerYAnchor.constraint(equalTo: deviceNameLabel.centerYAnchor, constant: 1),
         ])
         
-        deviceNameLabel.lineBreakMode = .ByTruncatingMiddle
-        batteryStatusLabel.setContentCompressionResistancePriority(UILayoutPriorityRequired, forAxis: UILayoutConstraintAxis.Horizontal)
+        deviceNameLabel.lineBreakMode = .byTruncatingMiddle
+        batteryStatusLabel.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: UILayoutConstraintAxis.horizontal)
     }
 }

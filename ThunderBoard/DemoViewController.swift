@@ -12,14 +12,14 @@ import UIKit
 class DemoViewController : UIViewController, DemoStreamingInteractionOutput, StreamingViewControllerDelegate {
 
     var streamingInteraction: DemoStreamingInteraction!
-    private var streamingEnabled = false
-    private var streamingViewController: StreamingViewController?
+    fileprivate var streamingEnabled = false
+    fileprivate var streamingViewController: StreamingViewController?
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        super.prepareForSegue(segue, sender: sender)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
         
         if segue.identifier == "streamingSegue" {
-            self.streamingViewController = segue.destinationViewController as? StreamingViewController
+            self.streamingViewController = segue.destination as? StreamingViewController
             self.streamingViewController?.delegate = self
             
             if streamingEnabled == false {
@@ -36,7 +36,7 @@ class DemoViewController : UIViewController, DemoStreamingInteractionOutput, Str
     
     //MARK: - StreamingViewControllerDelegate
     
-    func streamingButton(on: Bool) {
+    func streamingButton(_ on: Bool) {
         if on {
             streamingInteraction.startStreaming()
         }
@@ -51,7 +51,7 @@ class DemoViewController : UIViewController, DemoStreamingInteractionOutput, Str
     
     //MARK: - DemoInteractionOutput
     
-    func streamingEnabled(enabled: Bool) {
+    func streamingEnabled(_ enabled: Bool) {
         // make a note of streaming mode, since segue will 
         // be performed after this function is called
         streamingEnabled = enabled
@@ -69,7 +69,7 @@ class DemoViewController : UIViewController, DemoStreamingInteractionOutput, Str
         self.streamingViewController?.streamingMode = .NotStreaming
     }
     
-    func showStreamingError(error: NSError) {
+    func showStreamingError(_ error: NSError) {
         self.streamingViewController?.streamingMode = .Reconnecting
     }
     

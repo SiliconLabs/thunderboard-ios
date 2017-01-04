@@ -13,7 +13,7 @@ class EnvironmentDemoCollectionViewCell : UICollectionViewCell {
     let valueLabel = StyledLabel(style: .demoStatus)
     let iconImageView = UIImageView(image: UIImage(named: "icn_demo_ambient_light_inactive")!)
     let iconBackgroundView = UIImageView(image: nil)
-    private let iconContainer = UIView()
+    fileprivate let iconContainer = UIView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -25,7 +25,7 @@ class EnvironmentDemoCollectionViewCell : UICollectionViewCell {
         commonInit()
     }
     
-    func updateValue(label: String, imageName: String, backgroundColor: UIColor?, power: Bool? = nil) {
+    func updateValue(_ label: String, imageName: String, backgroundColor: UIColor?, power: Bool? = nil) {
         let maskImageName = "icn_demo_tint_circle"
         iconImageView.image = UIImage(named: imageName)
         
@@ -39,8 +39,8 @@ class EnvironmentDemoCollectionViewCell : UICollectionViewCell {
         valueLabel.text = label
     }
     
-    private func commonInit() {
-        backgroundColor = UIColor.clearColor()
+    fileprivate func commonInit() {
+        backgroundColor = UIColor.clear
         
         contentView.addSubview(titleLabel)
         contentView.addSubview(iconContainer)
@@ -50,24 +50,24 @@ class EnvironmentDemoCollectionViewCell : UICollectionViewCell {
 
         contentView.subviews.forEach({ $0.translatesAutoresizingMaskIntoConstraints = false })
         
-        NSLayoutConstraint.activateConstraints([
-            titleLabel.leadingAnchor.constraintEqualToAnchor(iconContainer.leadingAnchor),
-            titleLabel.trailingAnchor.constraintEqualToAnchor(iconContainer.trailingAnchor),
-            titleLabel.topAnchor.constraintEqualToAnchor(contentView.topAnchor, constant: 18),
+        NSLayoutConstraint.activate([
+            titleLabel.leadingAnchor.constraint(equalTo: iconContainer.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: iconContainer.trailingAnchor),
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 18),
             
-            iconContainer.widthAnchor.constraintEqualToAnchor(iconContainer.heightAnchor),
-            iconContainer.topAnchor.constraintEqualToAnchor(titleLabel.bottomAnchor, constant: 10),
-            iconContainer.bottomAnchor.constraintEqualToAnchor(contentView.bottomAnchor, constant: -10),
-            iconContainer.centerXAnchor.constraintEqualToAnchor(contentView.centerXAnchor),
+            iconContainer.widthAnchor.constraint(equalTo: iconContainer.heightAnchor),
+            iconContainer.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
+            iconContainer.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            iconContainer.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             
-            iconImageView.centerXAnchor.constraintEqualToAnchor(iconContainer.centerXAnchor),
-            iconImageView.centerYAnchor.constraintEqualToAnchor(iconContainer.centerYAnchor, constant: -10),
+            iconImageView.centerXAnchor.constraint(equalTo: iconContainer.centerXAnchor),
+            iconImageView.centerYAnchor.constraint(equalTo: iconContainer.centerYAnchor, constant: -10),
             
-            iconBackgroundView.centerXAnchor.constraintEqualToAnchor(iconContainer.centerXAnchor),
-            iconBackgroundView.centerYAnchor.constraintEqualToAnchor(iconContainer.centerYAnchor, constant: -10),
+            iconBackgroundView.centerXAnchor.constraint(equalTo: iconContainer.centerXAnchor),
+            iconBackgroundView.centerYAnchor.constraint(equalTo: iconContainer.centerYAnchor, constant: -10),
             
-            valueLabel.centerXAnchor.constraintEqualToAnchor(contentView.centerXAnchor),
-            valueLabel.lastBaselineAnchor.constraintEqualToAnchor(iconContainer.bottomAnchor, constant: -10),
+            valueLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            valueLabel.lastBaselineAnchor.constraint(equalTo: iconContainer.bottomAnchor, constant: -10),
         ])
 
         titleLabel.text = "TEMPERATURE"

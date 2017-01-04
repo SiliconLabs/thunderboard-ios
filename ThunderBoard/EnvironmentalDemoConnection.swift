@@ -13,35 +13,35 @@ protocol EnvironmentDemoConnection: DemoConnection {
 
 protocol EnvironmentDemoConnectionDelegate: class {
     func demoDeviceDisconnected()
-    func updatedEnvironmentData(data: EnvironmentData)
+    func updatedEnvironmentData(_ data: EnvironmentData)
 }
 
 extension EnvironmentDemoConnection {
     var capabilities: Set<DeviceCapability> {
         let environmentCapabilities: Set<DeviceCapability> = [
-            .Temperature,
-            .UVIndex,
-            .AmbientLight,
-            .Humidity,
-            .SoundLevel,
-            .AirQualityCO2,
-            .AirQualityVOC,
-            .AirPressure,
+            .temperature,
+            .uvIndex,
+            .ambientLight,
+            .humidity,
+            .soundLevel,
+            .airQualityCO2,
+            .airQualityVOC,
+            .airPressure,
         ]
         
         // Filter AirQuality capabilities if the Sense board is on CoinCell power
         let enabledDeviceCapabilities = device.capabilities.filter({ (capability) -> Bool in
-            if device.model != .Sense {
+            if device.model != .sense {
                 return true
             }
 
             switch capability {
-            case .AirQualityCO2: fallthrough
-            case .AirQualityVOC:
+            case .airQualityCO2: fallthrough
+            case .airQualityVOC:
                 switch device.power {
-                case .Unknown, .CoinCell:
+                case .unknown, .coinCell:
                     return false
-                case .USB, .AA, .GenericBattery:
+                case .usb, .aa, .genericBattery:
                     return true
                 }
                 
@@ -50,6 +50,6 @@ extension EnvironmentDemoConnection {
             }
         })
         
-        return environmentCapabilities.intersect(enabledDeviceCapabilities)
+        return environmentCapabilities.intersection(enabledDeviceCapabilities)
     }
 }

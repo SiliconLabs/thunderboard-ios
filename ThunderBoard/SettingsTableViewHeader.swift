@@ -15,7 +15,7 @@ class SettingsTableViewHeader : UITableViewHeaderFooterView {
         }
     }
     
-    private var titleLabel: StyledLabel = StyledLabel()
+    fileprivate var titleLabel: StyledLabel = StyledLabel()
 
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
@@ -27,37 +27,37 @@ class SettingsTableViewHeader : UITableViewHeaderFooterView {
         commonSetup()
     }
     
-    private func commonSetup() {
+    fileprivate func commonSetup() {
         titleLabel.style = StyleText.header
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         self.contentView.addSubview(titleLabel)
         self.contentView.addConstraint(NSLayoutConstraint(
             item: titleLabel,
-            attribute: .Leading,
-            relatedBy: .Equal,
+            attribute: .leading,
+            relatedBy: .equal,
             toItem: self.contentView,
-            attribute: .Leading,
+            attribute: .leading,
             multiplier: 1,
             constant: 15)
         )
         
         self.contentView.addConstraint(NSLayoutConstraint(
             item: titleLabel,
-            attribute: .Trailing,
-            relatedBy: .Equal,
+            attribute: .trailing,
+            relatedBy: .equal,
             toItem: self.contentView,
-            attribute: .Trailing,
+            attribute: .trailing,
             multiplier: 1,
             constant: -15)
         )
         
         self.contentView.addConstraint(NSLayoutConstraint(
             item: titleLabel,
-            attribute: .Baseline,
-            relatedBy: .Equal,
+            attribute: .lastBaseline,
+            relatedBy: .equal,
             toItem: self.contentView,
-            attribute: .Bottom,
+            attribute: .bottom,
             multiplier: 1,
             constant: -10)
         )

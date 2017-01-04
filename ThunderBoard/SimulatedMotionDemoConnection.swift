@@ -10,14 +10,14 @@ import Foundation
 class SimulatedMotionDemoConnection: MotionDemoConnection {
 
     var device: Device
-    private var simulatedDevice: SimulatedDevice {
+    fileprivate var simulatedDevice: SimulatedDevice {
         get { return device as! SimulatedDevice }
     }
     weak var connectionDelegate: MotionDemoConnectionDelegate?
     
-    private let simulationInterval: NSTimeInterval = 0.25
-    private let simulationRotationsPerSample: UInt = 5
-    private var simulationTimer: WeakTimer?
+    fileprivate let simulationInterval: TimeInterval = 0.25
+    fileprivate let simulationRotationsPerSample: UInt = 5
+    fileprivate var simulationTimer: WeakTimer?
     
     init(device: SimulatedDevice) {
         self.device = device
@@ -55,12 +55,12 @@ class SimulatedMotionDemoConnection: MotionDemoConnection {
     
     //MARK: - Private
 
-    private var currentSample               = 0
+    fileprivate var currentSample               = 0
     
-    private var elapsedTime: NSTimeInterval = 0
-    private var cumulativeRotations: UInt   = 0
+    fileprivate var elapsedTime: TimeInterval = 0
+    fileprivate var cumulativeRotations: UInt   = 0
     func simulateDataUpdate() {
-        NSOperationQueue.mainQueue().addOperationWithBlock({
+        OperationQueue.main.addOperation({
             
             self.simulateAccelerationData()
             self.simulateOrientation()
@@ -95,7 +95,7 @@ class SimulatedMotionDemoConnection: MotionDemoConnection {
         connectionDelegate?.ledColorUpdated(false, color: LedRgb.random())
     }
     
-    private func randomOrientationVector() -> ThunderboardInclination {
+    fileprivate func randomOrientationVector() -> ThunderboardInclination {
         let scale: Degree = 360
         
         let vector = ThunderboardInclination(
@@ -107,7 +107,7 @@ class SimulatedMotionDemoConnection: MotionDemoConnection {
         return vector
     }
     
-    private func randomAccelerationVector() -> ThunderboardVector {
+    fileprivate func randomAccelerationVector() -> ThunderboardVector {
         let scale: α = 2
         let vector = ThunderboardVector(
             x: randomFloat() * scale - (scale / 2),
@@ -117,8 +117,8 @@ class SimulatedMotionDemoConnection: MotionDemoConnection {
         return vector
     }
     
-    private func randomFloat() -> Float {
-        return ceilf(Float(random())/Float(RAND_MAX) * 100) / 100
+    fileprivate func randomFloat() -> Float {
+        return ceilf(Float(arc4random())/Float(RAND_MAX) * 100) / 100
     }
 }
 

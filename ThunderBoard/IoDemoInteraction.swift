@@ -8,15 +8,15 @@
 import Foundation
 
 protocol IoDemoInteractionOutput : class {
-    func showButtonState(button: Int, pressed: Bool)
-    func showLedState(led: Int, state: LedState)
+    func showButtonState(_ button: Int, pressed: Bool)
+    func showLedState(_ led: Int, state: LedState)
     func disableRgb()
 }
 
 class IoDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput, IoDemoConnectionDelegate, IoDemoStreamingDataSource {
     
-    private weak var output: IoDemoInteractionOutput?
-    private var connection: IoDemoConnection?
+    fileprivate weak var output: IoDemoInteractionOutput?
+    fileprivate var connection: IoDemoConnection?
 
     var streamingConnection: DemoStreamingConnection?
     weak var streamingOutput: DemoStreamingInteractionOutput?
@@ -43,12 +43,12 @@ class IoDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput, IoDemoC
             updatedLed(i, state: connection.ledState(i))
         }
 
-        if connection.capabilities.contains(.RGBOutput) == false {
+        if connection.capabilities.contains(.rgbOutput) == false {
             output?.disableRgb()
         }
     }
     
-    func toggleLed(ledNum: Int) {
+    func toggleLed(_ ledNum: Int) {
         guard let connection = connection else {
             return
         }
@@ -57,7 +57,7 @@ class IoDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput, IoDemoC
         connection.setLed(ledNum, state: state.toggle())
     }
     
-    func setColor(index: Int, color: LedRgb) {
+    func setColor(_ index: Int, color: LedRgb) {
         guard let connection = connection else {
             return
         }
@@ -72,11 +72,11 @@ class IoDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput, IoDemoC
         streamingConnection?.stopStreaming()
     }
     
-    func buttonPressed(button: Int, pressed: Bool) {
+    func buttonPressed(_ button: Int, pressed: Bool) {
         output?.showButtonState(button, pressed: pressed)
     }
     
-    func updatedLed(led: Int, state: LedState) {
+    func updatedLed(_ led: Int, state: LedState) {
         output?.showLedState(led, state: state)
     }
     

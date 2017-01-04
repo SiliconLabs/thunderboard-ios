@@ -8,7 +8,7 @@
 import Foundation
 
 protocol DemoPresenter {
-    func showIoDemo(connection: IoDemoConnection)
-    func showMotionDemo(connection: MotionDemoConnection)
-    func showEnvironmentDemo(connection: EnvironmentDemoConnection)
+    func showIoDemo(_ connection: IoDemoConnection)
+    func showMotionDemo(_ connection: MotionDemoConnection)
+    func showEnvironmentDemo(_ connection: EnvironmentDemoConnection)
 }

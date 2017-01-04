@@ -8,20 +8,20 @@
 import Foundation
 
 protocol EnvironmentDemoInteractionOutput : class {
-    func updatedEnvironmentData(data: EnvironmentData, capabilities: Set<DeviceCapability>)
+    func updatedEnvironmentData(_ data: EnvironmentData, capabilities: Set<DeviceCapability>)
 }
 
 class EnvironmentDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput, EnvironmentDemoConnectionDelegate, EnvironmentDemoStreamingDataSource {
 
-    private weak var output: EnvironmentDemoInteractionOutput?
-    private var connection: EnvironmentDemoConnection?
+    fileprivate weak var output: EnvironmentDemoInteractionOutput?
+    fileprivate var connection: EnvironmentDemoConnection?
     
     var streamingConnection: DemoStreamingConnection?
     weak var streamingOutput: DemoStreamingInteractionOutput?
     weak var streamSharePresenter: DemoStreamSharePresenter?
 
-    private var currentData: EnvironmentData = EnvironmentData()
-    private let capabilities: Set<DeviceCapability>
+    fileprivate var currentData: EnvironmentData = EnvironmentData()
+    fileprivate let capabilities: Set<DeviceCapability>
     
     //MARK: - Public
     
@@ -42,7 +42,7 @@ class EnvironmentDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput
         streamingConnection?.stopStreaming()
     }
     
-    func updatedEnvironmentData(data: EnvironmentData) {
+    func updatedEnvironmentData(_ data: EnvironmentData) {
         currentData = data
         self.output?.updatedEnvironmentData(currentData, capabilities: capabilities)
     }

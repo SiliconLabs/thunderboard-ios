@@ -7,9 +7,9 @@
 
 import Foundation
 
-extension NSDate {
+extension Date {
     
-    class var tb_currentTimestamp: Int64 {
+    static var tb_currentTimestamp: Int64 {
         get {
             var time:timeval = timeval(tv_sec: 0, tv_usec: 0)
             gettimeofday(&time, nil)

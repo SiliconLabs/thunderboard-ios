@@ -10,22 +10,22 @@ import Foundation
 protocol DemoConfiguration: class {
     var deviceIdentifier: DeviceId? { get }
     weak var configurationDelegate: DemoConfigurationDelegate? { get set }
-    func configureForDemo(demo: ThunderboardDemo)
+    func configureForDemo(_ demo: ThunderboardDemo)
     func resetDemoConfiguration()
 }
 
 protocol DemoConfigurationDelegate: class {
     
-    func deviceIdentifierUpdated(deviceId: DeviceId)
+    func deviceIdentifierUpdated(_ deviceId: DeviceId)
 
     func configuringIoDemo()
-    func ioDemoReady(connection: IoDemoConnection)
+    func ioDemoReady(_ connection: IoDemoConnection)
     
     func configuringMotionDemo()
-    func motionDemoReady(connection: MotionDemoConnection)
+    func motionDemoReady(_ connection: MotionDemoConnection)
     
     func configuringEnvironmentDemo()
-    func environmentDemoReady(connection: EnvironmentDemoConnection)
+    func environmentDemoReady(_ connection: EnvironmentDemoConnection)
     
     func demoConfigurationReset()
 }

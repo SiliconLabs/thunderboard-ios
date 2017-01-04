@@ -10,7 +10,7 @@ import UIKit
 let UserNotificationSettingsUpdatedEvent = "com.silabs.notificationsettings"
 
 protocol NotificationSettingsInteractionOutput : class {
-    func notificationsEnabled(enabled: Bool)
+    func notificationsEnabled(_ enabled: Bool)
     func notificationDevicesUpdated()
 
     func locationServicesNotAllowed()
@@ -33,12 +33,12 @@ class NotificationSettingsInteraction : NotificationManagerDelegate {
     }
 
     init() {
-        NSNotificationCenter.defaultCenter().addObserverForName(UserNotificationSettingsUpdatedEvent, object: nil, queue: nil) { [weak self] (notification: NSNotification) -> Void in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: UserNotificationSettingsUpdatedEvent), object: nil, queue: nil) { [weak self] (notification: Notification) -> Void in
             self?.notificationSettingsUpdated()
         }
     }
     
-    func enableNotifications(enabled: Bool) {
+    func enableNotifications(_ enabled: Bool) {
         // During testing, this may be a desired behavior
         // if enabled == false {
         //     removeAllDevices()
@@ -47,12 +47,12 @@ class NotificationSettingsInteraction : NotificationManagerDelegate {
         self.manager?.enableNotifications(enabled)
     }
     
-    func allowDevice(index: Int) {
+    func allowDevice(_ index: Int) {
         self.manager?.allowDevice(otherDevices()[index])
         notifyUpdates()
     }
     
-    func removeDevice(index: Int) {
+    func removeDevice(_ index: Int) {
         self.manager?.removeDevice(allowedDevices()[index])
         notifyUpdates()
     }
@@ -79,12 +79,12 @@ class NotificationSettingsInteraction : NotificationManagerDelegate {
    
     //MARK: - NotificationManagerDelegate
     
-    func notificationsEnabled(enabled: Bool) {
+    func notificationsEnabled(_ enabled: Bool) {
         notifyUpdates()
         
         if enabled {
-            let settings = UIUserNotificationSettings(forTypes: .Alert, categories: nil)
-            UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+            let settings = UIUserNotificationSettings(types: .alert, categories: nil)
+            UIApplication.shared.registerUserNotificationSettings(settings)
         }
     }
     
@@ -100,25 +100,25 @@ class NotificationSettingsInteraction : NotificationManagerDelegate {
     
     //MARK: - Private
     
-    private func notificationSettingsUpdated() {
-        let settings = UIApplication.sharedApplication().currentUserNotificationSettings()
-        if settings?.types.contains(.Alert) == false {
+    fileprivate func notificationSettingsUpdated() {
+        let settings = UIApplication.shared.currentUserNotificationSettings
+        if settings?.types.contains(.alert) == false {
             notificationsNotAllowed()
         }
     }
     
-    private func notifyUpdates() {
+    fileprivate func notifyUpdates() {
         if let enabled = self.manager?.notificationsEnabled {
             output?.notificationsEnabled(enabled)
             output?.notificationDevicesUpdated()
         }
     }
     
-    private func removeAllDevices() {
+    fileprivate func removeAllDevices() {
         self.manager?.removeAllDevices()
     }
     
-    private func displayDevice(notificationDevice: NotificationDevice) -> NotificationDevice {
+    fileprivate func displayDevice(_ notificationDevice: NotificationDevice) -> NotificationDevice {
         return notificationDevice
     }
 }

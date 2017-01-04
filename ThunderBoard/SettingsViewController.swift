@@ -9,9 +9,9 @@ import UIKit
 
 class SettingsViewController: UITableViewController {
     
-    private enum Sections: Int {
-        case PersonalInfo
-        case Preferences
+    fileprivate enum Sections: Int {
+        case personalInfo
+        case preferences
     }
     
     @IBOutlet weak var nameLabel: StyledLabel!
@@ -32,29 +32,29 @@ class SettingsViewController: UITableViewController {
     @IBOutlet weak var beaconNotificationsStateLabel: StyledLabel!
     
     weak var notificationManager: NotificationManager?
-    private let settings = ThunderboardSettings()
-    private let notificationsSegue           = "notificationsSegue"
-    private let beaconEnabledText            = "ON"
-    private let beaconDisabledText           = "OFF"
-    private let personalInfoTitleText        = "PERSONAL INFO"
-    private let preferencesTitleText         = "PREFERENCES"
-    private let editLabelText                = "Edit"
-    private let measurementsLabelText        = "Measurements"
-    private let temperatureLabelText         = "Temperature"
-    private let motionModelText              = "Motion Demo Model"
-    private let beaconNotificationsLabelText = "Beacon Notifications"
-    private let emptyNameText                = "Name"
-    private let emptyTitleText               = "Title"
-    private let emptyEmailText               = "Email"
-    private let emptyPhoneText               = "Phone"
-    private let versionText                  = "Version "
-    private let copyrightText                = "| © Silicon Labs 2016"
+    fileprivate let settings = ThunderboardSettings()
+    fileprivate let notificationsSegue           = "notificationsSegue"
+    fileprivate let beaconEnabledText            = "ON"
+    fileprivate let beaconDisabledText           = "OFF"
+    fileprivate let personalInfoTitleText        = "PERSONAL INFO"
+    fileprivate let preferencesTitleText         = "PREFERENCES"
+    fileprivate let editLabelText                = "Edit"
+    fileprivate let measurementsLabelText        = "Measurements"
+    fileprivate let temperatureLabelText         = "Temperature"
+    fileprivate let motionModelText              = "Motion Demo Model"
+    fileprivate let beaconNotificationsLabelText = "Beacon Notifications"
+    fileprivate let emptyNameText                = "Name"
+    fileprivate let emptyTitleText               = "Title"
+    fileprivate let emptyEmailText               = "Email"
+    fileprivate let emptyPhoneText               = "Phone"
+    fileprivate let versionText                  = "Version "
+    fileprivate let copyrightText                = "| © Silicon Labs 2016"
 
     override func viewDidLoad() {
         setupAppearance()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         populatePersonalInfoFields()
         updateMeasurementsControl()
         updateTemperatureControl()
@@ -62,15 +62,15 @@ class SettingsViewController: UITableViewController {
         updateBeaconNotificationsControl()
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == notificationsSegue {
-            if let notifications = segue.destinationViewController as? NotificationSettingsViewController {
+            if let notifications = segue.destination as? NotificationSettingsViewController {
                 notifications.notificationManager = self.notificationManager
             }
         }
     }
     
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
         guard let cell = cell as? SettingsViewCell else {
             fatalError("settings table cell subclass should be used")
@@ -87,15 +87,15 @@ class SettingsViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 54
     }
     
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerView = UITableViewHeaderFooterView()
         let contentView = headerView.contentView
@@ -103,18 +103,18 @@ class SettingsViewController: UITableViewController {
         contentView.backgroundColor = StyleColor.lightGray
 
         switch Sections(rawValue: section)! {
-        case .PersonalInfo:
+        case .personalInfo:
             setupSectionTitle(personalInfoTitleText, contentView: contentView)
             setupEditLabel(contentView)
         
-        case .Preferences:
+        case .preferences:
             setupSectionTitle(preferencesTitleText, contentView: contentView)
         }
         
         return headerView
     }
     
-    private func setupSectionTitle(title: String, contentView: UIView) {
+    fileprivate func setupSectionTitle(_ title: String, contentView: UIView) {
         let titleView = StyledLabel()
         contentView.addSubview(titleView)
         titleView.tb_setText(title, style: StyleText.header)
@@ -122,38 +122,38 @@ class SettingsViewController: UITableViewController {
         titleView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addConstraint(NSLayoutConstraint(
             item: titleView,
-            attribute: .Top,
-            relatedBy: .Equal,
+            attribute: .top,
+            relatedBy: .equal,
             toItem: contentView,
-            attribute: .Top,
+            attribute: .top,
             multiplier: 1,
             constant: 18)
         )
         contentView.addConstraint(NSLayoutConstraint(
             item: titleView,
-            attribute: .Bottom,
-            relatedBy: .Equal,
+            attribute: .bottom,
+            relatedBy: .equal,
             toItem: contentView,
-            attribute: .Bottom,
+            attribute: .bottom,
             multiplier: 1,
             constant: -10)
         )
         contentView.addConstraint(NSLayoutConstraint(
             item: titleView,
-            attribute: .Leading,
-            relatedBy: .Equal,
+            attribute: .leading,
+            relatedBy: .equal,
             toItem: contentView,
-            attribute: .Leading,
+            attribute: .leading,
             multiplier: 1,
             constant: 15)
         )
     }
     
     func editTapped() {
-        performSegueWithIdentifier("editInfoSegue", sender: nil)
+        performSegue(withIdentifier: "editInfoSegue", sender: nil)
     }
     
-    private func setupEditLabel(contentView: UIView) {
+    fileprivate func setupEditLabel(_ contentView: UIView) {
         let editView = StyledLabel()
         contentView.addSubview(editView)
         
@@ -161,47 +161,47 @@ class SettingsViewController: UITableViewController {
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(editTapped))
         editView.addGestureRecognizer(tapGestureRecognizer)
-        editView.userInteractionEnabled = true
+        editView.isUserInteractionEnabled = true
         
         editView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addConstraint(NSLayoutConstraint(
             item: editView,
-            attribute: .Top,
-            relatedBy: .Equal,
+            attribute: .top,
+            relatedBy: .equal,
             toItem: contentView,
-            attribute: .Top,
+            attribute: .top,
             multiplier: 1,
             constant: 18)
         )
         contentView.addConstraint(NSLayoutConstraint(
             item: editView,
-            attribute: .Bottom,
-            relatedBy: .Equal,
+            attribute: .bottom,
+            relatedBy: .equal,
             toItem: contentView,
-            attribute: .Bottom,
+            attribute: .bottom,
             multiplier: 1,
             constant: -10)
         )
         contentView.addConstraint(NSLayoutConstraint(
             item: editView,
-            attribute: .Trailing,
-            relatedBy: .Equal,
+            attribute: .trailing,
+            relatedBy: .equal,
             toItem: contentView,
-            attribute: .Trailing,
+            attribute: .trailing,
             multiplier: 1,
             constant: -15)
         )
         
     }
     
-    private func setupFooter() {
+    fileprivate func setupFooter() {
         let footerView = UITableViewHeaderFooterView()
         let contentView = footerView.contentView
         let footerLabel = StyledLabel()
-        footerLabel.textAlignment = NSTextAlignment.Center
+        footerLabel.textAlignment = NSTextAlignment.center
         
-        let version = UIApplication.sharedApplication().tb_version
-        let build   = UIApplication.sharedApplication().tb_buildNumber
+        let version = UIApplication.shared.tb_version
+        let build   = UIApplication.shared.tb_buildNumber
         let footerText  = "\(versionText) \(version) (\(build)) \(copyrightText)"
         footerLabel.tb_setText(footerText, style: StyleText.subtitle1)
         contentView.addSubview(footerLabel)
@@ -210,28 +210,28 @@ class SettingsViewController: UITableViewController {
         footerLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addConstraint(NSLayoutConstraint(
             item:       footerLabel,
-            attribute:  .CenterX,
-            relatedBy:  .Equal,
+            attribute:  .centerX,
+            relatedBy:  .equal,
             toItem:     contentView,
-            attribute:  .CenterX,
+            attribute:  .centerX,
             multiplier: 1,
             constant:   0)
         )
         contentView.addConstraint(NSLayoutConstraint(
             item:       footerLabel,
-            attribute:  .Top,
-            relatedBy:  .Equal,
+            attribute:  .top,
+            relatedBy:  .equal,
             toItem:     contentView,
-            attribute:  .Bottom,
+            attribute:  .bottom,
             multiplier: 1,
             constant:   0)
         )
         view.addConstraint(NSLayoutConstraint(
             item:       footerLabel,
-            attribute:  .Height,
-            relatedBy:  .Equal,
+            attribute:  .height,
+            relatedBy:  .equal,
             toItem:      nil,
-            attribute:  .NotAnAttribute,
+            attribute:  .notAnAttribute,
             multiplier: 1,
             constant:   36)
         )
@@ -239,45 +239,45 @@ class SettingsViewController: UITableViewController {
     
     //MARK: action handlers
     
-    @IBAction func doneButtonTapped(sender: UIBarButtonItem) {
-        navigationController?.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
+        navigationController?.dismiss(animated: true, completion: nil)
         
     }
     
-    @IBAction func measurementsDidChange(sender: UISegmentedControl) {
+    @IBAction func measurementsDidChange(_ sender: UISegmentedControl) {
         var newMeasurementsUnits: MeasurementUnits!
         switch measurementsControl.selectedSegmentIndex {
         case 0:
-            newMeasurementsUnits = .Metric
+            newMeasurementsUnits = .metric
         case 1:
-            newMeasurementsUnits = .Imperial
+            newMeasurementsUnits = .imperial
         default:
             fatalError("Unsupported segment selected")
         }
         settings.measurement = newMeasurementsUnits
     }
     
-    @IBAction func temperatureDidChange(sender: UISegmentedControl) {
+    @IBAction func temperatureDidChange(_ sender: UISegmentedControl) {
         var newTemperatureUnits: TemperatureUnits!
         switch temperatureControl.selectedSegmentIndex {
         case 0:
-            newTemperatureUnits = .Celsius
+            newTemperatureUnits = .celsius
         case 1:
-            newTemperatureUnits = .Fahrenheit
+            newTemperatureUnits = .fahrenheit
         default:
             fatalError("Unsupported segment selected")
         }
         settings.temperature = newTemperatureUnits
     }
     
-    @IBAction func motionModelDidChange(sender: UISegmentedControl) {
+    @IBAction func motionModelDidChange(_ sender: UISegmentedControl) {
         
         var newModel: MotionDemoModel!
         switch motionModelControl.selectedSegmentIndex {
         case 0:
-            newModel = .Board
+            newModel = .board
         case 1:
-            newModel = .Car
+            newModel = .car
         default:
             fatalError("Unsupported segment selected")
         }
@@ -287,7 +287,7 @@ class SettingsViewController: UITableViewController {
     
     // Private
     
-    private func setupAppearance() {
+    fileprivate func setupAppearance() {
         tableView.rowHeight          = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 42
         
@@ -308,7 +308,7 @@ class SettingsViewController: UITableViewController {
         setupFooter()
     }
     
-    private func populatePersonalInfoFields() {
+    fileprivate func populatePersonalInfoFields() {
         if let name = settings.userName {
             nameLabel.tb_setText(name, style: StyleText.main1.tweakColorAlpha(1.0))
         } else {
@@ -331,36 +331,36 @@ class SettingsViewController: UITableViewController {
         }
     }
     
-    private func updateMeasurementsControl() {
+    fileprivate func updateMeasurementsControl() {
         let measurementUnits = settings.measurement
         switch measurementUnits {
-        case .Metric:
+        case .metric:
             measurementsControl.selectedSegmentIndex = 0
-        case .Imperial:
+        case .imperial:
             measurementsControl.selectedSegmentIndex = 1
         }
     }
     
-    private func updateTemperatureControl() {
+    fileprivate func updateTemperatureControl() {
         let temperatureUnits = settings.temperature
         switch temperatureUnits {
-        case .Celsius:
+        case .celsius:
             temperatureControl.selectedSegmentIndex = 0
-        case .Fahrenheit:
+        case .fahrenheit:
             temperatureControl.selectedSegmentIndex = 1
         }
     }
     
-    private func updateMotionModelControl() {
+    fileprivate func updateMotionModelControl() {
         switch settings.motionDemoModel {
-        case .Board:
+        case .board:
             motionModelControl.selectedSegmentIndex = 0
-        case .Car:
+        case .car:
             motionModelControl.selectedSegmentIndex = 1
         }
     }
     
-    private func updateBeaconNotificationsControl() {
+    fileprivate func updateBeaconNotificationsControl() {
         let enabled = settings.beaconNotifications
         let enabledText = enabled ? beaconEnabledText : beaconDisabledText
         beaconNotificationsStateLabel.tb_setText(enabledText, style: StyleText.header.tweakColor(color: StyleColor.mediumGray))

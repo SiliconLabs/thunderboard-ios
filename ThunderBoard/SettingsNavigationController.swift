@@ -11,13 +11,13 @@ class SettingsNavigationController : UINavigationController {
     
     weak var notificationManager: NotificationManager?
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tb_setNavigationBarStyleForDemo(.Settings)
+        self.tb_setNavigationBarStyleForDemo(.settings)
         self.navigationBar.tintColor = StyleColor.white
         self.settingsViewController.notificationManager = notificationManager
     }

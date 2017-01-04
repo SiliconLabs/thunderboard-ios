@@ -12,10 +12,10 @@ class SimulatedEnvironmentDemoConnection : EnvironmentDemoConnection {
     var device: Device
     weak var connectionDelegate: EnvironmentDemoConnectionDelegate?
     var updateTimer: WeakTimer?
-    private var previous = EnvironmentData()
+    fileprivate var previous = EnvironmentData()
     
-    private var co2Enabled = true
-    private var vocEnabled = true
+    fileprivate var co2Enabled = true
+    fileprivate var vocEnabled = true
     
     // MARK:
     
@@ -29,26 +29,26 @@ class SimulatedEnvironmentDemoConnection : EnvironmentDemoConnection {
 
     // MARK:
 
-    private func notifyLatestData() {
+    fileprivate func notifyLatestData() {
         var data = EnvironmentData()
         
         capabilities.forEach({
             switch $0 {
-            case .AmbientLight:
+            case .ambientLight:
                 data.ambientLight = (previous.ambientLight ?? 10) + 10
-            case .Humidity:
+            case .humidity:
                 data.humidity = (previous.humidity ?? 26) + 1
-            case .UVIndex:
+            case .uvIndex:
                 data.uvIndex = (previous.uvIndex ?? 1.2) + 0.05
-            case .Temperature:
+            case .temperature:
                 data.temperature = (previous.temperature ?? 0) + 0.3
-            case .AirQualityVOC:
+            case .airQualityVOC:
                 data.voc = VolatileOrganicCompoundsReading(enabled: vocEnabled, value: AirQualityVOC((previous.voc?.value ?? 100) + 5))
-            case .AirQualityCO2:
+            case .airQualityCO2:
                 data.co2 = CarbonDioxideReading(enabled: co2Enabled, value: AirQualityCO2((previous.co2?.value ?? 0) + 10))
-            case .AirPressure:
+            case .airPressure:
                 data.pressure = (previous.pressure ?? 980) + 1
-            case .SoundLevel:
+            case .soundLevel:
                 data.sound = (previous.sound ?? 0) + 3
                 
             default:

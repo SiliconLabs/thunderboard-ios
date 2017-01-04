@@ -14,20 +14,20 @@ class SimulatedNotificationManager : NotificationManager {
         set (newValue) { settings.beaconNotifications = newValue }
     }
     
-    private let settings = ThunderboardSettings()
+    fileprivate let settings = ThunderboardSettings()
     weak var delegate: NotificationManagerDelegate?
     weak var presenter: NotificationPresenter?
     
-    func enableNotifications(enable: Bool) {
+    func enableNotifications(_ enable: Bool) {
         notificationsEnabled = enable
         self.delegate?.notificationsEnabled(self.notificationsEnabled)
     }
     
-    func allowDevice(device: NotificationDevice) {
+    func allowDevice(_ device: NotificationDevice) {
         //
     }
     
-    func removeDevice(device: NotificationDevice) {
+    func removeDevice(_ device: NotificationDevice) {
         //
     }
     
@@ -46,7 +46,7 @@ class SimulatedNotificationManager : NotificationManager {
         return []
     }
     
-    func setConnectedDevices(devices: [Device]) {
+    func setConnectedDevices(_ devices: [Device]) {
         //
     }
 }

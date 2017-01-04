@@ -7,10 +7,8 @@
 
 import Foundation
 
-extension NSData {
-    func tb_getByteAtIndex(index: Int) -> UInt8 {
-        var byte: UInt8 = 0
-        subdataWithRange(NSRange(location: index, length: 1)).getBytes(&byte, length: 1)
-        return byte
+extension Data {
+    func tb_getByteAtIndex(_ index: Int) -> UInt8 {
+        return self.subdata(in: index..<1).withUnsafeBytes { $0.pointee }
     }
 }

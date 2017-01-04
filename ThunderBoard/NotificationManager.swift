@@ -9,12 +9,12 @@ import Foundation
 import CoreLocation
 
 protocol NotificationManagerDelegate : class {
-    func notificationsEnabled(enabled: Bool)
+    func notificationsEnabled(_ enabled: Bool)
     func locationServicesNotAllowed()
 }
 
 protocol NotificationPresenter : class {
-    func showDetectedDevice(device: NotificationDevice)
+    func showDetectedDevice(_ device: NotificationDevice)
 }
 
 protocol NotificationManager : class {
@@ -23,13 +23,13 @@ protocol NotificationManager : class {
     weak var delegate: NotificationManagerDelegate? { get set }
     weak var presenter: NotificationPresenter? { get set }
 
-    func enableNotifications(enable: Bool)
-    func allowDevice(device: NotificationDevice)
-    func removeDevice(device: NotificationDevice)
+    func enableNotifications(_ enable: Bool)
+    func allowDevice(_ device: NotificationDevice)
+    func removeDevice(_ device: NotificationDevice)
     func removeAllDevices()
     
     func allowedDevices() -> [NotificationDevice]
     func otherDevices() -> [NotificationDevice]
     
-    func setConnectedDevices(devices: [Device])
+    func setConnectedDevices(_ devices: [Device])
 }

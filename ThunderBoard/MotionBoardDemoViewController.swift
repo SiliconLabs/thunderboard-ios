@@ -27,10 +27,10 @@ class MotionBoardDemoViewController : MotionDemoViewController {
         motionView.setModelScene("Thunderboard_React_031716_obj.obj", initialOrientation: initialOrientation)
     }
     
-    override func modelTranformMatrixForOrientation(orientation: ThunderboardInclination) -> SCNMatrix4 {
+    override func modelTranformMatrixForOrientation(_ orientation: ThunderboardInclination) -> SCNMatrix4 {
         let modelIdentity = motionView.modelIdentity
         
-        var transform = SCNMatrix4Rotate(modelIdentity, -orientation.x.tb_toRadian(), 0, 0, 1)
+        var transform = SCNMatrix4Rotate(modelIdentity!, -orientation.x.tb_toRadian(), 0, 0, 1)
         transform = SCNMatrix4Rotate(transform, -orientation.y.tb_toRadian(), 1, 0, 0)
         transform = SCNMatrix4Rotate(transform, orientation.z.tb_toRadian(), 0, 1, 0)
         

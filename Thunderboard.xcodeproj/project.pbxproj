@@ -679,6 +679,7 @@
 					DF6ADFAB1BBA4A1800B740D8 = {
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = 52444FG85C;
+						LastSwiftMigration = 0820;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -975,6 +976,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.silabs.ThunderBoard;
 				PRODUCT_MODULE_NAME = ThunderBoard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -995,6 +997,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.silabs.ThunderBoard;
 				PRODUCT_MODULE_NAME = ThunderBoard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

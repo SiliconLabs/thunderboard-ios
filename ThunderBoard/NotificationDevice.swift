@@ -29,28 +29,28 @@ class NotificationDevice : NSObject, NSCoding {
     }
     
     //MARK: NSCoding
-    private let codingName = "name"
-    private let codingIdentifier = "identifier"
+    fileprivate let codingName = "name"
+    fileprivate let codingIdentifier = "identifier"
     
     required init?(coder aDecoder: NSCoder) {
-        self.name = aDecoder.decodeObjectForKey(codingName) as! String
+        self.name = aDecoder.decodeObject(forKey: codingName) as! String
         
-        if let number = aDecoder.decodeObjectForKey(codingIdentifier) as? NSNumber {
-            self.identifier = DeviceId(number.integerValue)
+        if let number = aDecoder.decodeObject(forKey: codingIdentifier) as? NSNumber {
+            self.identifier = DeviceId(number.intValue)
         }
         else {
             self.identifier = 0
         }
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(name, forKey: codingName)
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(name, forKey: codingName)
         
-        let number = NSNumber(unsignedLongLong: identifier)
-        aCoder.encodeObject(number, forKey: codingIdentifier)
+        let number = NSNumber(value: identifier as UInt64)
+        aCoder.encode(number, forKey: codingIdentifier)
     }
     
-    override func isEqual(object: AnyObject?) -> Bool {
+    override func isEqual(_ object: Any?) -> Bool {
         if let object = object as? NotificationDevice {
             return self.identifier == object.identifier &&
                 self.name == object.name

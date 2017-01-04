@@ -11,20 +11,20 @@ extension UIView {
     
     func tb_applyCommonRoundedCornerWithShadowStyle() {
         self.tb_applyRoundedCorner(3)
-        self.tb_applyShadow(UIColor.blackColor(), offset: CGSize(width: 0, height: 2), opacity: 0.1, radius: 2)
+        self.tb_applyShadow(UIColor.black, offset: CGSize(width: 0, height: 2), opacity: 0.1, radius: 2)
     }
     
     func tb_applyCommonDropShadow() {
-        self.tb_applyShadow(UIColor.blackColor(), offset: CGSize(width: 0, height: 2), opacity: 0.1, radius: 2)
+        self.tb_applyShadow(UIColor.black, offset: CGSize(width: 0, height: 2), opacity: 0.1, radius: 2)
     }
     
-    func tb_applyRoundedCorner(radius: Float) {
+    func tb_applyRoundedCorner(_ radius: Float) {
         self.layer.cornerRadius = CGFloat(radius)
     }
     
-    func tb_applyShadow(color: UIColor, offset: CGSize, opacity: Float, radius: Float) {
+    func tb_applyShadow(_ color: UIColor, offset: CGSize, opacity: Float, radius: Float) {
         self.layer.masksToBounds = false
-        self.layer.shadowColor = color.CGColor
+        self.layer.shadowColor = color.cgColor
         self.layer.shadowOffset = offset
         self.layer.shadowOpacity = opacity
         self.layer.shadowRadius = CGFloat(radius)

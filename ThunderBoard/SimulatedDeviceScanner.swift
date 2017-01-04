@@ -9,11 +9,11 @@ import Foundation
 
 class SimulatedDeviceScanner : DeviceScanner, DeviceConnection {
     
-    private var discoveryTimer: WeakTimer?
+    fileprivate var discoveryTimer: WeakTimer?
     init() {
         delay(1) {
             // simulate delayed Bluetooth initialization
-            self.powerState = .Enabled
+            self.powerState = .enabled
         }
         
 //        delay(5) {
@@ -29,8 +29,8 @@ class SimulatedDeviceScanner : DeviceScanner, DeviceConnection {
     
     //MARK: - Simulated API
     
-    func simulateLostConnection(device: SimulatedDevice) {
-        device.connectionState = .Disconnected
+    func simulateLostConnection(_ device: SimulatedDevice) {
+        device.connectionState = .disconnected
         self.applicationDelegate?.transportLostConnectionToDevice(device)
     }
     
@@ -38,7 +38,7 @@ class SimulatedDeviceScanner : DeviceScanner, DeviceConnection {
     
     var scanningDelegate: DeviceScannerDelegate?
     func startScanning() {
-        if powerState == .Enabled {
+        if powerState == .enabled {
             scanningDelegate?.startedScanning()
             discoveryTimer = WeakTimer.scheduledTimer(0.1, repeats: true, action: { [weak self] in
                 self?.simulateDiscoveredDevice()
@@ -55,22 +55,22 @@ class SimulatedDeviceScanner : DeviceScanner, DeviceConnection {
     
     weak var connectionDelegate: DeviceConnectionDelegate?
     var currentDevice: Device?
-    func connect(device: Device) {
+    func connect(_ device: Device) {
         guard let device = device as? SimulatedDevice else {
             fatalError()
         }
         
         currentDevice = device
-        device.connectionState = .Connecting
+        device.connectionState = .connecting
 
         delay(0.8) {
-            device.connectionState = .Connected
+            device.connectionState = .connected
             self.connectionDelegate?.connectedToDevice(device)
             self.applicationDelegate?.transportConnectedToDevice(device)
         }
     }
     
-    func isConnectedToDevice(device: Device) -> Bool {
+    func isConnectedToDevice(_ device: Device) -> Bool {
         guard let current = currentDevice else {
             return false
         }
@@ -94,17 +94,17 @@ class SimulatedDeviceScanner : DeviceScanner, DeviceConnection {
         }
     }
     
-    private var powerState: DeviceTransportState = .Disabled {
+    fileprivate var powerState: DeviceTransportState = .disabled {
         didSet {
             
             notifyDelegates()
             
             // notify implicit scanning behaviors
             switch(powerState){
-            case .Disabled:
+            case .disabled:
                 stopScanning()
                 
-            case .Enabled:
+            case .enabled:
                 break
             }
         }
@@ -112,43 +112,43 @@ class SimulatedDeviceScanner : DeviceScanner, DeviceConnection {
 
     //MARK: - Internal
     
-    private func notifyDelegates() {
+    fileprivate func notifyDelegates() {
         self.applicationDelegate?.transportPowerStateUpdated(powerState)
         self.scanningDelegate?.transportPowerStateUpdated(powerState)
     }
     
-    private lazy var discoveredDevices: [SimulatedDevice] = {
+    fileprivate lazy var discoveredDevices: [SimulatedDevice] = {
         let reactCapabilities: Set<DeviceCapability> = [
-            .Temperature,
-            .Humidity,
-            .AmbientLight,
-            .UVIndex,
+            .temperature,
+            .humidity,
+            .ambientLight,
+            .uvIndex,
         ]
         
         let senseCapabilities: Set<DeviceCapability> = [
-            .Temperature,
-            .Humidity,
-            .AmbientLight,
-            .UVIndex,
-            .AirQualityCO2,
-            .AirQualityVOC,
-            .AirPressure,
-            .SoundLevel,
-            .RGBOutput,
+            .temperature,
+            .humidity,
+            .ambientLight,
+            .uvIndex,
+            .airQualityCO2,
+            .airQualityVOC,
+            .airPressure,
+            .soundLevel,
+            .rgbOutput,
         ]
         
         let devices: [SimulatedDevice] = [
             SimulatedDevice(name: "Thunderboard-React #58771", identifier: DeviceId(1), capabilities: reactCapabilities),
-            SimulatedDevice(name: "Thunderboard-Sense #58772", identifier: DeviceId(2), capabilities: senseCapabilities, model: .Sense),
+            SimulatedDevice(name: "Thunderboard-Sense #58772", identifier: DeviceId(2), capabilities: senseCapabilities, model: .sense),
         ]
         
         return devices
     }()
     
-    private func simulateDiscoveredDevice() {
+    fileprivate func simulateDiscoveredDevice() {
         discoveredDevices.forEach({
             $0.simulatedScanner = self
-            $0.RSSI = (-1 * Int(rand()) % 100)
+            $0.RSSI = (-1 * Int(arc4random()) % 100)
             self.scanningDelegate?.discoveredDevice($0)
         })
     }

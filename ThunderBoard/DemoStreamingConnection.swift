@@ -20,18 +20,18 @@ class DemoStreamingConnection : DemoStreaming {
     /// The sharable URL (displays an HTML view into the live data)
     var demoURL: String?
     var urlShortener = IsgdShortener()
-    private weak var output: DemoStreamingOutput?
+    fileprivate weak var output: DemoStreamingOutput?
 
-    private var device: Device
-    private var streamingEnabled: Bool = false
-    private var firebase: Firebase?
-    private var firebaseConnectionObserver: Firebase?
-    private var firebaseConnected = false
+    fileprivate var device: Device
+    fileprivate var streamingEnabled: Bool = false
+    fileprivate var firebase: Firebase?
+    fileprivate var firebaseConnectionObserver: Firebase?
+    fileprivate var firebaseConnected = false
     
-    private let firebaseIoHost   = ApplicationConfig.FirebaseIoHost
-    private let firebaseDemoHost = ApplicationConfig.FirebaseDemoHost
-    private let firebaseToken    = ApplicationConfig.FirebaseToken
-    private let shareUrlTemplate = "https://__FIREBASEDEMOHOST__/#/__DEVICEID_/__SESSIONID__/__DEMOTYPE__"
+    fileprivate let firebaseIoHost   = ApplicationConfig.FirebaseIoHost
+    fileprivate let firebaseDemoHost = ApplicationConfig.FirebaseDemoHost
+    fileprivate let firebaseToken    = ApplicationConfig.FirebaseToken
+    fileprivate let shareUrlTemplate = "https://__FIREBASEDEMOHOST__/#/__DEVICEID_/__SESSIONID__/__DEMOTYPE__"
 
     init(device: Device, output: DemoStreamingOutput?) {
         
@@ -43,13 +43,13 @@ class DemoStreamingConnection : DemoStreaming {
         }
         
         // if Firebase configuration is valid, enable the feature
-        guard let url = NSURL(string: "https://\(firebaseIoHost)") else {
+        guard let url = URL(string: "https://\(firebaseIoHost)") else {
             log.error("Firebase IO Host invalid - streaming disabled")
             streamingEnabled = false
             return
         }
         
-        guard let _ = NSURL(string: "https://\(firebaseDemoHost)") else {
+        guard let _ = URL(string: "https://\(firebaseDemoHost)") else {
             log.error("Firebase demo host invalid - streaming disabled")
             streamingEnabled = false
             return
@@ -67,8 +67,8 @@ class DemoStreamingConnection : DemoStreaming {
         self.firebase = Firebase(url: url.absoluteString)
         
         self.firebaseConnectionObserver = Firebase(url: "https://\(firebaseIoHost)/.info/connected")
-        firebaseConnectionObserver?.observeEventType(.Value, withBlock: { [weak self] snapshot in
-            let connected = snapshot.value as? Bool
+        firebaseConnectionObserver?.observe(.value, with: { [weak self] snapshot in
+            let connected = snapshot?.value as? Bool
             if connected != nil && connected! {
                 self?.firebaseConnected = true
             } else {
@@ -86,20 +86,20 @@ class DemoStreamingConnection : DemoStreaming {
         let deviceId = device.deviceIdentifier!
         let (sessionId, fullDemoUrl) = createNewSession(deviceId, demoType: type)
         
-        let queue = NSOperationQueue()
-        queue.suspended = true
+        let queue = OperationQueue()
+        queue.isSuspended = true
         
         let start = queue.tb_addAsyncOperationBlock("Notify Stream Starting") { [weak self] (operation: AsyncOperation) -> Void in
-            NSOperationQueue.mainQueue().addOperationWithBlock({
+            OperationQueue.main.addOperation({
                 self?.output?.streamStarting(fullDemoUrl)
                 operation.done()
             })
         }
 
-        var error: NSError? = nil
+        var error: Error? = nil
         let authentication = queue.tb_addAsyncOperationBlock("Firebase Authentication") { [weak self] (operation: AsyncOperation) -> Void in
             
-            self?.firebase?.authWithCustomToken(self?.firebaseToken, withCompletionBlock: { (fbError: NSError!, authData: FAuthData!) -> Void in
+            self?.firebase?.auth(withCustomToken: self?.firebaseToken, withCompletionBlock: { (fbError: Error?, authData: FAuthData?) -> Void in
                 
                 if fbError != nil {
                     log.error("Firebase authentication error: \(fbError)")
@@ -146,20 +146,20 @@ class DemoStreamingConnection : DemoStreaming {
         let finished = queue.tb_addAsyncOperationBlock("Finished") { [weak self] (operation: AsyncOperation) -> Void in
             
             log.info("Finished operation starting...")
-            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+            OperationQueue.main.addOperation({ () -> Void in
                 guard let strongSelf = self else {
                     return
                 }
                 
                 if error == nil {
-                    let url = strongSelf.demoURL as String!
+                    let url = strongSelf.demoURL!
                     strongSelf.beginStreamingSession(strongSelf.device, sessionId: sessionId, shortUrl: url)
                     strongSelf.startPollingTimers()
                     
                     strongSelf.output?.streamStarted(url)
                 }
                 else {
-                    strongSelf.output?.streamFailedToStart(error!)
+                    strongSelf.output?.streamFailedToStart(error! as NSError)
                 }
                 
                 operation.done()
@@ -174,7 +174,7 @@ class DemoStreamingConnection : DemoStreaming {
         finished.addDependency(shortener)
         finished.addDependency(authentication)
         
-        queue.suspended = false
+        queue.isSuspended = false
     }
  
     func stopStreaming() {
@@ -185,7 +185,7 @@ class DemoStreamingConnection : DemoStreaming {
         // send remaining samples
         reportCurrentData()
         
-        NSOperationQueue.mainQueue().addOperationWithBlock({
+        OperationQueue.main.addOperation({
             self.output?.streamStopped()
         })
         
@@ -205,20 +205,20 @@ class DemoStreamingConnection : DemoStreaming {
         return ""
     }
     
-    func sampleFrequency() -> NSTimeInterval {
-        return NSTimeInterval(1.0)
+    func sampleFrequency() -> TimeInterval {
+        return TimeInterval(1.0)
     }
     
-    func reportingFrequency() -> NSTimeInterval {
-        return NSTimeInterval(1.0)
+    func reportingFrequency() -> TimeInterval {
+        return TimeInterval(1.0)
     }
     
     //MARK:- Internal - Streaming Data
     
-    private var currentDemoSession: Firebase?
-    private func createNewSession(deviceId: DeviceId, demoType: String) -> (sessionId: String, shareUrl: String) {
+    fileprivate var currentDemoSession: Firebase?
+    fileprivate func createNewSession(_ deviceId: DeviceId, demoType: String) -> (sessionId: String, shareUrl: String) {
 
-        let sessionId = NSUUID().UUIDString
+        let sessionId = UUID().uuidString
         let urlString = shareUrlTemplate.tb_stringByReplacingTokenPairs([
             "__FIREBASEDEMOHOST__" : firebaseDemoHost,
             "__DEVICEID_" : deviceId.toString(),
@@ -230,75 +230,75 @@ class DemoStreamingConnection : DemoStreaming {
         return (sessionId, urlString)
     }
     
-    private func beginStreamingSession(device: Device, sessionId: String, shortUrl: String) {
+    fileprivate func beginStreamingSession(_ device: Device, sessionId: String, shortUrl: String) {
         
-        guard let firebase = firebase, deviceId = device.deviceIdentifier, deviceName = device.name else {
+        guard let firebase = firebase, let deviceId = device.deviceIdentifier, let deviceName = device.name else {
             return
         }
 
-        let startTime = NSDate.tb_currentTimestamp
-        let sessions = firebase.childByAppendingPath("sessions")
-        currentDemoSession = sessions.childByAppendingPath(sessionId.tb_sanitizeForFirebase())
+        let startTime = Date.tb_currentTimestamp
+        let sessions = firebase.child(byAppendingPath: "sessions")
+        currentDemoSession = sessions?.child(byAppendingPath: sessionId.tb_sanitizeForFirebase())
         let session = currentDemoSession!
         
         // URL
-        session.childByAppendingPath("shortUrl").setValue(shortUrl)
+        session.child(byAppendingPath: "shortUrl").setValue(shortUrl)
         
         // Start Time
-        session.childByAppendingPath("startTime").setValue(NSNumber(longLong: startTime))
+        session.child(byAppendingPath: "startTime").setValue(NSNumber(value: startTime as Int64))
         
         // Contact Info
         let settings = ThunderboardSettings()
-        let contactInfo = session.childByAppendingPath("contactInfo")
+        let contactInfo = session.child(byAppendingPath: "contactInfo")
 
         if let userName = settings.userName {
-            contactInfo.childByAppendingPath("fullName").setValue(userName)
+            contactInfo?.child(byAppendingPath: "fullName").setValue(userName)
         }
         
         if let userEmail = settings.userEmail {
-            contactInfo.childByAppendingPath("emailAddress").setValue(userEmail)
+            contactInfo?.child(byAppendingPath: "emailAddress").setValue(userEmail)
         }
         
         if let userTitle = settings.userTitle {
-            contactInfo.childByAppendingPath("title").setValue(userTitle)
+            contactInfo?.child(byAppendingPath: "title").setValue(userTitle)
         }
         
         if let userPhone = settings.userPhone {
-            contactInfo.childByAppendingPath("phoneNumber").setValue(userPhone)
+            contactInfo?.child(byAppendingPath: "phoneNumber").setValue(userPhone)
         }
         
         // Device ID (included in contact info)
-        contactInfo.childByAppendingPath("deviceName").setValue(deviceName)
+        contactInfo?.child(byAppendingPath: "deviceName").setValue(deviceName)
         
         // User Preferences
-        let temperatureUnits = session.childByAppendingPath("temperatureUnits")
+        let temperatureUnits = session.child(byAppendingPath: "temperatureUnits")
         switch settings.temperature {
-        case .Celsius:
-            temperatureUnits.setValue(0)
-        case .Fahrenheit:
-            temperatureUnits.setValue(1)
+        case .celsius:
+            temperatureUnits?.setValue(0)
+        case .fahrenheit:
+            temperatureUnits?.setValue(1)
         }
         
-        let measurementUnits = session.childByAppendingPath("measurementUnits")
+        let measurementUnits = session.child(byAppendingPath: "measurementUnits")
         switch settings.measurement {
-        case .Metric:
-            measurementUnits.setValue(0)
-        case .Imperial:
-            measurementUnits.setValue(1)
+        case .metric:
+            measurementUnits?.setValue(0)
+        case .imperial:
+            measurementUnits?.setValue(1)
         }
         
         // Recent Session Info
-        let recentSessions = firebase.childByAppendingPath("thunderboard/\(deviceId)/sessions")
-        recentSessions.childByAppendingPath(String(startTime)).setValue(sessionId)
+        let recentSessions = firebase.child(byAppendingPath: "thunderboard/\(deviceId)/sessions")
+        recentSessions?.child(byAppendingPath: String(startTime)).setValue(sessionId)
     }
     
-    private func endStreamingSession() {
+    fileprivate func endStreamingSession() {
         currentDemoSession = nil
     }
     
-    private var pendingDataPoints: [DemoStreamingDataPoint] = []
-    private var pendingDataLock = NSLock()
-    private func collectSampleData() {
+    fileprivate var pendingDataPoints: [DemoStreamingDataPoint] = []
+    fileprivate var pendingDataLock = NSLock()
+    fileprivate func collectSampleData() {
 
         pendingDataLock.lock()
         defer {
@@ -306,11 +306,11 @@ class DemoStreamingConnection : DemoStreaming {
         }
 
         if let s = sampleDemoData() {
-            pendingDataPoints.appendContentsOf(s)
+            pendingDataPoints.append(contentsOf: s)
         }
     }
     
-    private func reportCurrentData() {
+    fileprivate func reportCurrentData() {
         
         pendingDataLock.lock()
         defer {
@@ -325,9 +325,9 @@ class DemoStreamingConnection : DemoStreaming {
         }
 
         for sample in samples {
-            let dataPath = session.childByAppendingPath(sample.path)
-            let samplePath = dataPath.childByAppendingPath(sample.timestamp)
-            samplePath.setValue(sample.data)
+            let dataPath = session.child(byAppendingPath: sample.path)
+            let samplePath = dataPath?.child(byAppendingPath: sample.timestamp)
+            samplePath?.setValue(sample.data)
         }
         
         if self.firebaseConnected == false {
@@ -345,10 +345,10 @@ class DemoStreamingConnection : DemoStreaming {
     
     //MARK:- Internal - Timers
 
-    private var sampleTimer: WeakTimer?
-    private var reportingTimer: WeakTimer?
+    fileprivate var sampleTimer: WeakTimer?
+    fileprivate var reportingTimer: WeakTimer?
     
-    private func startPollingTimers() {
+    fileprivate func startPollingTimers() {
         log.info("starting polling timer")
 
         var frequency = sampleFrequency()
@@ -362,17 +362,17 @@ class DemoStreamingConnection : DemoStreaming {
         })
     }
     
-    private func stopPollingTimers() {
+    fileprivate func stopPollingTimers() {
         log.info("stopping polling timer")
         sampleTimer = nil
         reportingTimer = nil
     }
     
-    private func sampleTimerFired() {
+    fileprivate func sampleTimerFired() {
         collectSampleData()
     }
     
-    private func reportTimerFired() {
+    fileprivate func reportTimerFired() {
         reportCurrentData()
     }
     

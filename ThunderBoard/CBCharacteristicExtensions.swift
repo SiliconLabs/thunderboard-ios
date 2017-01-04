@@ -23,7 +23,7 @@ extension CBCharacteristicProperties : CustomStringConvertible {
         ]
         
         var propertyDescriptions = [String]()
-        for (index, string) in strings.enumerate() where contains(CBCharacteristicProperties(rawValue: UInt(1 << index))) {
+        for (index, string) in strings.enumerated() where contains(CBCharacteristicProperties(rawValue: UInt(1 << index))) {
             propertyDescriptions.append(string)
         }
         
@@ -34,24 +34,24 @@ extension CBCharacteristicProperties : CustomStringConvertible {
 extension CBCharacteristic {
     
     func tb_supportsNotificationOrIndication() -> Bool {
-        let notification = self.properties.rawValue & CBCharacteristicProperties.Notify.rawValue != 0
-        let indication = self.properties.rawValue & CBCharacteristicProperties.Indicate.rawValue != 0
+        let notification = self.properties.rawValue & CBCharacteristicProperties.notify.rawValue != 0
+        let indication = self.properties.rawValue & CBCharacteristicProperties.indicate.rawValue != 0
         
         return notification || indication
     }
     
     func tb_supportsRead() -> Bool {
-        return self.properties.rawValue & CBCharacteristicProperties.Read.rawValue != 0
+        return self.properties.rawValue & CBCharacteristicProperties.read.rawValue != 0
     }
     
     func tb_supportsWrite() -> Bool {
-        return self.properties.rawValue & CBCharacteristicProperties.Write.rawValue != 0
+        return self.properties.rawValue & CBCharacteristicProperties.write.rawValue != 0
     }
 
     func tb_int8Value() -> Int8? {
         if let data = self.value {
             var byte: Int8 = 0
-            data.getBytes(&byte, length: 1)
+            (data as NSData).getBytes(&byte, length: 1)
 
             return byte
         }
@@ -62,7 +62,7 @@ extension CBCharacteristic {
     func tb_uint8Value() -> UInt8? {
         if let data = self.value {
             var byte: UInt8 = 0
-            data.getBytes(&byte, length: 1)
+            (data as NSData).getBytes(&byte, length: 1)
 
             return byte
         }
@@ -73,7 +73,7 @@ extension CBCharacteristic {
     func tb_int16Value() -> Int16? {
         if let data = self.value {
             var value: Int16 = 0
-            data.getBytes(&value, length: 2)
+            (data as NSData).getBytes(&value, length: 2)
             
             return value
         }
@@ -84,7 +84,7 @@ extension CBCharacteristic {
     func tb_uint16Value() -> UInt16? {
         if let data = self.value {
             var value: UInt16 = 0
-            data.getBytes(&value, length: 2)
+            (data as NSData).getBytes(&value, length: 2)
             
             return value
         }
@@ -95,7 +95,7 @@ extension CBCharacteristic {
     func tb_uint32Value() -> UInt32? {
         if let data = self.value {
             var value: UInt32 = 0
-            data.getBytes(&value, length: 4)
+            (data as NSData).getBytes(&value, length: 4)
             return value
         }
         
@@ -105,7 +105,7 @@ extension CBCharacteristic {
     func tb_uint64value() -> UInt64? {
         if let data = self.value {
             var value: UInt64 = 0
-            data.getBytes(&value, length: 8)
+            (data as NSData).getBytes(&value, length: 8)
             return value
         }
         
@@ -114,7 +114,7 @@ extension CBCharacteristic {
     
     func tb_stringValue() -> String? {
         if let data = self.value {
-            return String(data: data, encoding: NSUTF8StringEncoding)
+            return String(data: data, encoding: String.Encoding.utf8)
         }
         
         return nil
@@ -125,11 +125,11 @@ extension CBCharacteristic {
             return nil
         }
         
-        let len = data.length
+        let len = data.count
         let result = NSMutableString(capacity: len*2)
-        var byteArray = [UInt8](count: len, repeatedValue: 0x0)
-        data.getBytes(&byteArray, length:len)
-        for (index, element) in byteArray.enumerate() {
+        var byteArray = [UInt8](repeating: 0x0, count: len)
+        (data as NSData).getBytes(&byteArray, length:len)
+        for (index, element) in byteArray.enumerated() {
             if index % 8 == 0 && index > 0 {
                 result.appendFormat("\n")
             }
@@ -147,13 +147,13 @@ extension CBCharacteristic {
     
     func tb_inclinationValue() -> ThunderboardInclination? {
         if let data = self.value {
-            if data.length >= 6 {
+            if data.count >= 6 {
                 var xDegreesTimes100: Int16 = 0;
                 var yDegreesTimes100: Int16 = 0;
                 var zDegreesTimes100: Int16 = 0;
-                data.getBytes(&xDegreesTimes100, range: NSMakeRange(0, 2))
-                data.getBytes(&yDegreesTimes100, range: NSMakeRange(2, 2))
-                data.getBytes(&zDegreesTimes100, range: NSMakeRange(4, 2))
+                (data as NSData).getBytes(&xDegreesTimes100, range: NSMakeRange(0, 2))
+                (data as NSData).getBytes(&yDegreesTimes100, range: NSMakeRange(2, 2))
+                (data as NSData).getBytes(&zDegreesTimes100, range: NSMakeRange(4, 2))
                 let xDegrees = Degree(xDegreesTimes100) / 100.0;
                 let yDegrees = Degree(yDegreesTimes100) / 100.0;
                 let zDegrees = Degree(zDegreesTimes100) / 100.0;
@@ -166,13 +166,13 @@ extension CBCharacteristic {
     
     func tb_vectorValue() -> ThunderboardVector? {
         if let data = self.value {
-            if data.length >= 6 {
+            if data.count >= 6 {
                 var xAccelerationTimes1k: Int16 = 0;
                 var yAccelerationTimes1k: Int16 = 0;
                 var zAccelerationTimes1k: Int16 = 0;
-                data.getBytes(&xAccelerationTimes1k, range: NSMakeRange(0, 2))
-                data.getBytes(&yAccelerationTimes1k, range: NSMakeRange(2, 2))
-                data.getBytes(&zAccelerationTimes1k, range: NSMakeRange(4, 2))
+                (data as NSData).getBytes(&xAccelerationTimes1k, range: NSMakeRange(0, 2))
+                (data as NSData).getBytes(&yAccelerationTimes1k, range: NSMakeRange(2, 2))
+                (data as NSData).getBytes(&zAccelerationTimes1k, range: NSMakeRange(4, 2))
                 let xAcceleration = α(xAccelerationTimes1k) / 1000.0;
                 let yAcceleration = α(yAccelerationTimes1k) / 1000.0;
                 let zAcceleration = α(zAccelerationTimes1k) / 1000.0;
@@ -185,12 +185,12 @@ extension CBCharacteristic {
     
     func tb_cscMeasurementValue() -> ThunderboardCSCMeasurement? {
         if let data = self.value {
-            if data.length >= 7 {
+            if data.count >= 7 {
                 var revolutionsSinceConnecting:            UInt32 = 0
                 var secondsSinceConnectingTimes1024:       UInt16 = 0
-                data.getBytes(&revolutionsSinceConnecting, range: NSMakeRange(1, 4))
-                data.getBytes(&secondsSinceConnectingTimes1024, range: NSMakeRange(5, 2))
-                let secondsSinceConnecting: NSTimeInterval = Double(secondsSinceConnectingTimes1024) / 1024
+                (data as NSData).getBytes(&revolutionsSinceConnecting, range: NSMakeRange(1, 4))
+                (data as NSData).getBytes(&secondsSinceConnectingTimes1024, range: NSMakeRange(5, 2))
+                let secondsSinceConnecting: TimeInterval = Double(secondsSinceConnectingTimes1024) / 1024
                 return ThunderboardCSCMeasurement(revolutions:UInt(revolutionsSinceConnecting), seconds:secondsSinceConnecting)
             }
         }
@@ -208,7 +208,7 @@ extension CBCharacteristic {
         //    |  |  +---- green
         //    |  +------- red
         //    +---------- enabled
-        if data.length != 4 {
+        if data.count != 4 {
             return nil
         }
         
@@ -219,6 +219,6 @@ extension CBCharacteristic {
         
         // note: for now, we're only supporting all-on for the LEDs
         let on = (enabled == 0) ? false : true
-        return LedState.RGB(on, LedRgb(red: red/255, green: green/255, blue: blue/255))
+        return LedState.rgb(on, LedRgb(red: red/255, green: green/255, blue: blue/255))
     }
 }

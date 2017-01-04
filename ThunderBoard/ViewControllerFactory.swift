@@ -11,9 +11,9 @@ class ViewControllerFactory {
     
     var presenter: ApplicationPresenter?
 
-    func deviceSelectionViewController(scanner: DeviceScanner, connector: DeviceConnection, settingsPresenter: SettingsPresenter) -> DeviceSelectionViewController {
+    func deviceSelectionViewController(_ scanner: DeviceScanner, connector: DeviceConnection, settingsPresenter: SettingsPresenter) -> DeviceSelectionViewController {
         
-        let deviceViewController = UIStoryboard(name: "DeviceSelection", bundle: nil).instantiateViewControllerWithIdentifier("DeviceSelectionViewController") as! DeviceSelectionViewController
+        let deviceViewController = UIStoryboard(name: "DeviceSelection", bundle: nil).instantiateViewController(withIdentifier: "DeviceSelectionViewController") as! DeviceSelectionViewController
 
         let interaction = DeviceSelectionInteraction(scanner: scanner, connector: connector, interactionOutput: deviceViewController)
         interaction.settingsPresenter = settingsPresenter
@@ -22,9 +22,9 @@ class ViewControllerFactory {
         return deviceViewController
     }
 
-    func demoSelectionViewController(demoConfiguration: DemoConfiguration, demoPresenter: DemoPresenter, settingsPresenter: SettingsPresenter, historyPresenter: DemoHistoryPresenter, notificationManager: NotificationManager) -> DemoSelectionViewController {
+    func demoSelectionViewController(_ demoConfiguration: DemoConfiguration, demoPresenter: DemoPresenter, settingsPresenter: SettingsPresenter, historyPresenter: DemoHistoryPresenter, notificationManager: NotificationManager) -> DemoSelectionViewController {
 
-        let demoViewController = UIStoryboard(name: "DemoSelection", bundle: nil).instantiateViewControllerWithIdentifier("DemoSelectionViewController") as! DemoSelectionViewController
+        let demoViewController = UIStoryboard(name: "DemoSelection", bundle: nil).instantiateViewController(withIdentifier: "DemoSelectionViewController") as! DemoSelectionViewController
         
         let interaction = DemoSelectionInteraction(demoConfiguration: demoConfiguration, output: demoViewController)
         interaction.demoPresenter = demoPresenter
@@ -36,9 +36,9 @@ class ViewControllerFactory {
         return demoViewController
     }
 
-    func environmentDemoViewController(connection: EnvironmentDemoConnection) -> EnvironmentDemoViewController {
+    func environmentDemoViewController(_ connection: EnvironmentDemoConnection) -> EnvironmentDemoViewController {
         
-        let demoViewController = UIStoryboard(name: "EnvironmentDemoViewController", bundle: nil).instantiateViewControllerWithIdentifier("EnvironmentDemoViewController") as! EnvironmentDemoViewController
+        let demoViewController = UIStoryboard(name: "EnvironmentDemoViewController", bundle: nil).instantiateViewController(withIdentifier: "EnvironmentDemoViewController") as! EnvironmentDemoViewController
         
         let interaction = EnvironmentDemoInteraction(output: demoViewController, demoConnection: connection)
         interaction.streamingOutput = demoViewController
@@ -54,9 +54,9 @@ class ViewControllerFactory {
         return demoViewController
     }
     
-    func ioDemoViewController(connection: IoDemoConnection) -> IoDemoViewController {
+    func ioDemoViewController(_ connection: IoDemoConnection) -> IoDemoViewController {
 
-        let demoViewController = UIStoryboard(name: "IoDemoViewController", bundle: nil).instantiateViewControllerWithIdentifier("IoDemoViewController") as! IoDemoViewController
+        let demoViewController = UIStoryboard(name: "IoDemoViewController", bundle: nil).instantiateViewController(withIdentifier: "IoDemoViewController") as! IoDemoViewController
         
         let interaction = IoDemoInteraction(output: demoViewController, demoConnection: connection)
         interaction.streamingOutput = demoViewController
@@ -72,9 +72,9 @@ class ViewControllerFactory {
         return demoViewController
     }
 
-    func motionCarDemoViewController(connection: MotionDemoConnection) -> MotionCarDemoViewController {
+    func motionCarDemoViewController(_ connection: MotionDemoConnection) -> MotionCarDemoViewController {
         
-        let demoViewController = UIStoryboard(name: "MotionCarDemoViewController", bundle: nil).instantiateViewControllerWithIdentifier("MotionCarDemoViewController") as! MotionCarDemoViewController
+        let demoViewController = UIStoryboard(name: "MotionCarDemoViewController", bundle: nil).instantiateViewController(withIdentifier: "MotionCarDemoViewController") as! MotionCarDemoViewController
         
         let interaction = MotionDemoInteraction(output: demoViewController, demoConnection: connection)
         interaction.streamingOutput = demoViewController
@@ -90,9 +90,9 @@ class ViewControllerFactory {
         return demoViewController
     }
     
-    func motionBoardDemoViewController(connection: MotionDemoConnection) -> MotionBoardDemoViewController {
+    func motionBoardDemoViewController(_ connection: MotionDemoConnection) -> MotionBoardDemoViewController {
         
-        let demoViewController = UIStoryboard(name: "MotionBoardDemoViewController", bundle: nil).instantiateViewControllerWithIdentifier("MotionBoardDemoViewController") as! MotionBoardDemoViewController
+        let demoViewController = UIStoryboard(name: "MotionBoardDemoViewController", bundle: nil).instantiateViewController(withIdentifier: "MotionBoardDemoViewController") as! MotionBoardDemoViewController
         
         let interaction = MotionDemoInteraction(output: demoViewController, demoConnection: connection)
         interaction.streamingOutput = demoViewController
@@ -108,9 +108,9 @@ class ViewControllerFactory {
         return demoViewController
     }
     
-    func motionSenseBoardDemoViewController(connection: MotionDemoConnection) -> MotionSenseBoardDemoViewController {
+    func motionSenseBoardDemoViewController(_ connection: MotionDemoConnection) -> MotionSenseBoardDemoViewController {
         
-        let demoViewController = UIStoryboard(name: "MotionSenseBoardDemoViewController", bundle: nil).instantiateViewControllerWithIdentifier("MotionSenseBoardDemoViewController") as! MotionSenseBoardDemoViewController
+        let demoViewController = UIStoryboard(name: "MotionSenseBoardDemoViewController", bundle: nil).instantiateViewController(withIdentifier: "MotionSenseBoardDemoViewController") as! MotionSenseBoardDemoViewController
         
         let interaction = MotionDemoInteraction(output: demoViewController, demoConnection: connection)
         interaction.streamingOutput = demoViewController
@@ -126,8 +126,8 @@ class ViewControllerFactory {
         return demoViewController
     }
 
-    func settingsViewController(notificationManager: NotificationManager) -> UIViewController {
-        let settings = UIStoryboard(name: "SettingsViewController", bundle: nil).instantiateViewControllerWithIdentifier("SettingsViewController") as! SettingsNavigationController
+    func settingsViewController(_ notificationManager: NotificationManager) -> UIViewController {
+        let settings = UIStoryboard(name: "SettingsViewController", bundle: nil).instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsNavigationController
         settings.notificationManager = notificationManager
         
         return settings

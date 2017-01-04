@@ -8,8 +8,8 @@
 import Foundation
 
 protocol DemoSelectionInteractionOutput: class {
-    func showConfiguringDemo(demo: ThunderboardDemo)
-    func enableDemoHistory(enabled: Bool)
+    func showConfiguringDemo(_ demo: ThunderboardDemo)
+    func enableDemoHistory(_ enabled: Bool)
 }
 
 class DemoSelectionInteraction: DemoConfigurationDelegate {
@@ -17,7 +17,7 @@ class DemoSelectionInteraction: DemoConfigurationDelegate {
     var demoPresenter: DemoPresenter?
     var historyPresenter: DemoHistoryPresenter?
     var settingsPresenter: SettingsPresenter?
-    private var demoConfiguration: DemoConfiguration?
+    fileprivate var demoConfiguration: DemoConfiguration?
     
     weak var output: DemoSelectionInteractionOutput?
     var configuringDemo: ThunderboardDemo?
@@ -32,7 +32,7 @@ class DemoSelectionInteraction: DemoConfigurationDelegate {
         output?.enableDemoHistory(enableHistory)
     }
     
-    func configureForDemo(demo: ThunderboardDemo) {
+    func configureForDemo(_ demo: ThunderboardDemo) {
         
         // prevent multiple configurations
         if configuringDemo != nil {
@@ -56,17 +56,17 @@ class DemoSelectionInteraction: DemoConfigurationDelegate {
 
     //MARK:- DemoConfigurationDelegate
     
-    func deviceIdentifierUpdated(deviceId: DeviceId) {
+    func deviceIdentifierUpdated(_ deviceId: DeviceId) {
         output?.enableDemoHistory(true)
     }
     
     // IO
     func configuringIoDemo() {
-        self.configuringDemo = .IO
-        self.output?.showConfiguringDemo(.IO)
+        self.configuringDemo = .io
+        self.output?.showConfiguringDemo(.io)
     }
     
-    func ioDemoReady(connection: IoDemoConnection) {
+    func ioDemoReady(_ connection: IoDemoConnection) {
         self.configuringDemo = nil
         demoPresenter?.showIoDemo(connection)
     }
@@ -75,11 +75,11 @@ class DemoSelectionInteraction: DemoConfigurationDelegate {
     // Motion
     
     func configuringMotionDemo() {
-        self.configuringDemo = .Motion
-        self.output?.showConfiguringDemo(.Motion)
+        self.configuringDemo = .motion
+        self.output?.showConfiguringDemo(.motion)
     }
     
-    func motionDemoReady(connection: MotionDemoConnection) {
+    func motionDemoReady(_ connection: MotionDemoConnection) {
         self.configuringDemo = nil
         demoPresenter?.showMotionDemo(connection)
     }
@@ -88,11 +88,11 @@ class DemoSelectionInteraction: DemoConfigurationDelegate {
     // Environment
     
     func configuringEnvironmentDemo() {
-        self.configuringDemo = .Environment
-        self.output?.showConfiguringDemo(.Environment)
+        self.configuringDemo = .environment
+        self.output?.showConfiguringDemo(.environment)
     }
     
-    func environmentDemoReady(connection: EnvironmentDemoConnection) {
+    func environmentDemoReady(_ connection: EnvironmentDemoConnection) {
         self.configuringDemo = nil
         demoPresenter?.showEnvironmentDemo(connection)
     }

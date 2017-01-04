@@ -11,15 +11,15 @@ let domainUrlShortener  = "com.silabs.Thunderboard.urlshortening"
 let domainStreaming     = "com.silabs.Thunderboard.streaming"
 
 enum ErrorCodes: Int {
-    case UrlShorteningRequestCreation
-    case UrlShorteningNoResponse
-    case UrlShorteningMissingData
-    case UrlShorteningInvalidData
-    case UrlShorteningDeserialization
-    case UrlShorteningProviderError
-    case UrlShorteningUnknownError
+    case urlShorteningRequestCreation
+    case urlShorteningNoResponse
+    case urlShorteningMissingData
+    case urlShorteningInvalidData
+    case urlShorteningDeserialization
+    case urlShorteningProviderError
+    case urlShorteningUnknownError
     
-    case StreamingDisconnected
+    case streamingDisconnected
 }
 
 class ErrorFactory {
@@ -27,36 +27,36 @@ class ErrorFactory {
     //MARK: - URL Shortener
     
     class func shortenerRequestCreationFailure() -> NSError {
-        return NSError(domain: domainUrlShortener, code: ErrorCodes.UrlShorteningRequestCreation.rawValue, userInfo: [NSLocalizedDescriptionKey : "Invalid Shortening Request"])
+        return NSError(domain: domainUrlShortener, code: ErrorCodes.urlShorteningRequestCreation.rawValue, userInfo: [NSLocalizedDescriptionKey : "Invalid Shortening Request"])
     }
     
     class func shortenerNoResponseError() -> NSError {
-        return NSError(domain: domainUrlShortener, code: ErrorCodes.UrlShorteningNoResponse.rawValue, userInfo: [NSLocalizedDescriptionKey : "No Response"])
+        return NSError(domain: domainUrlShortener, code: ErrorCodes.urlShorteningNoResponse.rawValue, userInfo: [NSLocalizedDescriptionKey : "No Response"])
     }
     
     class func shortenerMissingDataError() -> NSError {
-        return NSError(domain: domainUrlShortener, code: ErrorCodes.UrlShorteningMissingData.rawValue, userInfo: [NSLocalizedDescriptionKey : "Empty Response"])
+        return NSError(domain: domainUrlShortener, code: ErrorCodes.urlShorteningMissingData.rawValue, userInfo: [NSLocalizedDescriptionKey : "Empty Response"])
     }
     
     class func shortenerInvalidDataError() -> NSError {
-        return NSError(domain: domainUrlShortener, code: ErrorCodes.UrlShorteningInvalidData.rawValue, userInfo: [NSLocalizedDescriptionKey : "Invalid Data"])
+        return NSError(domain: domainUrlShortener, code: ErrorCodes.urlShorteningInvalidData.rawValue, userInfo: [NSLocalizedDescriptionKey : "Invalid Data"])
     }
     
     class func shortenerDeserializationError() -> NSError {
-        return NSError(domain: domainUrlShortener, code: ErrorCodes.UrlShorteningDeserialization.rawValue, userInfo: [NSLocalizedDescriptionKey : "Malformed Resposne"])
+        return NSError(domain: domainUrlShortener, code: ErrorCodes.urlShorteningDeserialization.rawValue, userInfo: [NSLocalizedDescriptionKey : "Malformed Resposne"])
     }
     
-    class func shortenerResponseError(providerErrorCode: Int) -> NSError {
-        return NSError(domain: domainUrlShortener, code: ErrorCodes.UrlShorteningProviderError.rawValue, userInfo: [NSLocalizedDescriptionKey:"Provider Error (\(providerErrorCode))"])
+    class func shortenerResponseError(_ providerErrorCode: Int) -> NSError {
+        return NSError(domain: domainUrlShortener, code: ErrorCodes.urlShorteningProviderError.rawValue, userInfo: [NSLocalizedDescriptionKey:"Provider Error (\(providerErrorCode))"])
     }
     
     class func shortenerUnknownError() -> NSError {
-        return NSError(domain: domainUrlShortener, code: ErrorCodes.UrlShorteningUnknownError.rawValue, userInfo: [NSLocalizedDescriptionKey:"Unknown Error"])
+        return NSError(domain: domainUrlShortener, code: ErrorCodes.urlShorteningUnknownError.rawValue, userInfo: [NSLocalizedDescriptionKey:"Unknown Error"])
     }
     
     //MARK: - Streaming
     
     class func streamingDisconnected() -> NSError {
-        return NSError(domain: domainStreaming, code: ErrorCodes.StreamingDisconnected.rawValue, userInfo: [NSLocalizedDescriptionKey:"Stream Disconnected"])
+        return NSError(domain: domainStreaming, code: ErrorCodes.streamingDisconnected.rawValue, userInfo: [NSLocalizedDescriptionKey:"Stream Disconnected"])
     }
 }

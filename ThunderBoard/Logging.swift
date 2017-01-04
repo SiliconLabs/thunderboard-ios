@@ -22,25 +22,25 @@ class Logging {
     static var levels: [Level] = [.Error, .Info]
     #endif
     
-    class func error(message: String, file: String = #file, function: String = #function, line: Int = #line) {
+    class func error(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
         if levels.contains(.Error) {
             writeMessage(message, level: .Error, file: file, function: function, line: line)
         }
     }
     
-    class func info(message: String, file: String = #file, function: String = #function, line: Int = #line) {
+    class func info(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
         if levels.contains(.Info) {
             writeMessage(message, level: .Info, file: file, function: function, line: line)
         }
     }
     
-    class func debug(message: String, file: String = #file, function: String = #function, line: Int = #line) {
+    class func debug(_ message: String, file: String = #file, function: String = #function, line: Int = #line) {
         if levels.contains(.Debug) {
             writeMessage(message, level: .Debug, file: file, function: function, line: line)
         }
     }
     
-    private class func writeMessage(message: String, level: Level, file: String, function: String, line: Int) {
+    fileprivate class func writeMessage(_ message: String, level: Level, file: String, function: String, line: Int) {
         let filename = NSString(string: file).pathComponents.last! as String
         NSLog("[\(level)] \(filename):\(line) \(function) \(message)")
     }

@@ -15,7 +15,7 @@ enum StreamingBannerMode : String {
 }
 
 @objc protocol StreamingViewControllerDelegate : class {
-    func streamingButton(on: Bool)
+    func streamingButton(_ on: Bool)
     func sharingButtonTapped()
 }
 
@@ -47,37 +47,37 @@ class StreamingViewController: UIViewController {
     
     //MARK: - Actions
     
-    @IBAction func switchValueChanged(sender: AnyObject?) {
-        if let on = streamingSwitch?.on {
+    @IBAction func switchValueChanged(_ sender: AnyObject?) {
+        if let on = streamingSwitch?.isOn {
             self.delegate?.streamingButton(on)
         }
     }
     
-    @IBAction func shareButtonTapped(sender: AnyObject?) {
+    @IBAction func shareButtonTapped(_ sender: AnyObject?) {
         self.delegate?.sharingButtonTapped()
     }
     
     //MARK: - Private
     
-    private func updateStreamingModeDisplay() {
+    fileprivate func updateStreamingModeDisplay() {
         statusMessage?.text = streamingMode.rawValue
         
         switch streamingMode {
         case .Disabled:
-            shareButton?.enabled = false
-            streamingSwitch?.enabled = false
+            shareButton?.isEnabled = false
+            streamingSwitch?.isEnabled = false
             streamingSwitch?.setOn(false, animated: true)
-            shareButton?.hidden = true
+            shareButton?.isHidden = true
             
         case .NotStreaming:
-            shareButton?.hidden = true
+            shareButton?.isHidden = true
             streamingSwitch?.setOn(false, animated: true)
             
         case .Streaming:
-            shareButton?.hidden = false
+            shareButton?.isHidden = false
             
         case .Reconnecting:
-            shareButton?.hidden = false
+            shareButton?.isHidden = false
         }
     }
 }

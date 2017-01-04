@@ -32,21 +32,21 @@ class IoDemoStreamingConnection : DemoStreamingConnection {
         let inputs = dataSource.currentInputStates()
         let outputs = dataSource.currentOutputStates()
         
-        for (index, input) in inputs.enumerate() {
-            data["sw\(index)"] = input ? Int(1) : Int(0)
+        for (index, input) in inputs.enumerated() {
+            data["sw\(index)"] = input ? Int(1) as AnyObject? : Int(0) as AnyObject?
         }
         
         
         // ledb, ledg
         let labels = [ "ledb", "ledg" ]
-        for (index, output) in outputs.enumerate() {
+        for (index, output) in outputs.enumerated() {
             if index < labels.count {
-                data[labels[index]] = output.on ? Int(1) : Int(0)
+                data[labels[index]] = output.on ? Int(1) as AnyObject? : Int(0) as AnyObject?
             }
         }
         
         let path = "io/data"
-        let dataPoint = DemoStreamingDataPoint(path: path,  timestamp: String(NSDate.tb_currentTimestamp), data: data)
+        let dataPoint = DemoStreamingDataPoint(path: path,  timestamp: String(Date.tb_currentTimestamp), data: data as AnyObject)
         return [dataPoint]
     }
 

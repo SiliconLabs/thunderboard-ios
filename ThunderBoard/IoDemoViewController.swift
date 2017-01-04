@@ -69,27 +69,27 @@ class IoDemoViewController: DemoViewController, IoDemoInteractionOutput {
         addSliderGestures()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.tb_setNavigationBarStyleForDemo(.IO)
+        self.navigationController?.tb_setNavigationBarStyleForDemo(.io)
         interaction?.updateView()
     }
     
     //MARK: - Actions
     
-    @IBAction func light1ButtonPressed(sender: UIButton) {
+    @IBAction func light1ButtonPressed(_ sender: UIButton) {
         self.interaction?.toggleLed(0)
     }
     
-    @IBAction func light2ButtonPressed(sender: UIButton) {
+    @IBAction func light2ButtonPressed(_ sender: UIButton) {
         self.interaction?.toggleLed(1)
     }
     
-    @IBAction func rgbLightButtonPressed(sender: UIButton) {
+    @IBAction func rgbLightButtonPressed(_ sender: UIButton) {
         interaction?.toggleLed(2)
     }
     
-    @IBAction func colorSliderChanged(sender: UISlider) {
+    @IBAction func colorSliderChanged(_ sender: UISlider) {
         guard let color = colorForSliderValues() else {
             return
         }
@@ -97,7 +97,7 @@ class IoDemoViewController: DemoViewController, IoDemoInteractionOutput {
         interaction?.setColor(2, color: color)
     }
     
-    @IBAction func brightnessSliderChanged(sender: UISlider) {
+    @IBAction func brightnessSliderChanged(_ sender: UISlider) {
         guard let color = colorForSliderValues() else {
             return
         }
@@ -107,7 +107,7 @@ class IoDemoViewController: DemoViewController, IoDemoInteractionOutput {
     
     //MARK: - IoDemoInteractionOutput
     
-    func showButtonState(button: Int, pressed: Bool) {
+    func showButtonState(_ button: Int, pressed: Bool) {
         switch button {
         case 0:
             log.debug("Button 0 is \(pressed)")
@@ -130,17 +130,17 @@ class IoDemoViewController: DemoViewController, IoDemoInteractionOutput {
         }
     }
     
-    func showLedState(led: Int, state: LedState) {
+    func showLedState(_ led: Int, state: LedState) {
         
         switch state {
-        case .Digital(let on, let color):
+        case .digital(let on, let color):
             showDigital(led, on: on, color: color)
-        case .RGB(let on, let color):
+        case .rgb(let on, let color):
             showRgbState(on, color: color)
         }
     }
     
-    private func showDigital(index: Int, on: Bool, color: LedStaticColor? = nil) {
+    fileprivate func showDigital(_ index: Int, on: Bool, color: LedStaticColor? = nil) {
         log.debug("showLedState \(index) \(on)")
 
         let buttons: [UIButton] = [light1Button, light2Button, rgbButton!]
@@ -150,11 +150,11 @@ class IoDemoViewController: DemoViewController, IoDemoInteractionOutput {
             if on {
                 if let color = color {
                     switch color {
-                    case .Red:
+                    case .red:
                         return ButtonImageNames.Red
-                    case .Blue:
+                    case .blue:
                         return ButtonImageNames.Blue
-                    case .Green:
+                    case .green:
                         return ButtonImageNames.Green
                     }
                 }
@@ -166,11 +166,11 @@ class IoDemoViewController: DemoViewController, IoDemoInteractionOutput {
             }
         }()
         
-        buttons[index].setImage(UIImage(named: image)!, forState: .Normal)
+        buttons[index].setImage(UIImage(named: image)!, for: UIControlState())
         labels[index].text = on ? onString : offString
     }
     
-    private func showRgbState(on: Bool, color: LedRgb) {
+    fileprivate func showRgbState(_ on: Bool, color: LedRgb) {
         showDigital(2, on: on)
         
         let color = color.uiColor
@@ -179,13 +179,13 @@ class IoDemoViewController: DemoViewController, IoDemoInteractionOutput {
         
         color.getHue(&hue, saturation: nil, brightness: &brightness, alpha: nil)
         
-        brightnessSlider?.enabled = on
+        brightnessSlider?.isEnabled = on
         brightnessSlider?.value = Float(brightness)
         
-        colorSlider?.enabled = on
+        colorSlider?.isEnabled = on
         colorSlider?.value = Float(hue)
-        colorHueView?.hidden = !on
-        let trackColor = on ? UIColor.clearColor() : StyleColor.lightGray
+        colorHueView?.isHidden = !on
+        let trackColor = on ? UIColor.clear : StyleColor.lightGray
         colorSlider?.minimumTrackTintColor = trackColor
         colorSlider?.maximumTrackTintColor = trackColor
         
@@ -201,9 +201,9 @@ class IoDemoViewController: DemoViewController, IoDemoInteractionOutput {
 
     //MARK: - Internal
     
-    private func colorForSliderValues() -> LedRgb? {
+    fileprivate func colorForSliderValues() -> LedRgb? {
         guard let hue = colorSlider?.value,
-            brightness = brightnessSlider?.value else {
+            let brightness = brightnessSlider?.value else {
                 return nil
         }
         
@@ -217,13 +217,13 @@ class IoDemoViewController: DemoViewController, IoDemoInteractionOutput {
         return LedRgb(red: Float(r), green: Float(g), blue: Float(b))
     }
     
-    private func setupAppearance() {
+    fileprivate func setupAppearance() {
         setupSwitchesSectionAppearance()
         setupLightsSectionAppearance()
         setupRgbSectionAppearance()
     }
 
-    private func setupSwitchesSectionAppearance() {
+    fileprivate func setupSwitchesSectionAppearance() {
         switchesLabel.tb_setText(switchesString, style: StyleText.header2)
         switchesView.backgroundColor = StyleColor.white
         switchesView.tb_applyCommonRoundedCornerWithShadowStyle()
@@ -232,7 +232,7 @@ class IoDemoViewController: DemoViewController, IoDemoInteractionOutput {
         switch2OnOffLabel.style = StyleText.demoStatus
     }
     
-    private func setupLightsSectionAppearance() {
+    fileprivate func setupLightsSectionAppearance() {
         lightsLabel.tb_setText(lightsString, style: StyleText.header2)
         lightsView.backgroundColor = StyleColor.white
         lightsView.tb_applyCommonRoundedCornerWithShadowStyle()
@@ -241,28 +241,28 @@ class IoDemoViewController: DemoViewController, IoDemoInteractionOutput {
         light2OnOffLabel.style = StyleText.demoStatus
     }
     
-    private func setupRgbSectionAppearance() {
+    fileprivate func setupRgbSectionAppearance() {
         rgbLightsView?.backgroundColor = StyleColor.white
         rgbLightsView?.tb_applyCommonRoundedCornerWithShadowStyle()
         colorHueView?.tb_applyRoundedCorner(1)
         
-        rgbButton?.setImage(UIImage(named: "ic_led_lights_off")!, forState: .Normal)
+        rgbButton?.setImage(UIImage(named: "ic_led_lights_off")!, for: UIControlState())
         rgbStateLabel?.style = StyleText.demoStatus
         rgbStateLabel?.text = "--"
         
         colorLabel?.tb_setText(colorString, style: .header2)
-        colorSlider?.minimumTrackTintColor = UIColor.clearColor()
-        colorSlider?.maximumTrackTintColor = UIColor.clearColor()
+        colorSlider?.minimumTrackTintColor = UIColor.clear
+        colorSlider?.maximumTrackTintColor = UIColor.clear
         colorSlider?.minimumValue = 0.01
         colorSlider?.maximumValue = 0.99
-        colorSlider?.continuous = true
+        colorSlider?.isContinuous = true
         
         brightnessLabel?.tb_setText(brightnessString, style: .header2)
         brightnessSlider?.minimumTrackTintColor = StyleColor.lightGray
         brightnessSlider?.maximumTrackTintColor = StyleColor.lightGray
         brightnessSlider?.minimumValue = 0.01
         brightnessSlider?.maximumValue = 1.00
-        brightnessSlider?.continuous = true
+        brightnessSlider?.isContinuous = true
         
         brightnessNegativeLabel?.tb_setText("-", style: StyleText.demoStatus)
         brightnessPositiveLabel?.tb_setText("+", style: StyleText.demoStatus)
@@ -273,16 +273,16 @@ class IoDemoViewController: DemoViewController, IoDemoInteractionOutput {
         })
     }
     
-    private func addSliderGestures() {
+    fileprivate func addSliderGestures() {
         brightnessSlider?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(brightnessSliderTapped)))
         colorSlider?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(colorSliderTapped)))
     }
     
-    @objc func brightnessSliderTapped(recognizer: UITapGestureRecognizer) {
+    @objc func brightnessSliderTapped(_ recognizer: UITapGestureRecognizer) {
         brightnessSlider?.tb_updateSliderValueWithTap(recognizer)
     }
     
-    @objc func colorSliderTapped(recognizer: UITapGestureRecognizer) {
+    @objc func colorSliderTapped(_ recognizer: UITapGestureRecognizer) {
         colorSlider?.tb_updateSliderValueWithTap(recognizer)
     }
 }
@@ -294,10 +294,10 @@ extension LedRgb {
 }
 
 extension UISlider {
-    func tb_updateSliderValueWithTap(gesture: UITapGestureRecognizer) {
-        let point = gesture.locationInView(self)
+    func tb_updateSliderValueWithTap(_ gesture: UITapGestureRecognizer) {
+        let point = gesture.location(in: self)
         self.value = Float(point.x / self.frame.size.width)
-        self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+        self.sendActions(for: UIControlEvents.valueChanged)
     }
 }
 

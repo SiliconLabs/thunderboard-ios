@@ -11,14 +11,14 @@ import CoreBluetooth
 class BleEnvironmentDemoConnection : EnvironmentDemoConnection {
     
     var device: Device
-    private var bleDevice: BleDevice {
+    fileprivate var bleDevice: BleDevice {
         get { return device as! BleDevice }
     }
     
-    private var currentData: EnvironmentData = EnvironmentData()
-    private var pollingTimer: WeakTimer?
-    private var vocEnabled = false
-    private var co2Enabled = false
+    fileprivate var currentData: EnvironmentData = EnvironmentData()
+    fileprivate var pollingTimer: WeakTimer?
+    fileprivate var vocEnabled = false
+    fileprivate var co2Enabled = false
     weak var connectionDelegate: EnvironmentDemoConnectionDelegate?
 
     init(device: BleDevice) {
@@ -48,8 +48,8 @@ class BleEnvironmentDemoConnection : EnvironmentDemoConnection {
         set { }
     }
 
-    private func characteristicUpdated(characteristic: CBCharacteristic) {
-        switch characteristic.UUID {
+    fileprivate func characteristicUpdated(_ characteristic: CBCharacteristic) {
+        switch characteristic.uuid {
         case CBUUID.Temperature:
             if let temperature = characteristic.tb_int16Value() {
                 currentData.temperature = Double(temperature)/100
@@ -104,25 +104,25 @@ class BleEnvironmentDemoConnection : EnvironmentDemoConnection {
         }
     }
     
-    private func readCurrentValues() {
+    fileprivate func readCurrentValues() {
 
         capabilities.forEach({
             switch $0 {
-            case .Temperature:
+            case .temperature:
                 bleDevice.readValuesForCharacteristic(CBUUID.Temperature)
-            case .Humidity:
+            case .humidity:
                 bleDevice.readValuesForCharacteristic(CBUUID.Humidity)
-            case .UVIndex:
+            case .uvIndex:
                 bleDevice.readValuesForCharacteristic(CBUUID.UVIndex)
-            case .AmbientLight:
+            case .ambientLight:
                 bleDevice.readValuesForCharacteristic(CBUUID.AmbientLight)
-            case .AirQualityCO2:
+            case .airQualityCO2:
                 bleDevice.readValuesForCharacteristic(CBUUID.SenseAirQualityCarbonDioxide)
-            case .AirQualityVOC:
+            case .airQualityVOC:
                 bleDevice.readValuesForCharacteristic(CBUUID.SenseAirQualityVolatileOrganicCompounds)
-            case .SoundLevel:
+            case .soundLevel:
                 bleDevice.readValuesForCharacteristic(CBUUID.SoundLevelCustom)
-            case .AirPressure:
+            case .airPressure:
                 bleDevice.readValuesForCharacteristic(CBUUID.Pressure)
             default:
                 break
@@ -130,7 +130,7 @@ class BleEnvironmentDemoConnection : EnvironmentDemoConnection {
         })
     }
     
-    private func notifyUpdatedData() {
+    fileprivate func notifyUpdatedData() {
         self.connectionDelegate?.updatedEnvironmentData(currentData)
     }
 }

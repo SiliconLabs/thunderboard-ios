@@ -11,14 +11,14 @@ import CoreBluetooth
 class BleMotionDemoConnection: MotionDemoConnection {
     
     var device: Device
-    private var bleDevice: BleDevice {
+    fileprivate var bleDevice: BleDevice {
         get { return device as! BleDevice }
     }
     
     weak var connectionDelegate: MotionDemoConnectionDelegate?
 
-    private let startCalibrationId = 0x01
-    private let resetOrientationId = 0x02
+    fileprivate let startCalibrationId = 0x01
+    fileprivate let resetOrientationId = 0x02
 
     init(device: BleDevice) {
         self.device = device
@@ -30,9 +30,9 @@ class BleMotionDemoConnection: MotionDemoConnection {
         }
     }
     
-    func characteristicUpdated(characteristic: CBCharacteristic) {
+    func characteristicUpdated(_ characteristic: CBCharacteristic) {
 
-        switch characteristic.UUID {
+        switch characteristic.uuid {
         case CBUUID.CSCMeasurement:
             notifyRotation(characteristic)
 
@@ -52,7 +52,7 @@ class BleMotionDemoConnection: MotionDemoConnection {
             notifyColorUpdated(characteristic)
             
         default:
-            log.debug("unknown UUID: \(characteristic.UUID)")
+            log.debug("unknown UUID: \(characteristic.uuid)")
             break
         }
     }
@@ -60,21 +60,21 @@ class BleMotionDemoConnection: MotionDemoConnection {
     // MotionDemoConnection protocol
     
     func startCalibration() {
-        let data = NSData(bytes: [ UInt8(0x01) ], length: 1)
+        let data = Data(bytes: UnsafePointer<UInt8>([ UInt8(0x01) ]), count: 1)
         self.bleDevice.writeValueForCharacteristic(CBUUID.Command, value: data)
         
         self.connectionDelegate?.startedCalibration()
     }
     
     func resetOrientation() {
-        let data = NSData(bytes: [ UInt8(0x02) ], length: 1)
+        let data = Data(bytes: UnsafePointer<UInt8>([ UInt8(0x02) ]), count: 1)
         self.bleDevice.writeValueForCharacteristic(CBUUID.Command, value: data)
         
         self.connectionDelegate?.startedOrientationReset()
     }
     
     func resetRevolutions() {
-        let data = NSData(bytes: [ UInt8(0x01), 0, 0, 0, 0 ], length: 5)
+        let data = Data(bytes: UnsafePointer<UInt8>([ UInt8(0x01), 0, 0, 0, 0 ]), count: 5)
         self.bleDevice.writeValueForCharacteristic(CBUUID.CSCControlPoint, value: data)
         
         self.connectionDelegate?.startedRevolutionsReset()
@@ -86,7 +86,7 @@ class BleMotionDemoConnection: MotionDemoConnection {
     
     // Internal
     
-    private func notifyRotation(characteristic: CBCharacteristic) {
+    fileprivate func notifyRotation(_ characteristic: CBCharacteristic) {
         if let cscMeasurement:ThunderboardCSCMeasurement = characteristic.tb_cscMeasurementValue() {
             
             let revolutions = cscMeasurement.revolutionsSinceConnecting
@@ -95,19 +95,19 @@ class BleMotionDemoConnection: MotionDemoConnection {
         }
     }
     
-    private func notifyOrientation(characteristic: CBCharacteristic) {
+    fileprivate func notifyOrientation(_ characteristic: CBCharacteristic) {
         if let inclination = characteristic.tb_inclinationValue() {
             self.connectionDelegate?.orientationUpdated(inclination)
         }
     }
     
-    private func notifyAcceleration(characteristic: CBCharacteristic) {
+    fileprivate func notifyAcceleration(_ characteristic: CBCharacteristic) {
         if let vector = characteristic.tb_vectorValue() {
             self.connectionDelegate?.accelerationUpdated(vector)
         }
     }
     
-    private func notifyCommand(characteristic: CBCharacteristic) {
+    fileprivate func notifyCommand(_ characteristic: CBCharacteristic) {
         if let value = characteristic.tb_uint32Value() {
             
             let command = Int(value >> 8) & 0b11
@@ -125,20 +125,20 @@ class BleMotionDemoConnection: MotionDemoConnection {
         }
     }
     
-    private func notifyColorUpdated(characteristic: CBCharacteristic) {
+    fileprivate func notifyColorUpdated(_ characteristic: CBCharacteristic) {
         guard let ledState = characteristic.tb_analogLedState() else {
             return
         }
         
         switch ledState {
-        case .RGB(let on, let color):
+        case .rgb(let on, let color):
             connectionDelegate?.ledColorUpdated(on, color: color)
         default:
             break
         }
     }
     
-    private func notifyCSCControlPoint(characteristic: CBCharacteristic) {
+    fileprivate func notifyCSCControlPoint(_ characteristic: CBCharacteristic) {
         self.connectionDelegate?.finishedRevolutionsReset()
     }
 }

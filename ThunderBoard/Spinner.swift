@@ -37,28 +37,28 @@ class Spinner: UIView {
         }
     }
     
-    var trackColor: UIColor = UIColor.lightGrayColor() {
+    var trackColor: UIColor = UIColor.lightGray {
         didSet {
-            trackPathLayer.strokeColor = trackColor.CGColor
+            trackPathLayer.strokeColor = trackColor.cgColor
         }
     }
     
-    var lineColor: UIColor = UIColor.blueColor() {
+    var lineColor: UIColor = UIColor.blue {
         didSet {
-            colorPathLayer.strokeColor = lineColor.CGColor
+            colorPathLayer.strokeColor = lineColor.cgColor
         }
     }
     
     var hidesWhenStopped: Bool = true {
         didSet {
             if hidesWhenStopped {
-                self.hidden = !self.isAnimating
+                self.isHidden = !self.isAnimating
             }
         }
     }
 
-    private var isAnimating = false
-    func startAnimating(duration: NSTimeInterval) {
+    fileprivate var isAnimating = false
+    func startAnimating(_ duration: TimeInterval) {
 
         if isAnimating == false {
             isAnimating = true
@@ -68,17 +68,17 @@ class Spinner: UIView {
             strokeEndAnim.duration = duration
             strokeEndAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
             strokeEndAnim.repeatCount = HUGE
-            strokeEndAnim.removedOnCompletion = false
+            strokeEndAnim.isRemovedOnCompletion = false
             
-            colorPathLayer.addAnimation(strokeEndAnim, forKey: nil)
-            self.hidden = false
+            colorPathLayer.add(strokeEndAnim, forKey: nil)
+            self.isHidden = false
         }
     }
     
     func stopAnimating() {
         isAnimating = false
         colorPathLayer.removeAllAnimations()
-        self.hidden = self.hidesWhenStopped
+        self.isHidden = self.hidesWhenStopped
     }
     
     
@@ -88,13 +88,13 @@ class Spinner: UIView {
         super.layoutSubviews()
 
         trackPathLayer.frame = bounds
-        trackPathLayer.path = circlePath().CGPath
+        trackPathLayer.path = circlePath().cgPath
         
         colorPathLayer.frame = bounds
-        colorPathLayer.path = circlePath().CGPath
+        colorPathLayer.path = circlePath().cgPath
     }
     
-    private func commonSetup() {
+    fileprivate func commonSetup() {
         
         setupTrackPath()
         layer.addSublayer(trackPathLayer)
@@ -102,32 +102,32 @@ class Spinner: UIView {
         setupColorPath()
         layer.addSublayer(colorPathLayer)
         
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.clear
         self.clipsToBounds = false
-        self.hidden = hidesWhenStopped
+        self.isHidden = hidesWhenStopped
     }
     
-    private func setupTrackPath() {
+    fileprivate func setupTrackPath() {
         trackPathLayer.frame = bounds
         trackPathLayer.lineWidth = lineWidth
-        trackPathLayer.fillColor = UIColor.clearColor().CGColor
-        trackPathLayer.strokeColor = trackColor.CGColor
+        trackPathLayer.fillColor = UIColor.clear.cgColor
+        trackPathLayer.strokeColor = trackColor.cgColor
         trackPathLayer.strokeStart = 0
         trackPathLayer.strokeEnd = 1
     }
     
-    private func setupColorPath() {
+    fileprivate func setupColorPath() {
         colorPathLayer.frame = bounds
         colorPathLayer.lineWidth = lineWidth
-        colorPathLayer.fillColor = UIColor.clearColor().CGColor
-        colorPathLayer.strokeColor = lineColor.CGColor
+        colorPathLayer.fillColor = UIColor.clear.cgColor
+        colorPathLayer.strokeColor = lineColor.cgColor
         colorPathLayer.strokeStart = 0
         colorPathLayer.strokeEnd = 0
         colorPathLayer.lineCap = "butt"
     }
     
-    private func circlePath() -> UIBezierPath {
-        return UIBezierPath(arcCenter: CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds)),
+    fileprivate func circlePath() -> UIBezierPath {
+        return UIBezierPath(arcCenter: CGPoint(x: bounds.midX, y: bounds.midY),
             radius: (bounds.size.width - lineWidth) / 2,
             startAngle: CGFloat(M_PI_2),
             endAngle: CGFloat(5*M_PI_2),

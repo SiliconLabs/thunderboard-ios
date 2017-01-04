@@ -9,9 +9,9 @@ import UIKit
 
 class NotificationSettingsViewController : UIViewController, UITableViewDelegate, UITableViewDataSource, NotificationSettingsInteractionOutput {
     
-    private enum Sections: Int {
-    case AllowedDevices
-    case OtherDevices
+    fileprivate enum Sections: Int {
+    case allowedDevices
+    case otherDevices
     }
     
     @IBOutlet var tableView: UITableView?
@@ -24,61 +24,61 @@ class NotificationSettingsViewController : UIViewController, UITableViewDelegate
     var interaction: NotificationSettingsInteraction?
     weak var notificationManager: NotificationManager?
     
-    private var allowed = Array<NotificationDevice>()
-    private var other = Array<NotificationDevice>()
+    fileprivate var allowed = Array<NotificationDevice>()
+    fileprivate var other = Array<NotificationDevice>()
     
-    private let allowedDevicesTitle = "ALLOWED DEMO DEVICES"
-    private let otherDevicesTitle   = "OTHER DEMO DEVICES"
+    fileprivate let allowedDevicesTitle = "ALLOWED DEMO DEVICES"
+    fileprivate let otherDevicesTitle   = "OTHER DEMO DEVICES"
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAppearance()
         setupInteraction()
         
-        tableView?.registerClass(SettingsTableViewHeader.self, forHeaderFooterViewReuseIdentifier: "header")
+        tableView?.register(SettingsTableViewHeader.self, forHeaderFooterViewReuseIdentifier: "header")
         self.title = "Beacon Notifications"
     }
     
     //MARK: - UITableViewDataSource
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Sections(rawValue: section)! {
-        case .AllowedDevices:
+        case .allowedDevices:
             return allowed.count
-        case .OtherDevices:
+        case .otherDevices:
             return other.count
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("NotificationSettingsDeviceCell") as! NotificationSettingsDeviceCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "NotificationSettingsDeviceCell") as! NotificationSettingsDeviceCell
         updateCell(cell, indexPath: indexPath)
         return cell
     }
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch Sections(rawValue: section)! {
-        case .AllowedDevices:
+        case .allowedDevices:
             return 40
-        case .OtherDevices:
+        case .otherDevices:
             return 30
         }
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier("header") as! SettingsTableViewHeader
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as! SettingsTableViewHeader
         switch Sections(rawValue: section)! {
-        case .AllowedDevices:
+        case .allowedDevices:
             view.title = allowedDevicesTitle
-        case .OtherDevices:
+        case .otherDevices:
             view.title = otherDevicesTitle
         }
 
@@ -87,43 +87,43 @@ class NotificationSettingsViewController : UIViewController, UITableViewDelegate
     
     //MARK: - Actions
     
-    @IBAction func notificationSwitchChanged(sender: AnyObject?) {
-        if let on = notificationsEnabledSwitch?.on {
+    @IBAction func notificationSwitchChanged(_ sender: AnyObject?) {
+        if let on = notificationsEnabledSwitch?.isOn {
             self.interaction?.enableNotifications(on)
         }
     }
     
     @IBAction func handleBack() {
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     //MARK: - NotificationSettingsInteractionOutput
     
-    func notificationsEnabled(enabled: Bool) {
+    func notificationsEnabled(_ enabled: Bool) {
         notificationsEnabledSwitch?.setOn(enabled, animated: true)
-        self.tableView?.hidden = !enabled
+        self.tableView?.isHidden = !enabled
     }
     
     func locationServicesNotAllowed() {
-        let alert = UIAlertController(title: "Location Services Disabled", message: "Open Settings and enable Location in order to use beacons.", preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Cancel, handler: nil))
+        let alert = UIAlertController(title: "Location Services Disabled", message: "Open Settings and enable Location in order to use beacons.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.cancel, handler: nil))
         
-        let settings = UIAlertAction(title: "Open Settings", style: .Default) { (action: UIAlertAction) -> Void in
-            UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+        let settings = UIAlertAction(title: "Open Settings", style: .default) { (action: UIAlertAction) -> Void in
+            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
         }
         alert.addAction(settings)
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
     func notificationsNotAllowed() {
-        let alert = UIAlertController(title: "Notifications Disabled", message: "Open Settings and enable Notifications in order to use beacons.", preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Cancel, handler: nil))
+        let alert = UIAlertController(title: "Notifications Disabled", message: "Open Settings and enable Notifications in order to use beacons.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.cancel, handler: nil))
         
-        let settings = UIAlertAction(title: "Open Settings", style: .Default) { (action: UIAlertAction) -> Void in
-            UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+        let settings = UIAlertAction(title: "Open Settings", style: .default) { (action: UIAlertAction) -> Void in
+            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
         }
         alert.addAction(settings)
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
     func notificationDevicesUpdated() {
@@ -139,7 +139,7 @@ class NotificationSettingsViewController : UIViewController, UITableViewDelegate
 
     //MARK: - Private
     
-    private func setupAppearance() {
+    fileprivate func setupAppearance() {
         self.automaticallyAdjustsScrollViewInsets = false
         self.view.backgroundColor = StyleColor.lightGray
         
@@ -157,13 +157,13 @@ class NotificationSettingsViewController : UIViewController, UITableViewDelegate
         self.notificationsEnabledSwitch?.onTintColor = StyleColor.terbiumGreen
     }
     
-    private func setupInteraction() {
+    fileprivate func setupInteraction() {
         interaction = NotificationSettingsInteraction()
         interaction?.manager = self.notificationManager
         interaction?.output = self
     }
 
-    private func updateCell(cell: NotificationSettingsDeviceCell, indexPath: NSIndexPath) {
+    fileprivate func updateCell(_ cell: NotificationSettingsDeviceCell, indexPath: IndexPath) {
         guard let tableView = self.tableView else {
             return
         }
@@ -171,14 +171,14 @@ class NotificationSettingsViewController : UIViewController, UITableViewDelegate
         var device: NotificationDevice? = nil
         
         switch Sections(rawValue: indexPath.section)! {
-        case .AllowedDevices:
+        case .allowedDevices:
             device = allowed[indexPath.row]
             cell.setActionTitle("REMOVE")
             cell.deviceStatus?.text = device?.status.rawValue
             cell.actionHandler = { [weak self] in
                 self?.interaction?.removeDevice(indexPath.row)
             }
-        case .OtherDevices:
+        case .otherDevices:
             device = other[indexPath.row]
             cell.setActionTitle("ALLOW")
             cell.deviceStatus?.text = ""

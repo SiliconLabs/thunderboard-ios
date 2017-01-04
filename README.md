@@ -51,7 +51,7 @@ ThunderBoard attempts to shorten all demo URLs with the [is.gd](http://is.gd) UR
 
 # Building the code
 
-_The ThunderBoard project is written in Swift 2, and thus requires Xcode 7.0 or newer._
+_The ThunderBoard project is written in Swift 3, and thus requires Xcode 8.0 or newer._
 
 1. Download Xcode from the Mac App Store or from the [developer tools site](https://developer.apple.com/xcode/downloads/).
 2. Open `ThunderBoard.xcodeproj` in Xcode

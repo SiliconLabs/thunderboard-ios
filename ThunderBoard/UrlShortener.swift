@@ -8,5 +8,5 @@
 import Foundation
 
 protocol UrlShortener {
-    func shortenUrl(url: String, completion: ((url: String?, error: NSError?) -> Void))
+    func shortenUrl(_ url: String, completion: @escaping ((_ url: String?, _ error: NSError?) -> Void))
 }

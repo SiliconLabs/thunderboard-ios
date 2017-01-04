@@ -23,34 +23,34 @@ class MotionDemoStreamingConnection : DemoStreamingConnection {
         return "motion"
     }
     
-    override func sampleFrequency() -> NSTimeInterval {
+    override func sampleFrequency() -> TimeInterval {
         return 0.1
     }
     
     override func sampleDemoData() -> [DemoStreamingDataPoint]? {
         
         guard let acceleration = self.dataSource?.currentAcceleration(),
-            orientation = self.dataSource?.currentOrientation(),
-            position = self.dataSource?.currentPosition() else {
+            let orientation = self.dataSource?.currentOrientation(),
+            let position = self.dataSource?.currentPosition() else {
 
             return nil
         }
 
         var data:[String: AnyObject] = Dictionary<String, AnyObject>()
         
-        data["ax"] = acceleration.x
-        data["ay"] = acceleration.y
-        data["az"] = acceleration.z
+        data["ax"] = acceleration.x as AnyObject?
+        data["ay"] = acceleration.y as AnyObject?
+        data["az"] = acceleration.z as AnyObject?
         
-        data["ox"] = orientation.x
-        data["oy"] = orientation.y
-        data["oz"] = orientation.z
+        data["ox"] = orientation.x as AnyObject?
+        data["oy"] = orientation.y as AnyObject?
+        data["oz"] = orientation.z as AnyObject?
         
-        data["speed"] = position.speedInMetersPerSecond
-        data["distance"] = position.distance
+        data["speed"] = position.speedInMetersPerSecond as AnyObject?
+        data["distance"] = position.distance as AnyObject?
 
         let path = "motion/data"
-        let dataPoint = DemoStreamingDataPoint(path: path,  timestamp: String(NSDate.tb_currentTimestamp), data: data)
+        let dataPoint = DemoStreamingDataPoint(path: path,  timestamp: String(Date.tb_currentTimestamp), data: data as AnyObject)
         return [dataPoint]
     }
 }

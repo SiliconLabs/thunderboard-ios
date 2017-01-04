@@ -15,17 +15,17 @@ class SimulatedIoDemoConnection : IoDemoConnection {
     // For demo, switches will shadow the LEDs
     var numberOfLeds: Int = 3
     var numberOfSwitches: Int = 2
-    private var deviceState: [LedState] = []
+    fileprivate var deviceState: [LedState] = []
     
     init(device: SimulatedDevice) {
         self.device = device
 
-        deviceState.append(LedState.Digital(false, device.ledColor(0)))
-        deviceState.append(LedState.Digital(false, device.ledColor(1)))
-        deviceState.append(LedState.RGB(false, LedRgb(red: 0.90, green: 0.50, blue: 0)))
+        deviceState.append(LedState.digital(false, device.ledColor(0)))
+        deviceState.append(LedState.digital(false, device.ledColor(1)))
+        deviceState.append(LedState.rgb(false, LedRgb(red: 0.90, green: 0.50, blue: 0)))
     }
 
-    func setLed(led: Int, state: LedState) {
+    func setLed(_ led: Int, state: LedState) {
         let index = Int(led)
         if index < deviceState.count {
             deviceState[index] = state
@@ -38,16 +38,16 @@ class SimulatedIoDemoConnection : IoDemoConnection {
         }
     }
     
-    func ledState(led: Int) -> LedState {
+    func ledState(_ led: Int) -> LedState {
         return deviceState[led]
     }
     
-    func isSwitchPressed(switchIndex: Int) -> Bool {
+    func isSwitchPressed(_ switchIndex: Int) -> Bool {
         let state = ledState(switchIndex)
         switch state {
-        case .Digital(let on, _):
+        case .digital(let on, _):
             return on
-        case .RGB(let on, _):
+        case .rgb(let on, _):
             return on
         }
     }

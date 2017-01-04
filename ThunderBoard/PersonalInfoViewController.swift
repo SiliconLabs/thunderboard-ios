@@ -19,12 +19,12 @@ class PersonalInfoViewController: UITableViewController {
     @IBOutlet weak var phoneTextField:  UITextField!
     @IBOutlet weak var emailTextField:  UITextField!
     
-    private let nameText  = "NAME"
-    private let titleText = "TITLE"
-    private let emailText = "EMAIL"
-    private let phoneText = "PHONE"
+    fileprivate let nameText  = "NAME"
+    fileprivate let titleText = "TITLE"
+    fileprivate let emailText = "EMAIL"
+    fileprivate let phoneText = "PHONE"
     
-    private let settings = ThunderboardSettings()
+    fileprivate let settings = ThunderboardSettings()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +32,7 @@ class PersonalInfoViewController: UITableViewController {
         setupNavButtons()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         populateInputFields()
     }
     
@@ -43,7 +43,7 @@ class PersonalInfoViewController: UITableViewController {
         self.emailTextField.text = settings.userEmail
     }
     
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let infoCell = cell as? PersonalInfoTableCell else {
             fatalError("invalid cell class")
         }
@@ -56,7 +56,7 @@ class PersonalInfoViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
             return 0
         } else {
@@ -64,7 +64,7 @@ class PersonalInfoViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerView = UITableViewHeaderFooterView()
         headerView.contentView.backgroundColor = StyleColor.siliconGray
@@ -94,13 +94,13 @@ class PersonalInfoViewController: UITableViewController {
     }
     
     func setupNavButtons() {
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "btn_navbar_close"), style: UIBarButtonItemStyle.Done, target: self, action: #selector(handleCancel))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "btn_navbar_done_active"), style: UIBarButtonItemStyle.Done, target: self, action: #selector(handleSave))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "btn_navbar_close"), style: UIBarButtonItemStyle.done, target: self, action: #selector(handleCancel))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "btn_navbar_done_active"), style: UIBarButtonItemStyle.done, target: self, action: #selector(handleSave))
     }
     
     //MARK: Action Handlers
     func handleCancel() {
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     func handleSave() {
@@ -109,6 +109,6 @@ class PersonalInfoViewController: UITableViewController {
         settings.userPhone     = self.phoneTextField.text
         settings.userEmail     = self.emailTextField.text
         
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
 }

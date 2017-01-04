@@ -13,38 +13,38 @@ protocol IoDemoConnection: DemoConnection {
     var numberOfLeds: Int { get }
     var numberOfSwitches: Int { get }
     
-    func setLed(led: Int, state: LedState)
-    func ledState(led: Int) -> LedState
+    func setLed(_ led: Int, state: LedState)
+    func ledState(_ led: Int) -> LedState
 
-    func isSwitchPressed(switchIndex: Int) -> Bool
+    func isSwitchPressed(_ switchIndex: Int) -> Bool
 }
 
 protocol IoDemoConnectionDelegate: class {
     func demoDeviceDisconnected()
-    func buttonPressed(button: Int, pressed: Bool)
-    func updatedLed(led: Int, state: LedState)
+    func buttonPressed(_ button: Int, pressed: Bool)
+    func updatedLed(_ led: Int, state: LedState)
 }
 
 extension IoDemoConnection {
     var capabilities: Set<DeviceCapability> {
         let ioDemoCapabilities: Set<DeviceCapability> = [
-            .DigitalInput,
-            .DigitalOutput,
-            .RGBOutput
+            .digitalInput,
+            .digitalOutput,
+            .rgbOutput
         ]
         
         let enabledDeviceCapabilities = device.capabilities.filter({ (capability) -> Bool in
-            if device.model != .Sense {
+            if device.model != .sense {
                 return true
             }
             
             // Disable RGB on coin cell power
             switch capability {
-            case .RGBOutput:
+            case .rgbOutput:
                 switch device.power {
-                case .Unknown, .CoinCell:
+                case .unknown, .coinCell:
                     return false
-                case .USB, .AA, .GenericBattery:
+                case .usb, .aa, .genericBattery:
                     return true
                 }
                 
@@ -53,6 +53,6 @@ extension IoDemoConnection {
             }
         })
         
-        return ioDemoCapabilities.intersect(enabledDeviceCapabilities)
+        return ioDemoCapabilities.intersection(enabledDeviceCapabilities)
     }
 }

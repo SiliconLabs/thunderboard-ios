@@ -20,23 +20,23 @@ class BleIoDemoConnection: IoDemoConnection {
         return 2    // TODO: detect this value based on digital characteristics
     }
 
-    private var bleDevice: BleDevice {
+    fileprivate var bleDevice: BleDevice {
         get { return device as! BleDevice }
     }
     
-    private var ledMask: UInt8    = 0
-    private var buttonMask: UInt8 = 0
-    private let digitalBits = 2 // TODO: each digital uses two bits
-    private let digitalInputIndexes = [ 0, 1 ]
-    private let digitalOutputIndexes = [ 0, 1 ]
-    private var analogState: LedState?  // only support one analog LED currently
-    private let hasAnalogRgb: Bool
-    private let ledWriteThrottle = Throttle(interval: 0.25) // up to four writes per second
+    fileprivate var ledMask: UInt8    = 0
+    fileprivate var buttonMask: UInt8 = 0
+    fileprivate let digitalBits = 2 // TODO: each digital uses two bits
+    fileprivate let digitalInputIndexes = [ 0, 1 ]
+    fileprivate let digitalOutputIndexes = [ 0, 1 ]
+    fileprivate var analogState: LedState?  // only support one analog LED currently
+    fileprivate let hasAnalogRgb: Bool
+    fileprivate let ledWriteThrottle = Throttle(interval: 0.25) // up to four writes per second
 
     init(device: BleDevice) {
         self.device = device
         
-        hasAnalogRgb = device.capabilities.contains(.RGBOutput)
+        hasAnalogRgb = device.capabilities.contains(.rgbOutput)
         
         self.bleDevice.demoConnectionCharacteristicValueUpdated = { [weak self] (characteristic: CBCharacteristic) in
             self?.characteristicUpdated(characteristic)
@@ -57,9 +57,9 @@ class BleIoDemoConnection: IoDemoConnection {
         return id
     }
     
-    func characteristicUpdated(characteristic: CBCharacteristic) {
+    func characteristicUpdated(_ characteristic: CBCharacteristic) {
         log.debug("updated \(characteristic)")
-        switch characteristic.UUID {
+        switch characteristic.uuid {
         case CBUUID.Digital:
             if characteristic.tb_supportsNotificationOrIndication() {
                 updateButtonState(characteristic)
@@ -86,16 +86,16 @@ class BleIoDemoConnection: IoDemoConnection {
         }
     }
 
-    func setLed(led: Int, state: LedState) {
+    func setLed(_ led: Int, state: LedState) {
         switch state {
-        case .Digital(let on, _):
+        case .digital(let on, _):
             setDigitalOutput(led, on: on)
-        case .RGB(let on, let color):
+        case .rgb(let on, let color):
             setAnalogOutput(on, color: color)
         }
     }
 
-    func ledState(led: Int) -> LedState {
+    func ledState(_ led: Int) -> LedState {
         if digitalOutputIndexes.contains(led) {
             return digitalState(ledMask, index: led)
         }
@@ -104,13 +104,13 @@ class BleIoDemoConnection: IoDemoConnection {
         }
     }
     
-    func isSwitchPressed(switchIndex: Int) -> Bool {
+    func isSwitchPressed(_ switchIndex: Int) -> Bool {
         return isDigitalHigh(buttonMask, index: switchIndex)
     }
 
     //MARK: - Internal
     
-    private func setDigitalOutput(index: Int, on: Bool) {
+    fileprivate func setDigitalOutput(_ index: Int, on: Bool) {
         let shift = UInt(index) * UInt(digitalBits)
         var mask = ledMask
         
@@ -121,7 +121,7 @@ class BleIoDemoConnection: IoDemoConnection {
             mask = mask & ~UInt8(1 << shift)
         }
         
-        let data = NSData(bytes: [ mask ], length: 1)
+        let data = Data(bytes: UnsafePointer<UInt8>([ mask ]), count: 1)
         self.bleDevice.writeValueForCharacteristic(CBUUID.Digital, value: data)
         
         // *** Note: sending notification optimistically ***
@@ -132,7 +132,7 @@ class BleIoDemoConnection: IoDemoConnection {
         notifyLedState()
     }
     
-    private func setAnalogOutput(on: Bool, color: LedRgb) {
+    fileprivate func setAnalogOutput(_ on: Bool, color: LedRgb) {
         let data = colorDataForLedRgb(on, color: color)
         
         ledWriteThrottle.run() {
@@ -140,30 +140,30 @@ class BleIoDemoConnection: IoDemoConnection {
         }
 
         // Send analog notification optimistically
-        analogState = LedState.RGB(on, color)
+        analogState = LedState.rgb(on, color)
         notifyLedState()
     }
     
-    private func digitalState(mask: UInt8, index: Int) -> LedState {
+    fileprivate func digitalState(_ mask: UInt8, index: Int) -> LedState {
         let ledColor = device.ledColor(index)
-        return LedState.Digital(isDigitalHigh(ledMask, index: index), ledColor)
+        return LedState.digital(isDigitalHigh(ledMask, index: index), ledColor)
     }
     
-    private func analogState(index: Int) -> LedState {
+    fileprivate func analogState(_ index: Int) -> LedState {
         guard let analogState = analogState else {
             log.error("invalid analog state")
-            return LedState.RGB(false, LedRgb(red: 0, green: 0, blue: 0))
+            return LedState.rgb(false, LedRgb(red: 0, green: 0, blue: 0))
         }
         
         return analogState
     }
     
-    private func isDigitalHigh(mask: UInt8, index: Int) -> Bool {
+    fileprivate func isDigitalHigh(_ mask: UInt8, index: Int) -> Bool {
         let shift = index * Int(digitalBits)
         return (mask & UInt8(1 << shift)) != 0
     }
     
-    private func updateButtonState(characteristic: CBCharacteristic) {
+    fileprivate func updateButtonState(_ characteristic: CBCharacteristic) {
         guard let newMask = characteristic.tb_uint8Value() else {
             return
         }
@@ -171,14 +171,14 @@ class BleIoDemoConnection: IoDemoConnection {
         buttonMask = newMask
     }
     
-    private func notifyButtonState() {
+    fileprivate func notifyButtonState() {
         for index in digitalInputIndexes {
             self.connectionDelegate?.buttonPressed(index, pressed: isDigitalHigh(buttonMask, index: index))
         }
     }
 
-    private func updateLedState(characteristic: CBCharacteristic) {
-        switch characteristic.UUID {
+    fileprivate func updateLedState(_ characteristic: CBCharacteristic) {
+        switch characteristic.uuid {
         case CBUUID.Digital:
             ledMask = characteristic.tb_uint8Value() ?? ledMask
             break
@@ -190,7 +190,7 @@ class BleIoDemoConnection: IoDemoConnection {
         }
     }
     
-    private func notifyLedState() {
+    fileprivate func notifyLedState() {
         for index in digitalOutputIndexes {
             let state = digitalState(ledMask, index: index)
             self.connectionDelegate?.updatedLed(index, state: state)
@@ -201,13 +201,13 @@ class BleIoDemoConnection: IoDemoConnection {
         }
     }
     
-    private func colorDataForLedRgb(on: Bool, color: LedRgb) -> NSData {
+    fileprivate func colorDataForLedRgb(_ on: Bool, color: LedRgb) -> Data {
         // 0000
         // 0001 0x01 back, lower (near USB)
         // 0010 0x02 back, upper
         // 0100 0x04 front, upper
         // 1000 0x08 front, lower (near USB)
         let enabledLeds = on ? UInt8(0x0F) : UInt8(0x00)
-        return NSData(bytes: [enabledLeds, UInt8(color.red * 255),UInt8(color.green * 255),UInt8(color.blue * 255)] as [UInt8], length: 4)
+        return Data(bytes: UnsafePointer<UInt8>([enabledLeds, UInt8(color.red * 255),UInt8(color.green * 255),UInt8(color.blue * 255)] as [UInt8]), count: 4)
     }
 }

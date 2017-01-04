@@ -6,16 +6,40 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractionOutput, UITableViewDataSource, UITableViewDelegate {
 
-    private let lookingForDevices               =   "Looking for Devices"
-    private let connectionTimeoutTitle          =   "Connection Failed"
-    private let connectionDismiss               =   "OK"
-    private let noDevicesFoundString            =   "No Devices Found"
-    private let bluetoothIsDisabledString       =   "Bluetooth is Disabled"
+    fileprivate let lookingForDevices               =   "Looking for Devices"
+    fileprivate let connectionTimeoutTitle          =   "Connection Failed"
+    fileprivate let connectionDismiss               =   "OK"
+    fileprivate let noDevicesFoundString            =   "No Devices Found"
+    fileprivate let bluetoothIsDisabledString       =   "Bluetooth is Disabled"
     
-    private func connectionTimeoutMessage(deviceName: String) -> String {
+    fileprivate func connectionTimeoutMessage(_ deviceName: String) -> String {
         return "Unable to connect to the device \(deviceName)"
     }
     
@@ -26,18 +50,18 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
     @IBOutlet var deviceTableHeight: NSLayoutConstraint?
     @IBOutlet var mmLogo: UIImageView?
     
-    private let initialAnimationHold    = NSTimeInterval(1.3)
-    private let initialAnimationFade    = NSTimeInterval(0.3)
-    private let initialAnimationSlide   = NSTimeInterval(0.7)
-    private let bottomSectionSmallHeight = 242
-    private let bottomSectionSizeChangeThreshold = 4
-    private let tableAnimationDuration = NSTimeInterval(0.3)
+    fileprivate let initialAnimationHold    = TimeInterval(1.3)
+    fileprivate let initialAnimationFade    = TimeInterval(0.3)
+    fileprivate let initialAnimationSlide   = TimeInterval(0.7)
+    fileprivate let bottomSectionSmallHeight = 242
+    fileprivate let bottomSectionSizeChangeThreshold = 4
+    fileprivate let tableAnimationDuration = TimeInterval(0.3)
     
     @IBOutlet weak var logoImage: UIImageView?
     @IBOutlet weak var tableView: UITableView? {
         didSet {
             self.tableView?.backgroundColor = StyleColor.white
-            self.tableView?.separatorStyle = .None
+            self.tableView?.separatorStyle = .none
         }
     }
     @IBOutlet weak var messagingViewContainer: UIView? {
@@ -60,13 +84,13 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
         interaction?.showSettings()
     }
     
-    private let deviceNotFoundTimeoutInterval = 10.0
+    fileprivate let deviceNotFoundTimeoutInterval = 10.0
     
     var interaction: DeviceSelectionInteraction?
     weak var notificationManager: NotificationManager?
     
-    private weak var currentAlert: UIAlertController?
-    private var noDevicesTimeoutTimer: WeakTimer?
+    fileprivate weak var currentAlert: UIAlertController?
+    fileprivate var noDevicesTimeoutTimer: WeakTimer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,13 +98,13 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
         self.title = ""
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.tb_setNavigationBarStyleForDemo(.Transparent)
+        self.navigationController?.tb_setNavigationBarStyleForDemo(.transparent)
         self.interaction?.startScanning()
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.interaction?.stopScanning()
         stopTimeoutToFindDevices()
@@ -102,7 +126,7 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
     
     //MARK: - UITableView DataSource
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let numDevices = self.interaction?.numberOfDevices() else {
             return 0
         }
@@ -110,24 +134,24 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
         return numDevices
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let display = (self.interaction?.deviceAtIndex(indexPath.row))!
-        let cell = self.tableView?.dequeueReusableCellWithIdentifier("deviceCell") as! DeviceTableViewCell
+        let cell = self.tableView?.dequeueReusableCell(withIdentifier: "deviceCell") as! DeviceTableViewCell
         updateData(cell, device:display)
         cell.drawSeparator = indexPath.row > 0
         return cell
     }
 
-    func updateData(cell: DeviceTableViewCell, device:DiscoveredDeviceDisplay) {
+    func updateData(_ cell: DeviceTableViewCell, device:DiscoveredDeviceDisplay) {
         cell.backgroundColor = StyleColor.white
         cell.selectedBackgroundView = UIView()
         cell.selectedBackgroundView?.backgroundColor = StyleColor.lightGray
         cell.nameLabel.tb_setText(device.name, style: StyleText.deviceName)
         
         if device.connecting {
-            cell.rssiImage.hidden = true
-            cell.rssiLabel.hidden = true
-            cell.connectingSpinner.hidden = false
+            cell.rssiImage.isHidden = true
+            cell.rssiLabel.isHidden = true
+            cell.connectingSpinner.isHidden = false
             
             cell.connectingSpinner.trackColor = StyleColor.lightGray
             cell.connectingSpinner.lineColor = StyleColor.terbiumGreen
@@ -153,111 +177,111 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
                 }
 
                 cell.rssiLabel.tb_setText("\(rssi) dBm", style: StyleText.subtitle2)
-                cell.rssiLabel.hidden = false
+                cell.rssiLabel.isHidden = false
             }
 
             cell.rssiImage.image = UIImage(named: signalImage)
-            cell.rssiImage.hidden = false
+            cell.rssiImage.isHidden = false
 
             cell.connectingSpinner.stopAnimating()
-            cell.connectingSpinner.hidden = true
+            cell.connectingSpinner.isHidden = true
         }
     }
 
     //MARK: - UITableView Delegate
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         selectDevice(indexPath.row)
     }
     
     //MARK:- Internal
     
-    private var viewState: DeviceListViewState = .Initial {
+    fileprivate var viewState: DeviceListViewState = .initial {
         didSet {
             switch viewState {
-            case .Initial:
-                self.messagingViewContainer?.hidden = true
-                self.tableView?.hidden = true
+            case .initial:
+                self.messagingViewContainer?.isHidden = true
+                self.tableView?.isHidden = true
                 makeSpinnerVisible(false)
 
-            case .BluetoothDisabled:
-                self.messagingViewContainer?.hidden = false
-                self.bluetoothDisabledAlert?.hidden = false
-                self.tableView?.hidden = true
+            case .bluetoothDisabled:
+                self.messagingViewContainer?.isHidden = false
+                self.bluetoothDisabledAlert?.isHidden = false
+                self.tableView?.isHidden = true
                 makeSpinnerVisible(false)
                 self.userMessageLabel?.tb_setText(bluetoothIsDisabledString, style: StyleText.deviceListStatus)
                 animateInitialTransition()
                 
-            case .Searching:
-                self.messagingViewContainer?.hidden = false
-                self.bluetoothDisabledAlert?.hidden = true
-                self.tableView?.hidden = true
+            case .searching:
+                self.messagingViewContainer?.isHidden = false
+                self.bluetoothDisabledAlert?.isHidden = true
+                self.tableView?.isHidden = true
                 makeSpinnerVisible(true)
                 self.userMessageLabel?.tb_setText(lookingForDevices, style: StyleText.deviceListStatus)
                 animateInitialTransition()
                 
-            case .NoDevicesFound:
-                self.messagingViewContainer?.hidden = false
-                self.bluetoothDisabledAlert?.hidden = true
-                self.tableView?.hidden = true
+            case .noDevicesFound:
+                self.messagingViewContainer?.isHidden = false
+                self.bluetoothDisabledAlert?.isHidden = true
+                self.tableView?.isHidden = true
                 makeSpinnerVisible(true)
                 self.userMessageLabel?.tb_setText(noDevicesFoundString, style: StyleText.deviceListStatus)
                 animateInitialTransition()
 
-            case .DevicesFound:
-                self.messagingViewContainer?.hidden = true
-                self.tableView?.hidden = false
+            case .devicesFound:
+                self.messagingViewContainer?.isHidden = true
+                self.tableView?.isHidden = false
                 makeSpinnerVisible(false)
                 animateInitialTransition()
             }
         }
     }
     enum DeviceListViewState {
-        case Initial
-        case BluetoothDisabled
-        case Searching
-        case NoDevicesFound
-        case DevicesFound
+        case initial
+        case bluetoothDisabled
+        case searching
+        case noDevicesFound
+        case devicesFound
     }
     
-    private func selectDevice(deviceIndex: Int) {
+    fileprivate func selectDevice(_ deviceIndex: Int) {
         self.interaction?.connectToDevice(deviceIndex)
     }
     
-    private func showBluetoothDisabledWarning() {
-        viewState = .BluetoothDisabled
+    fileprivate func showBluetoothDisabledWarning() {
+        viewState = .bluetoothDisabled
     }
     
-    private func hideBluetoothDisabledWarning() {
-        viewState = .Searching
+    fileprivate func hideBluetoothDisabledWarning() {
+        viewState = .searching
     }
     
-    private func showNoDevicesFoundWarning() {
-        viewState = .NoDevicesFound
+    fileprivate func showNoDevicesFoundWarning() {
+        viewState = .noDevicesFound
     }
     
-    private func hideNoDevicesFoundWarning() {
-        viewState = .DevicesFound
+    fileprivate func hideNoDevicesFoundWarning() {
+        viewState = .devicesFound
     }
     
-    private func makeSpinnerVisible(visible: Bool) {
+    fileprivate func makeSpinnerVisible(_ visible: Bool) {
         visible ? spinner?.startAnimating(StyleAnimations.spinnerDuration) : spinner?.stopAnimating()
-        spinner?.hidden = !visible
+        spinner?.isHidden = !visible
     }
     
-    private func showDemoListWithConfiguration(configuration: DemoConfiguration) {
+    fileprivate func showDemoListWithConfiguration(_ configuration: DemoConfiguration) {
         self.dismissAllAlerts({
             self.presenter?.showDemoSelection(configuration)
         })
     }
     
-    private func showConnectionTimedOutAlert(deviceName: String) {
+    fileprivate func showConnectionTimedOutAlert(_ deviceName: String) {
         self.dismissAllAlerts({
-            let alert = UIAlertController(title: self.connectionTimeoutTitle, message: self.connectionTimeoutMessage(deviceName), preferredStyle: .Alert)
-            alert.addAction(UIAlertAction(title: self.connectionDismiss, style: .Cancel, handler: nil))
+            let alert = UIAlertController(title: self.connectionTimeoutTitle, message: self.connectionTimeoutMessage(deviceName), preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: self.connectionDismiss, style: .cancel, handler: nil))
             alert.view.tintColor = StyleColor.siliconGray
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
             
             self.currentAlert = alert
         })
@@ -265,13 +289,13 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
         self.tableView?.reloadData()
     }
     
-    private func showConnectionInProgress() {
+    fileprivate func showConnectionInProgress() {
         self.tableView?.reloadData()
     }
     
-    private func dismissAllAlerts(completion: (() -> Void)?) {
+    fileprivate func dismissAllAlerts(_ completion: (() -> Void)?) {
         if let current = self.currentAlert {
-            current.dismissViewControllerAnimated(false, completion: completion)
+            current.dismiss(animated: false, completion: completion)
             self.currentAlert = nil
         }
         else {
@@ -279,13 +303,13 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
         }
     }
     
-    private var initialAnimationCompleted = false
-    private func animateInitialTransition() {
+    fileprivate var initialAnimationCompleted = false
+    fileprivate func animateInitialTransition() {
         if initialAnimationCompleted == false {
             initialAnimationCompleted = true
             delay(initialAnimationHold) {
-                NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-                    UIView.animateWithDuration(self.initialAnimationFade, animations: {
+                OperationQueue.main.addOperation { () -> Void in
+                    UIView.animate(withDuration: self.initialAnimationFade, animations: {
                         self.mmLogo?.alpha = 0.0
                         
                     }, completion: { (complete) -> Void in
@@ -295,7 +319,7 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
                             
                             self.messageContainerTopLayout?.constant = -1 * CGFloat(self.bottomSectionSmallHeight)
                             
-                            UIView.animateWithDuration(self.initialAnimationSlide, animations: {
+                            UIView.animate(withDuration: self.initialAnimationSlide, animations: {
                                 self.view.layoutIfNeeded()
                             })
                         }
@@ -308,7 +332,7 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
     //MARK:- DeviceSelectionInteractionOutput
     
     // power
-    func bleEnabled(enabled: Bool) {
+    func bleEnabled(_ enabled: Bool) {
         log.debug("enabed=\(enabled)")
         
         if enabled {
@@ -321,15 +345,15 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
     
     // scanning
 
-    func bleScanning(scanning: Bool) {
+    func bleScanning(_ scanning: Bool) {
         log.debug("scanning=\(scanning)")
         
         if scanning {
             if self.interaction?.numberOfDevices() > 0 {
-                viewState = .DevicesFound
+                viewState = .devicesFound
             }
             else {
-                viewState = .Searching
+                viewState = .searching
             }
             
             startTimeoutToFindDevices()
@@ -345,10 +369,10 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
         if let count = self.interaction?.numberOfDevices() {
             
             if count > 0 {
-                viewState = .DevicesFound
+                viewState = .devicesFound
             }
             else {
-                viewState = .Searching
+                viewState = .searching
             }
             
             startTimeoutToFindDevices()
@@ -356,28 +380,28 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
             if count >= bottomSectionSizeChangeThreshold {
                 let maxHeight = self.view.frame.size.height * 0.65
                 self.deviceTableHeight?.constant = CGFloat(maxHeight)
-                UIView.animateWithDuration(tableAnimationDuration) { () -> Void in
+                UIView.animate(withDuration: tableAnimationDuration, animations: { () -> Void in
                     self.view.layoutIfNeeded()
-                }
+                }) 
             }
         }
     }
     
-    func bleDeviceUpdated(device: DiscoveredDeviceDisplay, index: Int) {
-        if let cell = tableView?.cellForRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0)) as! DeviceTableViewCell! {
+    func bleDeviceUpdated(_ device: DiscoveredDeviceDisplay, index: Int) {
+        if let cell = tableView?.cellForRow(at: IndexPath(row: index, section: 0)) as! DeviceTableViewCell! {
             updateData(cell, device: device)
         }
     }
     
-    func interactionShowConnectionInProgress(index: Int) {
+    func interactionShowConnectionInProgress(_ index: Int) {
         self.showConnectionInProgress()
     }
     
-    func interactionShowConnectionTimedOut(deviceName: String) {
+    func interactionShowConnectionTimedOut(_ deviceName: String) {
         self.showConnectionTimedOutAlert(deviceName)
     }
     
-    func interactionShowConnectionDemos(configuration: DemoConfiguration) {
+    func interactionShowConnectionDemos(_ configuration: DemoConfiguration) {
         self.showDemoListWithConfiguration(configuration)
     }
 

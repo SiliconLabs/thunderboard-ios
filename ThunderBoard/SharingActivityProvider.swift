@@ -9,37 +9,37 @@ import UIKit
 
 class SharingActivityProvider : UIActivityItemProvider {
 
-    private let thunderboardUrl = ApplicationConfig.ProductMicroSiteUrl
-    private let settings = ThunderboardSettings()
+    fileprivate let thunderboardUrl = ApplicationConfig.ProductMicroSiteUrl
+    fileprivate let settings = ThunderboardSettings()
 
-    private var demoUrl: String
+    fileprivate var demoUrl: String
     init(url: String) {
         demoUrl = url
         super.init(placeholderItem: demoUrl)
     }
     
-    override func item() -> AnyObject {
+    override var item : Any {
         guard let activityType = self.activityType else {
-            return demoUrl
+            return demoUrl as AnyObject
         }
         
         switch activityType {
-        case UIActivityTypeMessage:
-            return smsMessageItem()
+        case UIActivityType.message:
+            return smsMessageItem() as AnyObject
             
-        case UIActivityTypeMail:
-            return emailMessageItem()
+        case UIActivityType.mail:
+            return emailMessageItem() as AnyObject
             
         default:
-            return demoUrl
+            return demoUrl as AnyObject
         }
     }
     
-    override func activityViewController(activityViewController: UIActivityViewController, subjectForActivityType activityType: String?) -> String {
+    override func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivityType?) -> String {
         return "Silicon Labs Demo Device Data"
     }
     
-    private func smsMessageItem() -> String {
+    fileprivate func smsMessageItem() -> String {
         //    Here is the link to access your Silicon Labs Demo Device synced data: <URL>
         //    Sent by <Name>, <Title>, <Email>, <Phone>
         
@@ -64,7 +64,7 @@ class SharingActivityProvider : UIActivityItemProvider {
         return message
     }
     
-    private func emailMessageItem() -> String {
+    fileprivate func emailMessageItem() -> String {
         //    Here is the link to access your synced data. It will remain active for 30 days after your sync ends.
         //    <URL>
         //    Learn more about Thunderboard at <URL>.

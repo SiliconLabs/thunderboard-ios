@@ -12,32 +12,32 @@ import UIKit
 
 typealias AsyncOperationBlock = ((AsyncOperation) -> Void)
 
-class AsyncOperation: NSOperation {
+class AsyncOperation: Operation {
 
     var operationBlock: AsyncOperationBlock?
     
-    init(block: AsyncOperationBlock) {
+    init(block: @escaping AsyncOperationBlock) {
         super.init()
         self.operationBlock = block
     }
     
-    private var state = OperationState.Ready {
+    fileprivate var state = OperationState.ready {
         willSet {
-            willChangeValueForKey(newValue.keyPath())
-            willChangeValueForKey(state.keyPath())
+            willChangeValue(forKey: newValue.keyPath())
+            willChangeValue(forKey: state.keyPath())
         }
         didSet {
-            didChangeValueForKey(oldValue.keyPath())
-            didChangeValueForKey(state.keyPath())
+            didChangeValue(forKey: oldValue.keyPath())
+            didChangeValue(forKey: state.keyPath())
         }
     }
-    private enum OperationState {
-        case Ready, Executing, Finished
+    fileprivate enum OperationState {
+        case ready, executing, finished
         func keyPath() -> String {
             switch self {
-            case .Ready:     return "isReady"
-            case .Executing: return "isExecuting"
-            case .Finished:  return "isFinished"
+            case .ready:     return "isReady"
+            case .executing: return "isExecuting"
+            case .finished:  return "isFinished"
             }
         }
     }
@@ -45,41 +45,41 @@ class AsyncOperation: NSOperation {
     //MARK: - Public
     
     func done() {
-        state = .Finished
+        state = .finished
     }
 
     //MARK:- Overrides
     
-    override var asynchronous: Bool {
+    override var isAsynchronous: Bool {
         return true
     }
     
-    override var ready: Bool {
-        return super.ready && state == .Ready
+    override var isReady: Bool {
+        return super.isReady && state == .ready
     }
     
-    override var executing: Bool {
-        return state == .Executing
+    override var isExecuting: Bool {
+        return state == .executing
     }
     
-    override var finished: Bool {
-        return state == .Finished
+    override var isFinished: Bool {
+        return state == .finished
     }
     
     override func start() {
-        state = .Executing
+        state = .executing
         operationBlock?(self)
     }
 }
 
-extension NSOperationQueue {    
-    func tb_addAsyncOperationBlock(block: AsyncOperationBlock) -> AsyncOperation {
+extension OperationQueue {    
+    func tb_addAsyncOperationBlock(_ block: @escaping AsyncOperationBlock) -> AsyncOperation {
         let operation = AsyncOperation(block: block)
         self.addOperation(operation)
         return operation
     }
     
-    func tb_addAsyncOperationBlock(name: String, block: AsyncOperationBlock) -> AsyncOperation {
+    func tb_addAsyncOperationBlock(_ name: String, block: @escaping AsyncOperationBlock) -> AsyncOperation {
         let operation = self.tb_addAsyncOperationBlock(block)
         operation.name = name
         return operation

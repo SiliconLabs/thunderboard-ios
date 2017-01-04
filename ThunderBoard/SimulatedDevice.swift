@@ -9,7 +9,7 @@ import Foundation
 
 class SimulatedDevice : Device, DemoConfiguration, Equatable, CustomDebugStringConvertible {
     
-    private (set) var model: DeviceModel
+    fileprivate (set) var model: DeviceModel
     var name: String?
     var deviceIdentifier: DeviceId? {
         didSet {
@@ -21,21 +21,21 @@ class SimulatedDevice : Device, DemoConfiguration, Equatable, CustomDebugStringC
     var connectionState: DeviceConnectionState {
         didSet {
             switch connectionState {
-            case .Disconnected:
+            case .disconnected:
                 break
                 
-            case .Connecting:
+            case .connecting:
                 break
                 
-            case .Connected:
+            case .connected:
                 delay(1) {
                     self.power = [
-                        .USB,
-                        .AA(99),
-                        .AA(70),
-                        .CoinCell(27),
-                        .CoinCell(13),
-                        .CoinCell(5),
+                        .usb,
+                        .aa(99),
+                        .aa(70),
+                        .coinCell(27),
+                        .coinCell(13),
+                        .coinCell(5),
                     ].random()
                     self.firmwareVersion = "1.0.0";
                     self.notifyConnectedDelegate()
@@ -44,21 +44,21 @@ class SimulatedDevice : Device, DemoConfiguration, Equatable, CustomDebugStringC
         }
     }
     
-    private (set) var power: PowerSource = .Unknown
-    private (set) var capabilities: Set<DeviceCapability> = []
+    fileprivate (set) var power: PowerSource = .unknown
+    fileprivate (set) var capabilities: Set<DeviceCapability> = []
     
     weak var connectedDelegate: ConnectedDeviceDelegate?
     weak var simulatedScanner: SimulatedDeviceScanner?
     weak var demoConnection: DemoConnection?
     
-    init(name: String, identifier: DeviceId, capabilities: Set<DeviceCapability>, rssi: Int? = nil, model: DeviceModel? = .React) {
-        self.model = model ?? .React
+    init(name: String, identifier: DeviceId, capabilities: Set<DeviceCapability>, rssi: Int? = nil, model: DeviceModel? = .react) {
+        self.model = model ?? .react
         self.name = name
         self.deviceIdentifier = identifier
         self.capabilities = capabilities
         self.RSSI = rssi ?? -40
 
-        connectionState = .Disconnected
+        connectionState = .disconnected
         
         delay(2.0) {
             self.deviceIdentifier = DeviceId(100)
@@ -66,12 +66,12 @@ class SimulatedDevice : Device, DemoConfiguration, Equatable, CustomDebugStringC
         }
     }
     
-    private func notifyConnectedDelegate() {
+    fileprivate func notifyConnectedDelegate() {
         self.connectedDelegate?.connectedDeviceUpdated(self.name!, RSSI: self.RSSI, power: self.power, identifier: self.deviceIdentifier, firmwareVersion: self.firmwareVersion)
     }
     
     typealias CalibrationCompletion = ( () -> Void )
-    func startCalibration(completion: CalibrationCompletion?) {
+    func startCalibration(_ completion: CalibrationCompletion?) {
         
         delay(5) {
             completion?()
@@ -89,7 +89,7 @@ class SimulatedDevice : Device, DemoConfiguration, Equatable, CustomDebugStringC
     
     //MARK: - Private
     
-    private func simulateLostConnection() {
+    fileprivate func simulateLostConnection() {
 
         self.simulatedScanner?.simulateLostConnection(self)
     }
@@ -97,16 +97,16 @@ class SimulatedDevice : Device, DemoConfiguration, Equatable, CustomDebugStringC
     //MARK: - DemoConfiguration
     
     weak var configurationDelegate: DemoConfigurationDelegate?
-    func configureForDemo(demo: ThunderboardDemo) {
+    func configureForDemo(_ demo: ThunderboardDemo) {
 
         switch demo {
-        case .IO:
+        case .io:
             configureIoDemo()
             
-        case .Environment:
+        case .environment:
             configureEnvironmentDemo()
 
-        case .Motion:
+        case .motion:
             configureMotionDemo()
         }
     }
@@ -118,12 +118,12 @@ class SimulatedDevice : Device, DemoConfiguration, Equatable, CustomDebugStringC
         }
     }
     
-    private func deviceIdentifierUpdated() {
+    fileprivate func deviceIdentifierUpdated() {
         guard let deviceIdentifier = deviceIdentifier else { return }
         self.configurationDelegate?.deviceIdentifierUpdated(deviceIdentifier)
     }
     
-    private func configureIoDemo() {
+    fileprivate func configureIoDemo() {
         self.configurationDelegate?.configuringIoDemo()
         delay(0.2) {
             let connection = SimulatedIoDemoConnection(device: self)
@@ -132,7 +132,7 @@ class SimulatedDevice : Device, DemoConfiguration, Equatable, CustomDebugStringC
         }
     }
     
-    private func configureEnvironmentDemo() {
+    fileprivate func configureEnvironmentDemo() {
         self.configurationDelegate?.configuringEnvironmentDemo()
         
         delay(0.5) {
@@ -142,7 +142,7 @@ class SimulatedDevice : Device, DemoConfiguration, Equatable, CustomDebugStringC
         }
     }
     
-    private func configureMotionDemo() {
+    fileprivate func configureMotionDemo() {
         self.configurationDelegate?.configuringMotionDemo()
         
         delay(0.5) {
@@ -159,7 +159,7 @@ func ==(lhs: SimulatedDevice, rhs: SimulatedDevice) -> Bool {
 
 extension Array {
     func random() -> Element {
-        let randomIndex = Int(rand()) % count
+        let randomIndex = Int(arc4random()) % count
         return self[randomIndex]
     }
 }

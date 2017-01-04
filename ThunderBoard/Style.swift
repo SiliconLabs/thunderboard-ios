@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIColor {
-    class func tb_hex(hex: Int) -> UIColor {
+    class func tb_hex(_ hex: Int) -> UIColor {
         return UIColor(
             red:    CGFloat((hex & 0xFF0000) >> 16) / 255.0,
             green:  CGFloat((hex & 0x00FF00) >> 8)  / 255.0,
@@ -18,7 +18,7 @@ extension UIColor {
 }
 
 extension UILabel {
-    func tb_setText(text: String, style: StyleText) {
+    func tb_setText(_ text: String, style: StyleText) {
         self.attributedText = style.attributedString(text)
     }
 }
@@ -136,7 +136,7 @@ class StyleColor {
     }
     
     class var white: UIColor {
-        get { return UIColor.whiteColor() }
+        get { return UIColor.white }
     }
 }
 
@@ -230,7 +230,7 @@ class StyleText {
         self.kerning = kerning
     }
     
-    func attributedString(text: String) -> NSAttributedString {
+    func attributedString(_ text: String) -> NSAttributedString {
         var attributes: [String:AnyObject] = [
             NSFontAttributeName : self.font,
             NSForegroundColorAttributeName : self.color
@@ -238,7 +238,7 @@ class StyleText {
         
         if let kerning = self.kerning {
             let kerningAdjustment: CGFloat = 20.0
-            attributes[NSKernAttributeName] = (kerning / kerningAdjustment)
+            attributes[NSKernAttributeName] = (kerning / kerningAdjustment) as AnyObject
         }
         
         let attributedString = NSAttributedString(string: text, attributes: attributes)
@@ -250,8 +250,8 @@ class StyleText {
         return self
     }
     
-    func tweakColorAlpha(alpha: CGFloat) -> StyleText {
-        self.color = self.color.colorWithAlphaComponent(alpha)
+    func tweakColorAlpha(_ alpha: CGFloat) -> StyleText {
+        self.color = self.color.withAlphaComponent(alpha)
         return self
     }
     
@@ -264,13 +264,13 @@ class StyleText {
 
 class StyleAnimations {
     
-    class var spinnerDuration: NSTimeInterval {
+    class var spinnerDuration: TimeInterval {
         get { return 1.5 }
     }
 }
 
 extension UIColor {
-    class func colorForTemperature(temp: Temperature) -> UIColor {
+    class func colorForTemperature(_ temp: Temperature) -> UIColor {
         let inf = Temperature.infinity
         switch temp {
         case 37.7 ..< inf:
@@ -305,7 +305,7 @@ extension UIColor {
         }
     }
     
-    class func colorForHumidity(humidity: Humidity) -> UIColor {
+    class func colorForHumidity(_ humidity: Humidity) -> UIColor {
         let inf = Humidity.infinity
         switch humidity {
         case 65 ..< inf:
@@ -324,7 +324,7 @@ extension UIColor {
         }
     }
     
-    class func colorForIlluminance(lx: Lux) -> UIColor {
+    class func colorForIlluminance(_ lx: Lux) -> UIColor {
         let inf = Lux.infinity
         switch lx {
         case (-inf) ..< 41:
@@ -351,7 +351,7 @@ extension UIColor {
         }
     }
     
-    class func colorForUVIndex(uv: UVIndex) -> UIColor {
+    class func colorForUVIndex(_ uv: UVIndex) -> UIColor {
         let inf = UVIndex.infinity
         switch uv {
         case (-inf) ..< 3:
@@ -368,7 +368,7 @@ extension UIColor {
         }
     }
     
-    class func colorForCO2(ppm: AirQualityCO2) -> UIColor {
+    class func colorForCO2(_ ppm: AirQualityCO2) -> UIColor {
         let inf = AirQualityCO2.infinity
         switch ppm {
         case (-inf) ..< 1000:
@@ -383,7 +383,7 @@ extension UIColor {
         }
     }
     
-    class func colorForVOC(ppb: AirQualityVOC) -> UIColor {
+    class func colorForVOC(_ ppb: AirQualityVOC) -> UIColor {
         let inf = AirQualityVOC.infinity
         switch ppb {
         case (-inf) ..< 100:
@@ -396,12 +396,12 @@ extension UIColor {
         }
     }
     
-    class func colorForAtmosphericPressure(pressure: AtmosphericPressure) -> UIColor {
+    class func colorForAtmosphericPressure(_ pressure: AtmosphericPressure) -> UIColor {
         // current design utilizes the same color for all values
         return StyleColor.terbiumGreen
     }
     
-    class func colorForSoundLevel(level: SoundLevel) -> UIColor {
+    class func colorForSoundLevel(_ level: SoundLevel) -> UIColor {
         let inf = SoundLevel.infinity
         switch level {
         case (-inf) ..< 30:

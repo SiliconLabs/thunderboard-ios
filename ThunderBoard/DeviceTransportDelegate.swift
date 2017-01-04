@@ -8,16 +8,16 @@
 import Foundation
 
 enum DeviceTransportState {
-    case Enabled
-    case Disabled
+    case enabled
+    case disabled
 }
 
 protocol DeviceTransportPowerDelegate: class {
-    func transportPowerStateUpdated(state: DeviceTransportState)
+    func transportPowerStateUpdated(_ state: DeviceTransportState)
 }
 
 protocol DeviceTransportApplicationDelegate: DeviceTransportPowerDelegate {
-    func transportConnectedToDevice(device: Device)
-    func transportDisconnectedFromDevice(device: Device)
-    func transportLostConnectionToDevice(device: Device)
+    func transportConnectedToDevice(_ device: Device)
+    func transportDisconnectedFromDevice(_ device: Device)
+    func transportLostConnectionToDevice(_ device: Device)
 }

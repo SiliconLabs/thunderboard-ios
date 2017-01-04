@@ -8,12 +8,12 @@
 import Foundation
 
 protocol MotionDemoInteractionOutput : class {
-    func updateOrientation(orientation: ThunderboardInclination)
-    func updateAcceleration(acceleration: ThunderboardVector)
-    func updateWheel(diameter: Meters)
-    func updateLocation(distance: Float, speed: Float, rpm: Float, totalRpm: UInt)
-    func updateLedColor(on: Bool, color: LedRgb)
-    func deviceCalibrating(isCalibrating: Bool)
+    func updateOrientation(_ orientation: ThunderboardInclination)
+    func updateAcceleration(_ acceleration: ThunderboardVector)
+    func updateWheel(_ diameter: Meters)
+    func updateLocation(_ distance: Float, speed: Float, rpm: Float, totalRpm: UInt)
+    func updateLedColor(_ on: Bool, color: LedRgb)
+    func deviceCalibrating(_ isCalibrating: Bool)
 }
 
 class MotionDemoInteraction : DemoStreamingInteraction, MotionDemoConnectionDelegate, DemoStreamingOutput, MotionDemoStreamingDataSource {
@@ -22,20 +22,20 @@ class MotionDemoInteraction : DemoStreamingInteraction, MotionDemoConnectionDele
     weak var streamingOutput: DemoStreamingInteractionOutput?
     weak var streamSharePresenter: DemoStreamSharePresenter?
 
-    private weak var output: MotionDemoInteractionOutput?
-    private var connection: MotionDemoConnection?
+    fileprivate weak var output: MotionDemoInteractionOutput?
+    fileprivate var connection: MotionDemoConnection?
     
-    private static let defaultWheelSize: Meters = 0.0301
+    fileprivate static let defaultWheelSize: Meters = 0.0301
 
-    private var acceleration = ThunderboardVector()
-    private var orientation = ThunderboardInclination()
-    private var position = ThunderboardWheel(diameter: defaultWheelSize)
-    private var calibrating = false
+    fileprivate var acceleration = ThunderboardVector()
+    fileprivate var orientation = ThunderboardInclination()
+    fileprivate var position = ThunderboardWheel(diameter: defaultWheelSize)
+    fileprivate var calibrating = false
     
-    private var calibrationComplete: (() -> Void)?
-    private var resetOrientationComplete: (() -> Void)?
-    private var resetRevolutionsComplete: (() -> Void)?
-    private var calibrationTimer: NSTimer?
+    fileprivate var calibrationComplete: (() -> Void)?
+    fileprivate var resetOrientationComplete: (() -> Void)?
+    fileprivate var resetRevolutionsComplete: (() -> Void)?
+    fileprivate var calibrationTimer: Timer?
     
     //MARK: - Public
     
@@ -64,7 +64,7 @@ class MotionDemoInteraction : DemoStreamingInteraction, MotionDemoConnectionDele
         calibrating = true
         output?.deviceCalibrating(calibrating)
         
-        let queue = NSOperationQueue()
+        let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         
         // Start calibration process (this may take up to 10 seconds)
@@ -82,7 +82,7 @@ class MotionDemoInteraction : DemoStreamingInteraction, MotionDemoConnectionDele
         
         // Notify VC
         let finished = queue.tb_addAsyncOperationBlock("finished") { [weak self] (operation: AsyncOperation) -> Void in
-            NSOperationQueue.mainQueue().addOperationWithBlock({ [weak self] in
+            OperationQueue.main.addOperation({ [weak self] in
                 guard let strongSelf = self else {
                     return
                 }
@@ -98,7 +98,7 @@ class MotionDemoInteraction : DemoStreamingInteraction, MotionDemoConnectionDele
         finished.addDependency(calibration)
 
         // Reset Revolutions - only if cycling service is available
-        if connection.capabilities.contains(.Revolutions) {
+        if connection.capabilities.contains(.revolutions) {
             let revolutions = queue.tb_addAsyncOperationBlock("revolutions") { [weak self] (operation: AsyncOperation) -> Void in
                 self?.resetRevolutionsComplete = { operation.done() }
                 self?.connection?.resetRevolutions()
@@ -109,7 +109,7 @@ class MotionDemoInteraction : DemoStreamingInteraction, MotionDemoConnectionDele
             finished.addDependency(revolutions)
         }
 
-        queue.suspended = false
+        queue.isSuspended = false
     }
     
     //MARK: - MotionDemoStreamingDataSource
@@ -171,21 +171,21 @@ class MotionDemoInteraction : DemoStreamingInteraction, MotionDemoConnectionDele
         self.resetRevolutionsComplete = nil
     }
     
-    func orientationUpdated(inclination: ThunderboardInclination) {
+    func orientationUpdated(_ inclination: ThunderboardInclination) {
         orientation = inclination
         output?.updateOrientation(inclination)
     }
     
-    func accelerationUpdated(vector: ThunderboardVector) {
+    func accelerationUpdated(_ vector: ThunderboardVector) {
         acceleration = vector
         output?.updateAcceleration(vector)
     }
     
-    func ledColorUpdated(on: Bool, color: LedRgb) {
+    func ledColorUpdated(_ on: Bool, color: LedRgb) {
         output?.updateLedColor(on, color: color)
     }
     
-    func rotationUpdated(revolutions: UInt, elapsedTime: NSTimeInterval) {
+    func rotationUpdated(_ revolutions: UInt, elapsedTime: TimeInterval) {
         position.updateRevolutions(revolutions, cumulativeSecondsSinceConnecting: elapsedTime)
         let speed    = position.speedInMetersPerSecond
         let distance = position.distance

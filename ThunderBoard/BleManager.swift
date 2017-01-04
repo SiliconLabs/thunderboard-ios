@@ -11,11 +11,11 @@ import CoreBluetooth
 
 class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConnection {
     
-    private let connectionTimeout: NSTimeInterval = 5
-    private var expectingDisconnect = false
+    fileprivate let connectionTimeout: TimeInterval = 5
+    fileprivate var expectingDisconnect = false
 
-    private var central: CBCentralManager?
-    private var powerState: DeviceTransportState = .Disabled {
+    fileprivate var central: CBCentralManager?
+    fileprivate var powerState: DeviceTransportState = .disabled {
         didSet {
             
             // notify power state delegates
@@ -24,16 +24,16 @@ class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConne
             
             // notify implicit scanning behaviors
             switch(powerState){
-            case .Disabled:
+            case .disabled:
                 self.scanningDelegate?.stoppedScanning()
-            case .Enabled:
+            case .enabled:
                 break
             }
         }
     }
     weak var applicationDelegate: DeviceTransportApplicationDelegate?
 
-    private var bleDevices: [NSUUID:BleDevice] = Dictionary<NSUUID, BleDevice>()
+    fileprivate var bleDevices: [UUID:BleDevice] = Dictionary<UUID, BleDevice>()
 
     //MARK: - Initialization
     
@@ -41,7 +41,7 @@ class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConne
         super.init()
         
         let opts = [ CBCentralManagerOptionShowPowerAlertKey : true ]
-        let queue = dispatch_queue_create("com.silabs.thunderboard.blequeue", DISPATCH_QUEUE_SERIAL)
+        let queue = DispatchQueue(label: "com.silabs.thunderboard.blequeue", attributes: [])
         self.central = CBCentralManager(delegate: self, queue: queue, options: opts)
     }
     
@@ -54,10 +54,10 @@ class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConne
         }
     }
     func startScanning() {
-        if powerState == .Enabled {
+        if powerState == .enabled {
             let services: [CBUUID]? = nil
-            let options: [String: AnyObject]? = [ CBCentralManagerScanOptionAllowDuplicatesKey : true ]
-            self.central?.scanForPeripheralsWithServices(services, options: options)
+            let options: [String: AnyObject]? = [ CBCentralManagerScanOptionAllowDuplicatesKey : true as AnyObject ]
+            self.central?.scanForPeripherals(withServices: services, options: options)
             self.scanningDelegate?.startedScanning()
         }
     }
@@ -77,19 +77,19 @@ class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConne
         }
     }
 
-    func connect(device: Device) {
+    func connect(_ device: Device) {
         guard let device = device as? BleDevice else {
             fatalError()
         }
         
         if self.peripheralPendingConnection == nil {
-            device.connectionState = .Connecting
-            self.central?.connectPeripheral(device.cbPeripheral!, options: nil)
+            device.connectionState = .connecting
+            self.central?.connect(device.cbPeripheral!, options: nil)
             self.startConnectionTimer()
         }
     }
     
-    func isConnectedToDevice(device: Device) -> Bool {
+    func isConnectedToDevice(_ device: Device) -> Bool {
         guard let device = device as? BleDevice else {
             fatalError()
         }
@@ -108,12 +108,12 @@ class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConne
     }
     
     //MARK: Connection Timer
-    private var connectionTimer: NSTimer?
-    private func startConnectionTimer() {
-        self.connectionTimer = NSTimer.scheduledTimerWithTimeInterval(connectionTimeout, target: self, selector: #selector(connectionTimeoutFired), userInfo: nil, repeats: false)
+    fileprivate var connectionTimer: Timer?
+    fileprivate func startConnectionTimer() {
+        self.connectionTimer = Timer.scheduledTimer(timeInterval: connectionTimeout, target: self, selector: #selector(connectionTimeoutFired), userInfo: nil, repeats: false)
     }
     
-    private func stopConnectionTimer() {
+    fileprivate func stopConnectionTimer() {
         self.connectionTimer?.invalidate()
         self.connectionTimer = nil
     }
@@ -137,7 +137,7 @@ class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConne
             expectingDisconnect = true
             
             self.central?.cancelPeripheralConnection(pending)
-            device.connectionState = .Disconnected
+            device.connectionState = .disconnected
             device.RSSI = nil
             
             self.notifyConnectionTimedOut(pending)
@@ -146,38 +146,38 @@ class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConne
     
     //MARK: Notifications
     
-    private func notifyConnectedPeripheral(peripheral: CBPeripheral!) {
+    fileprivate func notifyConnectedPeripheral(_ peripheral: CBPeripheral!) {
         let device = bleDeviceForPeripheral(peripheral)
         self.applicationDelegate?.transportConnectedToDevice(device)
         self.connectionDelegate?.connectedToDevice(device)
     }
     
-    private func notifyDisconnectedPeripheral(peripheral: CBPeripheral!) {
+    fileprivate func notifyDisconnectedPeripheral(_ peripheral: CBPeripheral!) {
         let device = bleDeviceForPeripheral(peripheral)
         self.applicationDelegate?.transportDisconnectedFromDevice(device)
     }
     
-    private func notifyConnectionTimedOut(peripheral: CBPeripheral) {
+    fileprivate func notifyConnectionTimedOut(_ peripheral: CBPeripheral) {
         let device = bleDeviceForPeripheral(peripheral)
         self.connectionDelegate?.connectionToDeviceTimedOut(device)
     }
     
-    private func notifyLostConnection(peripheral: CBPeripheral) {
+    fileprivate func notifyLostConnection(_ peripheral: CBPeripheral) {
         let device = bleDeviceForPeripheral(peripheral)
         self.applicationDelegate?.transportLostConnectionToDevice(device)
     }
     
-    private func notifyLostAllConnections() {
+    fileprivate func notifyLostAllConnections() {
         let peripherals = self.bleDevices.map( { return $0.1.cbPeripheral } )
         for peripheral in peripherals {
             notifyDisconnectedPeripheral(peripheral)
-            notifyLostConnection(peripheral)
+            notifyLostConnection(peripheral!)
         }
     }
     
     //MARK:- Internal
     
-    private func bleDeviceForPeripheral(peripheral: CBPeripheral) -> BleDevice {
+    fileprivate func bleDeviceForPeripheral(_ peripheral: CBPeripheral) -> BleDevice {
         if let existing = self.bleDevices[peripheral.identifier] {
             return existing
         }
@@ -188,17 +188,17 @@ class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConne
         return device
     }
     
-    private var connectedPeripherals: [CBPeripheral] {
+    fileprivate var connectedPeripherals: [CBPeripheral] {
         return self.bleDevices.values.filter({
-            let result = $0.connectionState == .Connected
+            let result = $0.connectionState == .connected
             return result
         }).map({ $0.cbPeripheral })
     }
     
-    private var peripheralPendingConnection: CBPeripheral? {
+    fileprivate var peripheralPendingConnection: CBPeripheral? {
         get {
             return self.bleDevices.values.filter({
-                let result = $0.connectionState == .Connecting
+                let result = $0.connectionState == .connecting
                 return result
             }).map({ $0.cbPeripheral }).first
         }
@@ -206,32 +206,32 @@ class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConne
     
     //MARK:- CBCentralManagerDelegate
     
-    func centralManagerDidUpdateState(central: CBCentralManager) {
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
 
         dispatch_main_sync {
             switch(central.state) {
-            case .PoweredOn:
-                self.powerState = .Enabled
+            case .poweredOn:
+                self.powerState = .enabled
                 
-            case .PoweredOff: fallthrough
-            case .Resetting: fallthrough
-            case .Unauthorized: fallthrough
-            case .Unknown: fallthrough
-            case .Unsupported:
-                self.powerState = .Disabled
+            case .poweredOff: fallthrough
+            case .resetting: fallthrough
+            case .unauthorized: fallthrough
+            case .unknown: fallthrough
+            case .unsupported:
+                self.powerState = .disabled
                 self.stopScanning()
                 self.notifyLostAllConnections()
             }
         }
     }
 
-    func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber) {
+    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         
         // RSSI value 127 is Apple-reserved and indicates the RSSI value could not be read.
-        if RSSI.integerValue != 127 {
+        if RSSI.intValue != 127 {
             if isThunderboard(peripheral) {
                 let device = bleDeviceForPeripheral(peripheral)
-                device.RSSI = RSSI.integerValue
+                device.RSSI = RSSI.intValue
                 
                 dispatch_main_async {
                     self.scanningDelegate?.discoveredDevice(device)
@@ -240,11 +240,11 @@ class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConne
         }
     }
     
-    func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
+    func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         log.info("connected to \(peripheral)")
 
         let device = bleDeviceForPeripheral(peripheral)
-        device.connectionState = .Connected
+        device.connectionState = .connected
         self.stopConnectionTimer()
         
         dispatch_main_async {
@@ -256,9 +256,9 @@ class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConne
         delay(5) {
             peripheral.services?.forEach({ (service) in
                 print("---------------------------------------------------")
-                print("      Service: \(service.UUID.UUIDString) (\(service.UUID))")
+                print("      Service: \(service.uuid.uuidString) (\(service.uuid))")
                 service.characteristics?.forEach({ (characteristic) in
-                    print("          Characteristic: \(characteristic.UUID.UUIDString) properties \(characteristic.properties)")
+                    print("          Characteristic: \(characteristic.uuid.uuidString) properties \(characteristic.properties)")
                 })
             })
 
@@ -266,11 +266,11 @@ class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConne
     }
     
     
-    func centralManager(central: CBCentralManager, didFailToConnectPeripheral peripheral: CBPeripheral, error: NSError?) {
+    func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
         log.error("failed connection to peripheral \(peripheral) error \(error)")
         
         let device = bleDeviceForPeripheral(peripheral)
-        device.connectionState = .Disconnected
+        device.connectionState = .disconnected
         self.stopConnectionTimer()
         
         if expectingDisconnect == false {
@@ -281,11 +281,11 @@ class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConne
     }
     
 
-    func centralManager(central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?) {
+    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         log.info("disconnected from peripheral \(peripheral) error=\(error)")
         
         let device = bleDeviceForPeripheral(peripheral)
-        device.connectionState = .Disconnected
+        device.connectionState = .disconnected
         
         dispatch_main_async {
             self.notifyDisconnectedPeripheral(peripheral)

@@ -16,7 +16,7 @@ class NotificationSettingsDeviceCell: UITableViewCell {
     typealias ActionHandler = ( () -> Void )
     var actionHandler: ActionHandler?
     
-    private let actionStyle = StyleText.headerActive
+    fileprivate let actionStyle = StyleText.headerActive
     
     var drawSeparator: Bool = false {
         didSet {
@@ -24,12 +24,12 @@ class NotificationSettingsDeviceCell: UITableViewCell {
         }
     }
     
-    override func drawRect(rect: CGRect) {
-        super.drawRect(rect)
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
         if drawSeparator {
             let path = UIBezierPath()
-            path.moveToPoint(CGPointMake(15, 0))
-            path.addLineToPoint(CGPointMake(rect.width, 0))
+            path.move(to: CGPoint(x: 15, y: 0))
+            path.addLine(to: CGPoint(x: rect.width, y: 0))
             path.lineWidth = 1
             
             StyleColor.lightGray.setStroke()
@@ -40,7 +40,7 @@ class NotificationSettingsDeviceCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.backgroundColor = StyleColor.white
-        self.contentView.backgroundColor = UIColor.clearColor()
+        self.contentView.backgroundColor = UIColor.clear
         
         self.selectedBackgroundView = UIView()
         self.selectedBackgroundView?.backgroundColor = StyleColor.white
@@ -48,14 +48,14 @@ class NotificationSettingsDeviceCell: UITableViewCell {
         deviceStatus?.style = StyleText.subtitle1
         setActionTitle("")
         
-        actionButton?.addTarget(self, action: #selector(actionButtonTapped(_:)), forControlEvents: .TouchUpInside)
+        actionButton?.addTarget(self, action: #selector(actionButtonTapped(_:)), for: .touchUpInside)
     }
     
-    func setActionTitle(title: String) {
-        actionButton?.setAttributedTitle(actionStyle.attributedString(title), forState: UIControlState.Normal)
+    func setActionTitle(_ title: String) {
+        actionButton?.setAttributedTitle(actionStyle.attributedString(title), for: UIControlState())
     }
     
-    @objc private func actionButtonTapped(sender: AnyObject?) {
+    @objc fileprivate func actionButtonTapped(_ sender: AnyObject?) {
         actionHandler?()
     }
 }

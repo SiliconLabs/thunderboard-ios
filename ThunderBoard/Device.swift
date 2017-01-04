@@ -8,9 +8,9 @@
 import Foundation
 
 enum DeviceConnectionState {
-    case Disconnected
-    case Connecting
-    case Connected
+    case disconnected
+    case connecting
+    case connected
 }
 
 typealias DeviceId = UInt64
@@ -21,45 +21,45 @@ extension DeviceId {
 }
 
 enum DeviceModel {
-    case Unknown
-    case React
-    case Sense
+    case unknown
+    case react
+    case sense
 }
 
 enum DeviceCapability {
     // IO
-    case DigitalInput   // switches
-    case DigitalOutput  // binary LEDs
-    case RGBOutput      // RGB LEDs
+    case digitalInput   // switches
+    case digitalOutput  // binary LEDs
+    case rgbOutput      // RGB LEDs
     
     // Environment
-    case Temperature
-    case Humidity
-    case AmbientLight
-    case UVIndex
-    case AirQualityCO2
-    case AirQualityVOC
-    case AirPressure
-    case SoundLevel
+    case temperature
+    case humidity
+    case ambientLight
+    case uvIndex
+    case airQualityCO2
+    case airQualityVOC
+    case airPressure
+    case soundLevel
     
     // Motion
-    case Calibration    // Calibrate Control
-    case Orientation
-    case Acceleration
-    case Revolutions    // Hall Effect
+    case calibration    // Calibrate Control
+    case orientation
+    case acceleration
+    case revolutions    // Hall Effect
     
     // Device Details
-    case PowerSource
+    case powerSource
 }
 
 enum PowerSource : Equatable {
-    case Unknown
-    case USB
-    case GenericBattery(Int) // React
+    case unknown
+    case usb
+    case genericBattery(Int) // React
     
     // Specifc Batteries (Sense)
-    case AA(Int) // also AAA
-    case CoinCell(Int)
+    case aa(Int) // also AAA
+    case coinCell(Int)
 }
 
 protocol Device : class, DemoConfiguration {
@@ -74,20 +74,20 @@ protocol Device : class, DemoConfiguration {
     
     weak var connectedDelegate: ConnectedDeviceDelegate? { get set }
     
-    func ledColor(index: Int) -> LedStaticColor
+    func ledColor(_ index: Int) -> LedStaticColor
 }
 
 func ==(lhs: PowerSource, rhs: PowerSource) -> Bool {
     switch (lhs, rhs) {
-    case (.Unknown, .Unknown):
+    case (.unknown, .unknown):
         return true
-    case (.USB, .USB):
+    case (.usb, .usb):
         return true
-    case (.GenericBattery, .GenericBattery):
+    case (.genericBattery, .genericBattery):
         return true
-    case (.AA, .AA):
+    case (.aa, .aa):
         return true
-    case (.CoinCell, .CoinCell):
+    case (.coinCell, .coinCell):
         return true
     default:
         return false

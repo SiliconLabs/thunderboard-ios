@@ -9,7 +9,7 @@ import UIKit
 
 class HueGradientView: UIView {
 
-    override class func layerClass() -> AnyClass {
+    override class var layerClass : AnyClass {
         return CAGradientLayer.self
     }
     
@@ -23,17 +23,17 @@ class HueGradientView: UIView {
         commonInit()
     }
     
-    private func commonInit() {
+    fileprivate func commonInit() {
         gradientLayer.startPoint = CGPoint(x: 0, y: 0)
         gradientLayer.endPoint = CGPoint(x: 1, y: 0)
         gradientLayer.colors = {
             return (0 ..< 360).map({ (degree) -> CGColor in
-                return UIColor(hue: (CGFloat(degree)/CGFloat(360)), saturation: 1.0, brightness: 1.0, alpha: 1.0).CGColor
+                return UIColor(hue: (CGFloat(degree)/CGFloat(360)), saturation: 1.0, brightness: 1.0, alpha: 1.0).cgColor
             })
         }()
     }
     
-    private var gradientLayer: CAGradientLayer {
+    fileprivate var gradientLayer: CAGradientLayer {
         return self.layer as! CAGradientLayer
     }
     

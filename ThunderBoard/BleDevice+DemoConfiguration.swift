@@ -11,18 +11,18 @@ import CoreBluetooth
 extension BleDevice {
     
     // TODO: cleanup (remove duplication between demo configurations)
-    private func isNotificationProtected(characteristic: CBCharacteristic) -> Bool {
+    fileprivate func isNotificationProtected(_ characteristic: CBCharacteristic) -> Bool {
         return [
             CBUUID.BatteryLevel
             
-        ].contains(characteristic.UUID)
+        ].contains(characteristic.uuid)
     }
 
 
-    private func allKnownCharacteristics() -> Set<CBUUID> {
+    fileprivate func allKnownCharacteristics() -> Set<CBUUID> {
         var result: Set<CBUUID> = []
         
-        if let knownUUIDs = self.cbPeripheral.services?.flatMap({ $0.characteristics?.flatMap({ $0.UUID }) }).flatMap({$0}) {
+        if let knownUUIDs = self.cbPeripheral.services?.flatMap({ $0.characteristics?.flatMap({ $0.uuid }) }).flatMap({$0}) {
             for uuid in knownUUIDs {
                 result.insert(uuid)
             }
@@ -32,26 +32,26 @@ extension BleDevice {
     }
     
     
-    private func waitForCharacteristics(uuids: Set<CBUUID>) -> AsyncOperation {
+    fileprivate func waitForCharacteristics(_ uuids: Set<CBUUID>) -> AsyncOperation {
 
         let operation = AsyncOperation(block: { (operation: AsyncOperation) -> Void in
             repeat {
 
                 let knownUUIDs = self.allKnownCharacteristics()
-                let matches = uuids.intersect(knownUUIDs)
+                let matches = uuids.intersection(knownUUIDs)
                 if matches.count == uuids.count {
                     log.debug("found all characteristics")
                     break
                 }
                 else {
-                    let missing = uuids.subtract(matches)
+                    let missing = uuids.subtracting(matches)
                     log.info("missing characteristics: \(missing)")
                 }
                 
                 log.debug("waiting for characteristics")
                 // TODO: remove sleep and inject operation into queue (linking dependencies)
-                NSThread.sleepForTimeInterval(1)
-            } while(self.connectionState == .Connected)
+                Thread.sleep(forTimeInterval: 1)
+            } while(self.connectionState == .connected)
             
             operation.done()
         })
@@ -63,23 +63,23 @@ extension BleDevice {
     func resetDemoConfiguration() {
         log.debug("Demo Reset Requested")
         
-        let queue = NSOperationQueue()
+        let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         
         allCharacteristics.forEach({ characteristic in
             if characteristic.tb_supportsNotificationOrIndication() && !self.isNotificationProtected(characteristic) {
-                log.debug("Disabling notification on \(characteristic.UUID)")
+                log.debug("Disabling notification on \(characteristic.uuid)")
                 queue.tb_addAsyncOperationBlock({ (operation: AsyncOperation) -> Void in
 
                     self.characteristicNotificationUpdateHook = { (updatedCharacteristic: CBCharacteristic) -> Void in
                         if updatedCharacteristic == characteristic {
-                            log.debug("Received notification update for \(characteristic.UUID)")
+                            log.debug("Received notification update for \(characteristic.uuid)")
                             self.characteristicNotificationUpdateHook = nil
                             operation.done()
                         }
                     }
                     
-                    self.cbPeripheral?.setNotifyValue(false, forCharacteristic: characteristic)
+                    self.cbPeripheral?.setNotifyValue(false, for: characteristic)
                 })
             }
         })
@@ -87,13 +87,13 @@ extension BleDevice {
     
     func configureIoDemo() {
         
-        let queue = NSOperationQueue()
+        let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         
         // Notify Configuration Starting
         queue.tb_addAsyncOperationBlock { (operation: AsyncOperation) -> Void in
             
-            NSOperationQueue.mainQueue().addOperationWithBlock({
+            OperationQueue.main.addOperation({
                 self.configurationDelegate?.configuringIoDemo()
                 operation.done()
             })
@@ -107,7 +107,7 @@ extension BleDevice {
         
         let completion = AsyncOperation(block: { (operation: AsyncOperation) -> Void in
             log.info("Finished IO configuration")
-            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+            OperationQueue.main.addOperation({ () -> Void in
                 let connection = BleIoDemoConnection(device: self)
                 self.configurationDelegate?.ioDemoReady(connection)
             })
@@ -118,27 +118,27 @@ extension BleDevice {
 
             self.allCharacteristics.forEach({ characteristic in
                 
-                log.debug("checking \(characteristic.UUID)")
+                log.debug("checking \(characteristic.uuid)")
                 if characteristic.tb_supportsNotificationOrIndication() && !self.isNotificationProtected(characteristic) {
                     
                     let notifyOperation = queue.tb_addAsyncOperationBlock({ (operation: AsyncOperation) -> Void in
                         
                         self.characteristicNotificationUpdateHook = { (updatedCharacteristic: CBCharacteristic) -> Void in
                             if updatedCharacteristic == characteristic {
-                                log.debug("Received notification update for \(characteristic.UUID)")
+                                log.debug("Received notification update for \(characteristic.uuid)")
                                 self.characteristicNotificationUpdateHook = nil
                                 operation.done()
                             }
                         }
                         
-                        if requiredCharacteristics.contains(characteristic.UUID) {
+                        if requiredCharacteristics.contains(characteristic.uuid) {
                             log.debug("Updating notify for digital")
-                            self.cbPeripheral.setNotifyValue(true, forCharacteristic: characteristic)
+                            self.cbPeripheral.setNotifyValue(true, for: characteristic)
                         }
                             
                         else {
-                            log.debug("disabling notify for \(characteristic.UUID)")
-                            self.cbPeripheral.setNotifyValue(false, forCharacteristic: characteristic)
+                            log.debug("disabling notify for \(characteristic.uuid)")
+                            self.cbPeripheral.setNotifyValue(false, for: characteristic)
                         }
                     })
                     
@@ -152,17 +152,17 @@ extension BleDevice {
         // add completion task
         queue.addOperation(completion)
         
-        queue.suspended = false
+        queue.isSuspended = false
     }
     
     func configureEnvironmentDemo() {
-        let queue = NSOperationQueue()
+        let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         
         // Notify Configuration Starting
         queue.tb_addAsyncOperationBlock { (operation: AsyncOperation) -> Void in
             
-            NSOperationQueue.mainQueue().addOperationWithBlock({
+            OperationQueue.main.addOperation({
                 self.configurationDelegate?.configuringEnvironmentDemo()
                 operation.done()
             })
@@ -173,12 +173,12 @@ extension BleDevice {
         // HOWEVER, we need to wait for model and power (to determine if air quality should be shown)
         
         queue.tb_addAsyncOperationBlock { (operation) in
-            while self.power == .Unknown {
+            while self.power == .unknown {
                 log.info("waiting for power source information")
                 sleep(1)
             }
             
-            while self.model == .Unknown {
+            while self.model == .unknown {
                 log.info("waiting for model information")
                 sleep(1)
             }
@@ -189,21 +189,21 @@ extension BleDevice {
         // Environmental characteristics do not notify - the demo connection class handles polling, so notify is disabled for all
         allCharacteristics.forEach({ characteristic in
             
-            log.debug("checking \(characteristic.UUID)")
+            log.debug("checking \(characteristic.uuid)")
             if characteristic.tb_supportsNotificationOrIndication() && !self.isNotificationProtected(characteristic) {
                 
                 queue.tb_addAsyncOperationBlock({ (operation: AsyncOperation) -> Void in
                     
                     self.characteristicNotificationUpdateHook = { (updatedCharacteristic: CBCharacteristic) -> Void in
                         if updatedCharacteristic == characteristic {
-                            log.debug("Received notification update for \(characteristic.UUID)")
+                            log.debug("Received notification update for \(characteristic.uuid)")
                             self.characteristicNotificationUpdateHook = nil
                             operation.done()
                         }
                     }
 
-                    log.debug("disabling notify for \(characteristic.UUID)")
-                    self.cbPeripheral.setNotifyValue(false, forCharacteristic: characteristic)
+                    log.debug("disabling notify for \(characteristic.uuid)")
+                    self.cbPeripheral.setNotifyValue(false, for: characteristic)
                 })
             }
         })
@@ -211,25 +211,25 @@ extension BleDevice {
         // add completion task
         queue.tb_addAsyncOperationBlock({ (operation: AsyncOperation) -> Void in
             log.info("Finished Environment configuration")
-            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+            OperationQueue.main.addOperation({ () -> Void in
                 let connection = BleEnvironmentDemoConnection(device: self)
                 self.configurationDelegate?.environmentDemoReady(connection)
             })
             
         })
         
-        queue.suspended = false
+        queue.isSuspended = false
 
     }
 
     func configureMotionDemo() {
-        let queue = NSOperationQueue()
+        let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         
         // Notify Configuration Starting
         queue.tb_addAsyncOperationBlock { (operation: AsyncOperation) -> Void in
             
-            NSOperationQueue.mainQueue().addOperationWithBlock({
+            OperationQueue.main.addOperation({
                 self.configurationDelegate?.configuringMotionDemo()
                 operation.done()
             })
@@ -242,7 +242,7 @@ extension BleDevice {
             CBUUID.AccelerationMeasurement,
         ]
 
-        if capabilities.contains(.Revolutions) {
+        if capabilities.contains(.revolutions) {
             requiredCharacteristics.insert(.CSCMeasurement)
             requiredCharacteristics.insert(.CSCControlPoint)
         }
@@ -251,7 +251,7 @@ extension BleDevice {
         
         let completion = AsyncOperation(block: { operation in
             log.info("Finished Motion configuration")
-            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+            OperationQueue.main.addOperation({ () -> Void in
                 let connection = BleMotionDemoConnection(device: self)
                 self.configurationDelegate?.motionDemoReady(connection)
                 operation.done()
@@ -263,7 +263,7 @@ extension BleDevice {
         queue.tb_addAsyncOperationBlock({ operation in
             self.allCharacteristics.forEach({ characteristic in
                 
-                log.debug("checking \(characteristic.UUID)")
+                log.debug("checking \(characteristic.uuid)")
                 
                 if characteristic.tb_supportsNotificationOrIndication() && !self.isNotificationProtected(characteristic) {
                     
@@ -271,20 +271,20 @@ extension BleDevice {
                         
                         self.characteristicNotificationUpdateHook = { (updatedCharacteristic: CBCharacteristic) -> Void in
                             if updatedCharacteristic == characteristic {
-                                log.debug("Received notification update for \(characteristic.UUID)")
+                                log.debug("Received notification update for \(characteristic.uuid)")
                                 self.characteristicNotificationUpdateHook = nil
                                 operation.done()
                             }
                         }
                         
-                        if requiredCharacteristics.contains(characteristic.UUID) {
-                            log.debug("Enabling notify for \(characteristic.UUID)")
-                            self.cbPeripheral.setNotifyValue(true, forCharacteristic: characteristic)
+                        if requiredCharacteristics.contains(characteristic.uuid) {
+                            log.debug("Enabling notify for \(characteristic.uuid)")
+                            self.cbPeripheral.setNotifyValue(true, for: characteristic)
                         }
                             
                         else {
-                            log.debug("disabling notify for \(characteristic.UUID)")
-                            self.cbPeripheral.setNotifyValue(false, forCharacteristic: characteristic)
+                            log.debug("disabling notify for \(characteristic.uuid)")
+                            self.cbPeripheral.setNotifyValue(false, for: characteristic)
                         }
                     })
                     
@@ -299,6 +299,6 @@ extension BleDevice {
         // add completion task
         queue.addOperation(completion)
         
-        queue.suspended = false
+        queue.isSuspended = false
     }
 }
