@@ -1,0 +1,641 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="1XA-9s-9Nl">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+    </dependencies>
+    <scenes>
+        <!--Settings Navigation Controller-->
+        <scene sceneID="YhJ-HQ-GZT">
+            <objects>
+                <navigationController storyboardIdentifier="SettingsViewController" id="1XA-9s-9Nl" customClass="SettingsNavigationController" customModule="ThunderBoard" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="sVS-ey-aI8">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="wn4-bo-hC8" kind="relationship" relationship="rootViewController" id="cOf-QU-T0P"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="acm-f6-SxG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="960" y="1170"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="Kip-hZ-mMf">
+            <objects>
+                <tableViewController title="Settings" id="wn4-bo-hC8" customClass="SettingsViewController" customModule="ThunderBoard" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="OR5-7t-4HU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <sections>
+                            <tableViewSection id="wvg-du-ed6">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="139" id="EcX-Zf-cGg" customClass="SettingsViewCell" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="99" width="375" height="139"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EcX-Zf-cGg" id="49R-yd-DuR">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="139"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XIP-eV-3s1" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                                    <rect key="frame" x="15" y="18" width="345" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DBh-Xn-cg5" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                                    <rect key="frame" x="15" y="47" width="345" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wAH-ay-XL2" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                                    <rect key="frame" x="15" y="76" width="345" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CTW-cJ-nKk" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                                    <rect key="frame" x="15" y="105" width="345" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="XIP-eV-3s1" firstAttribute="leading" secondItem="49R-yd-DuR" secondAttribute="leading" constant="15" id="3xA-Ph-zbj"/>
+                                                <constraint firstAttribute="trailing" secondItem="DBh-Xn-cg5" secondAttribute="trailing" constant="15" id="T5I-1d-PWy"/>
+                                                <constraint firstItem="XIP-eV-3s1" firstAttribute="top" secondItem="49R-yd-DuR" secondAttribute="top" constant="18" id="Ytz-2O-nze"/>
+                                                <constraint firstItem="DBh-Xn-cg5" firstAttribute="leading" secondItem="49R-yd-DuR" secondAttribute="leading" constant="15" id="aB2-E7-d5Z"/>
+                                                <constraint firstAttribute="trailing" secondItem="XIP-eV-3s1" secondAttribute="trailing" constant="15" id="bcU-J7-0P7"/>
+                                                <constraint firstItem="wAH-ay-XL2" firstAttribute="leading" secondItem="49R-yd-DuR" secondAttribute="leading" constant="15" id="dFN-PI-JWh"/>
+                                                <constraint firstAttribute="trailing" secondItem="wAH-ay-XL2" secondAttribute="trailing" constant="15" id="nec-21-TPI"/>
+                                                <constraint firstItem="DBh-Xn-cg5" firstAttribute="top" secondItem="XIP-eV-3s1" secondAttribute="bottom" constant="8" id="ovN-7Q-LDg"/>
+                                                <constraint firstAttribute="trailing" secondItem="CTW-cJ-nKk" secondAttribute="trailing" constant="15" id="tL0-ZD-MNo"/>
+                                                <constraint firstItem="CTW-cJ-nKk" firstAttribute="leading" secondItem="49R-yd-DuR" secondAttribute="leading" constant="15" id="y60-11-BoL"/>
+                                                <constraint firstItem="wAH-ay-XL2" firstAttribute="top" secondItem="DBh-Xn-cg5" secondAttribute="bottom" constant="8" id="yt5-4w-PXl"/>
+                                                <constraint firstItem="CTW-cJ-nKk" firstAttribute="top" secondItem="wAH-ay-XL2" secondAttribute="bottom" constant="8" id="z2c-Yn-24W"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="uXZ-1S-Yrt" kind="show" identifier="editInfoSegue" id="AXV-TK-5zb">
+                                                <nil key="action"/>
+                                            </segue>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection id="4G1-EM-F9w">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="54" id="ze4-Sq-QZb" customClass="SettingsViewCell" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="274" width="375" height="54"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ze4-Sq-QZb" id="8Tx-q3-f5P">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Measurements" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qeg-Pa-bNG" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                                    <rect key="frame" x="15" y="17" width="114" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <segmentedControl contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="h07-R0-byY">
+                                                    <rect key="frame" x="249" y="13" width="110" height="29"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="110" id="XId-HT-hAc"/>
+                                                    </constraints>
+                                                    <segments>
+                                                        <segment title="Metric"/>
+                                                        <segment title="US"/>
+                                                    </segments>
+                                                    <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <connections>
+                                                        <action selector="measurementsDidChange:" destination="wn4-bo-hC8" eventType="valueChanged" id="RvU-Cc-Yfj"/>
+                                                    </connections>
+                                                </segmentedControl>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="h07-R0-byY" firstAttribute="leading" secondItem="Qeg-Pa-bNG" secondAttribute="trailing" constant="12" id="KUS-en-xEB"/>
+                                                <constraint firstItem="Qeg-Pa-bNG" firstAttribute="leading" secondItem="8Tx-q3-f5P" secondAttribute="leading" constant="15" id="QHE-ve-GKy"/>
+                                                <constraint firstItem="Qeg-Pa-bNG" firstAttribute="centerY" secondItem="8Tx-q3-f5P" secondAttribute="centerY" id="YfD-RO-cbQ"/>
+                                                <constraint firstAttribute="trailing" secondItem="h07-R0-byY" secondAttribute="trailing" constant="16" id="b4B-qY-mCb"/>
+                                                <constraint firstItem="h07-R0-byY" firstAttribute="centerY" secondItem="8Tx-q3-f5P" secondAttribute="centerY" id="cbl-48-INz"/>
+                                                <constraint firstItem="Qeg-Pa-bNG" firstAttribute="width" secondItem="h07-R0-byY" secondAttribute="width" id="dOy-NM-RUd"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="dOy-NM-RUd"/>
+                                                    <exclude reference="KUS-en-xEB"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="54" id="1Ix-fS-iAz" customClass="SettingsViewCell" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="328" width="375" height="54"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Ix-fS-iAz" id="Q11-1q-Mye">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Temperature" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YdO-Au-Oj9" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                                    <rect key="frame" x="15" y="17" width="98" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ymW-9A-0xc">
+                                                    <rect key="frame" x="249" y="13" width="110" height="29"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="110" id="RaT-AO-XiG"/>
+                                                    </constraints>
+                                                    <segments>
+                                                        <segment title="C"/>
+                                                        <segment title="F"/>
+                                                    </segments>
+                                                    <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <connections>
+                                                        <action selector="temperatureDidChange:" destination="wn4-bo-hC8" eventType="valueChanged" id="Nco-ZD-7fR"/>
+                                                    </connections>
+                                                </segmentedControl>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="YdO-Au-Oj9" firstAttribute="centerY" secondItem="Q11-1q-Mye" secondAttribute="centerY" id="0S9-Gm-CMZ"/>
+                                                <constraint firstItem="ymW-9A-0xc" firstAttribute="leading" secondItem="YdO-Au-Oj9" secondAttribute="trailing" constant="12" id="Dh1-EF-XO7"/>
+                                                <constraint firstAttribute="trailing" secondItem="ymW-9A-0xc" secondAttribute="trailing" constant="16" id="OgX-Dp-2m4"/>
+                                                <constraint firstItem="YdO-Au-Oj9" firstAttribute="width" secondItem="ymW-9A-0xc" secondAttribute="width" id="cKM-rd-Nev"/>
+                                                <constraint firstItem="YdO-Au-Oj9" firstAttribute="leading" secondItem="Q11-1q-Mye" secondAttribute="leading" constant="15" id="h9m-Ph-HJ5"/>
+                                                <constraint firstItem="ymW-9A-0xc" firstAttribute="centerY" secondItem="Q11-1q-Mye" secondAttribute="centerY" id="rEW-HZ-blZ"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="cKM-rd-Nev"/>
+                                                    <exclude reference="Dh1-EF-XO7"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="57" id="X0y-5c-hHr" customClass="SettingsViewCell" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="382" width="375" height="57"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="X0y-5c-hHr" id="kD4-al-VFI">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="57"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Motion Demo Model" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kjw-OI-2FA" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                                    <rect key="frame" x="15" y="18" width="155" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="lkx-Rm-ttT">
+                                                    <rect key="frame" x="249" y="15" width="110" height="29"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="110" id="CUc-0U-qoT"/>
+                                                    </constraints>
+                                                    <segments>
+                                                        <segment title="Board"/>
+                                                        <segment title="Car"/>
+                                                    </segments>
+                                                    <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <connections>
+                                                        <action selector="motionModelDidChange:" destination="wn4-bo-hC8" eventType="valueChanged" id="zvE-HI-oGI"/>
+                                                    </connections>
+                                                </segmentedControl>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="lkx-Rm-ttT" secondAttribute="trailing" constant="16" id="BQs-5Q-Dpd"/>
+                                                <constraint firstItem="lkx-Rm-ttT" firstAttribute="centerY" secondItem="kD4-al-VFI" secondAttribute="centerY" id="SNS-5W-hLe"/>
+                                                <constraint firstItem="Kjw-OI-2FA" firstAttribute="leading" secondItem="kD4-al-VFI" secondAttribute="leading" constant="15" id="X8C-VY-wt8"/>
+                                                <constraint firstItem="Kjw-OI-2FA" firstAttribute="centerY" secondItem="kD4-al-VFI" secondAttribute="centerY" id="g8F-y5-H3S"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="57" id="R09-Ht-1dJ" customClass="SettingsViewCell" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="439" width="375" height="57"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="R09-Ht-1dJ" id="pwG-Pe-kP1">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="57"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Beacon Notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7g5-OS-OUU" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                                    <rect key="frame" x="15" y="18" width="159" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icn_settings_arrow" translatesAutoresizingMaskIntoConstraints="NO" id="T2C-UZ-nPM">
+                                                    <rect key="frame" x="352" y="22" width="8" height="14"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="On" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lgy-rZ-cQp" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                                    <rect key="frame" x="317" y="18" width="23" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="lgy-rZ-cQp" secondAttribute="trailing" id="2oM-BF-Ky3"/>
+                                                <constraint firstItem="T2C-UZ-nPM" firstAttribute="leading" secondItem="lgy-rZ-cQp" secondAttribute="trailing" constant="12" id="9BJ-oX-9L0"/>
+                                                <constraint firstItem="7g5-OS-OUU" firstAttribute="trailing" secondItem="lgy-rZ-cQp" secondAttribute="trailing" constant="12" id="XTq-F6-PQA"/>
+                                                <constraint firstItem="7g5-OS-OUU" firstAttribute="leading" secondItem="pwG-Pe-kP1" secondAttribute="leading" constant="15" id="aQA-o1-h5c"/>
+                                                <constraint firstItem="lgy-rZ-cQp" firstAttribute="centerY" secondItem="pwG-Pe-kP1" secondAttribute="centerY" id="eev-gI-h4g"/>
+                                                <constraint firstItem="T2C-UZ-nPM" firstAttribute="leading" secondItem="lgy-rZ-cQp" secondAttribute="trailing" constant="-12" id="fVo-rT-lo8"/>
+                                                <constraint firstAttribute="trailing" secondItem="T2C-UZ-nPM" secondAttribute="trailing" constant="-15" id="iuU-Hl-CzA"/>
+                                                <constraint firstItem="T2C-UZ-nPM" firstAttribute="centerY" secondItem="pwG-Pe-kP1" secondAttribute="centerY" id="s1D-Gs-0hw"/>
+                                                <constraint firstItem="7g5-OS-OUU" firstAttribute="centerY" secondItem="pwG-Pe-kP1" secondAttribute="centerY" id="wJB-hL-wPG"/>
+                                                <constraint firstAttribute="trailing" secondItem="T2C-UZ-nPM" secondAttribute="trailing" constant="15" id="wUi-20-RmB"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="XTq-F6-PQA"/>
+                                                    <exclude reference="2oM-BF-Ky3"/>
+                                                    <exclude reference="fVo-rT-lo8"/>
+                                                    <exclude reference="iuU-Hl-CzA"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="GFR-4g-RkF" kind="show" identifier="notificationsSegue" id="ckd-sf-pyJ"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="wn4-bo-hC8" id="2Ro-lc-x4t"/>
+                            <outlet property="delegate" destination="wn4-bo-hC8" id="qoa-Oa-kKe"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Settings" id="5i6-MB-qpE">
+                        <barButtonItem key="leftBarButtonItem" image="btn_navbar_close" style="done" id="8FZ-YG-OB3">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="doneButtonTapped:" destination="wn4-bo-hC8" id="QZw-Ar-iCG"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="beaconNotificationsLabel" destination="7g5-OS-OUU" id="UBG-zR-CCm"/>
+                        <outlet property="beaconNotificationsStateLabel" destination="lgy-rZ-cQp" id="QWM-dt-fMU"/>
+                        <outlet property="emailLabel" destination="wAH-ay-XL2" id="OQa-2R-puL"/>
+                        <outlet property="measurementsControl" destination="h07-R0-byY" id="EuX-sO-lzf"/>
+                        <outlet property="measurementsLabel" destination="Qeg-Pa-bNG" id="vZY-5I-RGD"/>
+                        <outlet property="motionModelControl" destination="lkx-Rm-ttT" id="U2s-Op-S9L"/>
+                        <outlet property="motionModelLabel" destination="Kjw-OI-2FA" id="Ipe-pU-N5g"/>
+                        <outlet property="nameLabel" destination="XIP-eV-3s1" id="S7A-Tn-7oT"/>
+                        <outlet property="phoneLabel" destination="CTW-cJ-nKk" id="vgg-W2-SIQ"/>
+                        <outlet property="temperatureControl" destination="ymW-9A-0xc" id="k2A-hZ-Hzn"/>
+                        <outlet property="temperatureLabel" destination="YdO-Au-Oj9" id="GWK-15-uCR"/>
+                        <outlet property="titleLabel" destination="DBh-Xn-cg5" id="f4J-FJ-L7D"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ivh-LP-VkT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="Rah-u8-3bq">
+                    <rect key="frame" x="0.0" y="0.0" width="372" height="54"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+            </objects>
+            <point key="canvasLocation" x="1628.5" y="1169.5"/>
+        </scene>
+        <!--Edit Personal Info-->
+        <scene sceneID="iDC-lz-R0Z">
+            <objects>
+                <tableViewController title="Edit Personal Info" id="uXZ-1S-Yrt" customClass="PersonalInfoViewController" customModule="ThunderBoard" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="54" sectionHeaderHeight="28" sectionFooterHeight="28" id="if8-P2-6K3">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <sections>
+                            <tableViewSection id="eSH-4h-123">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="idd-zK-52G" customClass="PersonalInfoTableCell" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="64" width="375" height="54"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="idd-zK-52G" id="Gt5-Gv-gbz">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="8i2-Kx-Viy">
+                                                    <rect key="frame" x="85" y="19" width="270" height="19"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="alphabet"/>
+                                                </textField>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NAME" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4UK-tB-IGR" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                                    <rect key="frame" x="15" y="17" width="42" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="80" id="2B2-cp-HpU"/>
+                                                        <constraint firstAttribute="width" constant="42" id="cbL-os-Zf4"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="2B2-cp-HpU"/>
+                                                        </mask>
+                                                    </variation>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="4UK-tB-IGR" firstAttribute="centerY" secondItem="Gt5-Gv-gbz" secondAttribute="centerY" id="4On-c6-vgi"/>
+                                                <constraint firstItem="8i2-Kx-Viy" firstAttribute="leading" secondItem="4UK-tB-IGR" secondAttribute="trailing" constant="28" id="YbM-ba-PEO"/>
+                                                <constraint firstAttribute="trailing" secondItem="8i2-Kx-Viy" secondAttribute="trailing" constant="20" id="Ytb-7w-zf1"/>
+                                                <constraint firstItem="8i2-Kx-Viy" firstAttribute="baseline" secondItem="4UK-tB-IGR" secondAttribute="baseline" id="kLX-WZ-SE1"/>
+                                                <constraint firstItem="4UK-tB-IGR" firstAttribute="leading" secondItem="Gt5-Gv-gbz" secondAttribute="leading" constant="15" id="lW3-rY-NcY"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="textField" destination="8i2-Kx-Viy" id="gGl-qd-vJs"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="gbn-ZV-pK9" customClass="PersonalInfoTableCell" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="118" width="375" height="54"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gbn-ZV-pK9" id="tnK-ZS-H9b">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Title" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Gli-Xi-iZJ">
+                                                    <rect key="frame" x="85" y="19" width="270" height="19"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="alphabet"/>
+                                                </textField>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TITLE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Ho-Uk-sec" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                                    <rect key="frame" x="15" y="17" width="42" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="42" id="gvY-Na-jh7"/>
+                                                        <constraint firstAttribute="width" constant="80" id="vIq-pc-P2e"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="vIq-pc-P2e"/>
+                                                        </mask>
+                                                    </variation>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Gli-Xi-iZJ" firstAttribute="leading" secondItem="5Ho-Uk-sec" secondAttribute="trailing" constant="28" id="SZe-Bf-5Gp"/>
+                                                <constraint firstAttribute="trailing" secondItem="Gli-Xi-iZJ" secondAttribute="trailing" constant="20" id="VSX-ml-O6H"/>
+                                                <constraint firstItem="Gli-Xi-iZJ" firstAttribute="baseline" secondItem="5Ho-Uk-sec" secondAttribute="baseline" id="oqU-Ne-kPI"/>
+                                                <constraint firstItem="5Ho-Uk-sec" firstAttribute="centerY" secondItem="tnK-ZS-H9b" secondAttribute="centerY" id="xeQ-tA-vpc"/>
+                                                <constraint firstItem="5Ho-Uk-sec" firstAttribute="leading" secondItem="tnK-ZS-H9b" secondAttribute="leading" constant="15" id="xiV-Jv-8gj"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="textField" destination="Gli-Xi-iZJ" id="Xxn-04-IYO"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="LtT-G0-aH1" customClass="PersonalInfoTableCell" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="172" width="375" height="54"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LtT-G0-aH1" id="L8H-TP-V7M">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="iTT-qu-oaO">
+                                                    <rect key="frame" x="85" y="19" width="270" height="19"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
+                                                </textField>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EMAIL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wLr-iz-QSs" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                                    <rect key="frame" x="15" y="17" width="42" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="80" id="2ci-uv-MrR"/>
+                                                        <constraint firstAttribute="width" constant="42" id="xfV-ph-7hH"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="2ci-uv-MrR"/>
+                                                        </mask>
+                                                    </variation>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="iTT-qu-oaO" firstAttribute="baseline" secondItem="wLr-iz-QSs" secondAttribute="baseline" id="AZZ-gW-eT7"/>
+                                                <constraint firstAttribute="trailing" secondItem="iTT-qu-oaO" secondAttribute="trailing" constant="20" id="KgS-su-dsx"/>
+                                                <constraint firstItem="wLr-iz-QSs" firstAttribute="centerY" secondItem="L8H-TP-V7M" secondAttribute="centerY" id="fBQ-fp-IGH"/>
+                                                <constraint firstItem="wLr-iz-QSs" firstAttribute="leading" secondItem="L8H-TP-V7M" secondAttribute="leading" constant="15" id="vCr-Fw-dL0"/>
+                                                <constraint firstItem="iTT-qu-oaO" firstAttribute="leading" secondItem="wLr-iz-QSs" secondAttribute="trailing" constant="28" id="zGq-ND-Eg6"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="textField" destination="iTT-qu-oaO" id="aYu-Ty-6ye"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="lbD-vL-2Ze" customClass="PersonalInfoTableCell" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="226" width="375" height="54"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lbD-vL-2Ze" id="inm-Va-HYW">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Phone" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="ctj-lC-70q">
+                                                    <rect key="frame" x="85" y="19" width="270" height="19"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
+                                                </textField>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PHONE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ye-Eo-0F2" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                                    <rect key="frame" x="15" y="17" width="42" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="42" id="OwE-l2-9dB"/>
+                                                        <constraint firstAttribute="width" constant="80" id="heP-qs-yPa"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="heP-qs-yPa"/>
+                                                        </mask>
+                                                    </variation>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="ctj-lC-70q" secondAttribute="trailing" constant="20" id="2RT-B8-h3V"/>
+                                                <constraint firstItem="3Ye-Eo-0F2" firstAttribute="centerY" secondItem="inm-Va-HYW" secondAttribute="centerY" id="5ZJ-S2-wlb"/>
+                                                <constraint firstItem="ctj-lC-70q" firstAttribute="baseline" secondItem="3Ye-Eo-0F2" secondAttribute="baseline" id="RbR-lh-ibQ"/>
+                                                <constraint firstItem="ctj-lC-70q" firstAttribute="leading" secondItem="3Ye-Eo-0F2" secondAttribute="trailing" constant="28" id="hhU-IF-ai1"/>
+                                                <constraint firstItem="3Ye-Eo-0F2" firstAttribute="leading" secondItem="inm-Va-HYW" secondAttribute="leading" constant="15" id="r0I-H1-9a1"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="textField" destination="ctj-lC-70q" id="4Xo-wA-RN7"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="uXZ-1S-Yrt" id="fBR-Iq-XHU"/>
+                            <outlet property="delegate" destination="uXZ-1S-Yrt" id="7ne-yL-ySV"/>
+                        </connections>
+                    </tableView>
+                    <toolbarItems/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="emailLabel" destination="wLr-iz-QSs" id="hwT-AH-QZy"/>
+                        <outlet property="emailTextField" destination="iTT-qu-oaO" id="2vn-4P-dJV"/>
+                        <outlet property="nameLabel" destination="4UK-tB-IGR" id="Pob-x7-R0I"/>
+                        <outlet property="nameTextField" destination="8i2-Kx-Viy" id="KGS-mL-oid"/>
+                        <outlet property="phoneLabel" destination="3Ye-Eo-0F2" id="TAz-HB-6CX"/>
+                        <outlet property="phoneTextField" destination="ctj-lC-70q" id="IfE-4i-zil"/>
+                        <outlet property="titleLabel" destination="5Ho-Uk-sec" id="aCi-FY-FLV"/>
+                        <outlet property="titleTextField" destination="Gli-Xi-iZJ" id="XXh-de-P9k"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lgc-5u-yuD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2096.5" y="1169.5"/>
+        </scene>
+        <!--Beacon Notifications View Controller-->
+        <scene sceneID="e7h-5U-0uU">
+            <objects>
+                <viewController id="GFR-4g-RkF" userLabel="Beacon Notifications View Controller" customClass="NotificationSettingsViewController" customModule="ThunderBoard" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="zhl-rg-Dn0"/>
+                        <viewControllerLayoutGuide type="bottom" id="Kdl-QY-Zga"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="pV7-ye-Gxm">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="52" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="vZm-js-dKw">
+                                <rect key="frame" x="0.0" y="165" width="375" height="502"/>
+                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NotificationSettingsDeviceCell" rowHeight="52" id="Mst-K7-As9" customClass="NotificationSettingsDeviceCell" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="113.5" width="375" height="52"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Mst-K7-As9" id="DlL-Gj-Dxn">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Device-1234" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kgc-XL-gHE" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                                    <rect key="frame" x="15" y="3" width="278" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1000" text="Connected" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ATr-uL-AJH" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                                    <rect key="frame" x="15" y="21" width="278" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SZx-Sj-wgr">
+                                                    <rect key="frame" x="306" y="9" width="54" height="34"/>
+                                                    <state key="normal" title="Button"/>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Kgc-XL-gHE" firstAttribute="leading" secondItem="DlL-Gj-Dxn" secondAttribute="leading" constant="15" id="21y-7o-nLu"/>
+                                                <constraint firstItem="SZx-Sj-wgr" firstAttribute="centerY" secondItem="DlL-Gj-Dxn" secondAttribute="centerY" id="2Tk-eD-k98"/>
+                                                <constraint firstAttribute="bottom" secondItem="ATr-uL-AJH" secondAttribute="bottom" constant="10" id="NMN-Cz-3pZ"/>
+                                                <constraint firstItem="ATr-uL-AJH" firstAttribute="leading" secondItem="DlL-Gj-Dxn" secondAttribute="leading" constant="15" id="NPJ-O3-YbJ"/>
+                                                <constraint firstItem="SZx-Sj-wgr" firstAttribute="leading" secondItem="Kgc-XL-gHE" secondAttribute="trailing" constant="13" id="imP-ml-enB"/>
+                                                <constraint firstItem="ATr-uL-AJH" firstAttribute="top" secondItem="Kgc-XL-gHE" secondAttribute="baseline" constant="2" id="la3-As-JAx"/>
+                                                <constraint firstItem="Kgc-XL-gHE" firstAttribute="centerY" secondItem="DlL-Gj-Dxn" secondAttribute="centerY" priority="750" id="nzY-dI-94b"/>
+                                                <constraint firstItem="SZx-Sj-wgr" firstAttribute="leading" secondItem="ATr-uL-AJH" secondAttribute="trailing" constant="13" id="osC-rx-suG"/>
+                                                <constraint firstAttribute="trailing" secondItem="SZx-Sj-wgr" secondAttribute="trailing" constant="15" id="sMj-qr-vdm"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="actionButton" destination="SZx-Sj-wgr" id="A5d-YT-AiX"/>
+                                            <outlet property="deviceName" destination="Kgc-XL-gHE" id="PAq-1M-VWH"/>
+                                            <outlet property="deviceStatus" destination="ATr-uL-AJH" id="FSh-4R-YYQ"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="GFR-4g-RkF" id="gXT-jC-FYD"/>
+                                    <outlet property="delegate" destination="GFR-4g-RkF" id="TaB-k5-Wpb"/>
+                                </connections>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cz2-vp-RhM" userLabel="Notifications Description" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                <rect key="frame" x="16" y="76" width="343" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H0O-ra-o7U" userLabel="Notifications Container">
+                                <rect key="frame" x="0.0" y="113" width="375" height="52"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wFO-HN-Ajy" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
+                                        <rect key="frame" x="16" y="15" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EAy-7U-qPj">
+                                        <rect key="frame" x="310" y="10" width="51" height="31"/>
+                                        <connections>
+                                            <action selector="notificationSwitchChanged:" destination="GFR-4g-RkF" eventType="valueChanged" id="2Yh-yU-49f"/>
+                                        </connections>
+                                    </switch>
+                                </subviews>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="EAy-7U-qPj" firstAttribute="centerY" secondItem="H0O-ra-o7U" secondAttribute="centerY" id="Yak-BS-Ac8"/>
+                                    <constraint firstItem="wFO-HN-Ajy" firstAttribute="centerY" secondItem="H0O-ra-o7U" secondAttribute="centerY" id="Yoc-6L-gkv"/>
+                                    <constraint firstItem="wFO-HN-Ajy" firstAttribute="leading" secondItem="H0O-ra-o7U" secondAttribute="leading" constant="16" id="cEz-Z4-ZbX"/>
+                                    <constraint firstAttribute="height" constant="52" id="evo-qe-ka1"/>
+                                    <constraint firstAttribute="trailing" secondItem="EAy-7U-qPj" secondAttribute="trailing" constant="16" id="f6Z-dC-cKY"/>
+                                    <constraint firstItem="EAy-7U-qPj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wFO-HN-Ajy" secondAttribute="trailing" constant="15" id="fvm-ch-yb7"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="cz2-vp-RhM" firstAttribute="top" secondItem="zhl-rg-Dn0" secondAttribute="bottom" constant="12" id="C3U-Pc-Xkm"/>
+                            <constraint firstItem="H0O-ra-o7U" firstAttribute="leading" secondItem="pV7-ye-Gxm" secondAttribute="leading" id="D8R-LW-z2f"/>
+                            <constraint firstAttribute="leading" secondItem="vZm-js-dKw" secondAttribute="leading" id="Ee2-MT-ogS"/>
+                            <constraint firstItem="Kdl-QY-Zga" firstAttribute="top" secondItem="vZm-js-dKw" secondAttribute="bottom" id="SPr-g6-vcO"/>
+                            <constraint firstItem="vZm-js-dKw" firstAttribute="top" secondItem="H0O-ra-o7U" secondAttribute="bottom" id="bqr-BU-Twr"/>
+                            <constraint firstAttribute="trailing" secondItem="vZm-js-dKw" secondAttribute="trailing" id="hm3-7x-cso"/>
+                            <constraint firstItem="cz2-vp-RhM" firstAttribute="leading" secondItem="pV7-ye-Gxm" secondAttribute="leading" constant="16" id="jG8-lu-EzU"/>
+                            <constraint firstAttribute="trailing" secondItem="H0O-ra-o7U" secondAttribute="trailing" id="kFD-Xy-mf2"/>
+                            <constraint firstAttribute="trailing" secondItem="cz2-vp-RhM" secondAttribute="trailing" constant="16" id="tbD-hf-BoN"/>
+                            <constraint firstItem="H0O-ra-o7U" firstAttribute="top" secondItem="cz2-vp-RhM" secondAttribute="bottom" constant="16" id="vdE-mm-0dC"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Title" id="wzM-fx-UWz">
+                        <barButtonItem key="leftBarButtonItem" image="btn_navbar_back" id="wek-J7-H4S">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="handleBack" destination="GFR-4g-RkF" id="RD0-li-XK9"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="notificationsDescriptionLabel" destination="cz2-vp-RhM" id="0BE-Lx-dcY"/>
+                        <outlet property="notificationsEnabledContainer" destination="H0O-ra-o7U" id="2sy-g5-7R6"/>
+                        <outlet property="notificationsEnabledLabel" destination="wFO-HN-Ajy" id="jpa-wj-dbI"/>
+                        <outlet property="notificationsEnabledSwitch" destination="EAy-7U-qPj" id="ikE-gq-S4C"/>
+                        <outlet property="tableView" destination="vZm-js-dKw" id="3hp-yy-rPI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XGV-3E-FJr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1628.5" y="1977.5"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="btn_navbar_back" width="25" height="25"/>
+        <image name="btn_navbar_close" width="25" height="25"/>
+        <image name="icn_settings_arrow" width="8" height="14"/>
+    </resources>
+</document>

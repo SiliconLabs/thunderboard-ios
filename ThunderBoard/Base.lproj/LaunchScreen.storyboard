@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Llm-lL-Icb"/>
+                        <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_splash_mm" translatesAutoresizingMaskIntoConstraints="NO" id="Dso-wf-Qlv">
+                                <rect key="frame" x="137" y="64" width="100" height="33"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_splash" translatesAutoresizingMaskIntoConstraints="NO" id="fO5-oK-IOF">
+                                <rect key="frame" x="152" y="600" width="70" height="35"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_splash_thunderboard" translatesAutoresizingMaskIntoConstraints="NO" id="ZEW-2e-u9x">
+                                <rect key="frame" x="90.5" y="201" width="194" height="198"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.63137254901960782" green="0.72549019607843135" blue="0.1803921568627451" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="fO5-oK-IOF" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="H2w-s3-Lce"/>
+                            <constraint firstItem="ZEW-2e-u9x" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" multiplier="0.9" id="Nt9-wX-3UQ"/>
+                            <constraint firstItem="ZEW-2e-u9x" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="jAD-Ic-5NU"/>
+                            <constraint firstItem="Dso-wf-Qlv" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="44" id="kvS-gv-4am"/>
+                            <constraint firstItem="Dso-wf-Qlv" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="lFz-TR-Rv6"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="fO5-oK-IOF" secondAttribute="bottom" multiplier="1.05" id="xdT-f3-hnA"/>
+                        </constraints>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="52.5" y="374.5"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="logo_splash" width="70" height="35"/>
+        <image name="logo_splash_mm" width="100" height="33"/>
+        <image name="logo_splash_thunderboard" width="194" height="198"/>
+    </resources>
+</document>

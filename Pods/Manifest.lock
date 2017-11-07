@@ -1,0 +1,21 @@
+PODS:
+  - HockeySDK (4.1.3):
+    - HockeySDK/DefaultLib (= 4.1.3)
+  - HockeySDK/DefaultLib (4.1.3)
+  - RxCocoa (3.6.1):
+    - RxSwift (~> 3.6)
+  - RxSwift (3.6.1)
+
+DEPENDENCIES:
+  - HockeySDK
+  - RxCocoa (~> 3.0)
+  - RxSwift (~> 3.0)
+
+SPEC CHECKSUMS:
+  HockeySDK: 7dd8d7f5a4d71b7a5eebb320c8515cb22e99221b
+  RxCocoa: 84a08739ab186248c7f31ce4ee92d6f8a947d690
+  RxSwift: f9de85ea20cd2f7716ee5409fc13523dc638e4e4
+
+PODFILE CHECKSUM: 2b2f9a0ef090ec2ebff1f44bb9ea2641c09c82cb
+
+COCOAPODS: 1.2.0

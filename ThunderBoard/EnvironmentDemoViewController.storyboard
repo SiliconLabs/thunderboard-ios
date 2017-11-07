@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="WHM-1C-B2N">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <scenes>
+        <!--Environment Demo View Controller-->
+        <scene sceneID="nyg-eH-NuL">
+            <objects>
+                <viewController storyboardIdentifier="EnvironmentDemoViewController" id="WHM-1C-B2N" customClass="EnvironmentDemoViewController" customModule="ThunderBoard" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="dA1-yy-uu6"/>
+                        <viewControllerLayoutGuide type="bottom" id="82V-0N-sDA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ekX-2F-DfH">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6qq-WB-wAJ" userLabel="Sharing View">
+                                <rect key="frame" x="0.0" y="20" width="600" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="QcD-6T-jhA"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="ImO-P8-bas" kind="embed" identifier="streamingSegue" id="UPW-7U-qHO"/>
+                                </connections>
+                            </containerView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="UvH-X9-kKs">
+                                <rect key="frame" x="0.0" y="84" width="600" height="452"/>
+                                <collectionViewLayout key="collectionViewLayout" id="QN5-GH-Xu3" customClass="EnvironmentDemoCollectionViewLayout" customModule="ThunderBoard" customModuleProvider="target"/>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="UvH-X9-kKs" firstAttribute="leading" secondItem="ekX-2F-DfH" secondAttribute="leading" id="BNw-dy-KKO"/>
+                            <constraint firstItem="6qq-WB-wAJ" firstAttribute="top" secondItem="dA1-yy-uu6" secondAttribute="bottom" id="Par-hj-GNU"/>
+                            <constraint firstItem="82V-0N-sDA" firstAttribute="top" secondItem="UvH-X9-kKs" secondAttribute="bottom" constant="64" id="QXn-Z7-HW7"/>
+                            <constraint firstItem="UvH-X9-kKs" firstAttribute="top" secondItem="6qq-WB-wAJ" secondAttribute="bottom" id="koj-Az-ekC"/>
+                            <constraint firstItem="6qq-WB-wAJ" firstAttribute="trailing" secondItem="ekX-2F-DfH" secondAttribute="trailing" id="nvn-Ri-zXn"/>
+                            <constraint firstItem="6qq-WB-wAJ" firstAttribute="leading" secondItem="ekX-2F-DfH" secondAttribute="leading" id="su9-Es-MxP"/>
+                            <constraint firstAttribute="trailing" secondItem="UvH-X9-kKs" secondAttribute="trailing" id="xMd-d6-Ycg"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="UvH-X9-kKs" id="aLj-hu-TtC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6aD-4q-TUt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="231" y="325"/>
+        </scene>
+        <!--Streaming View Controller-->
+        <scene sceneID="g3A-A1-hJc">
+            <objects>
+                <viewController id="ImO-P8-bas" customClass="StreamingViewController" customModule="ThunderBoard" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yja-Sz-19w" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="940" y="218"/>
+        </scene>
+    </scenes>
+</document>
