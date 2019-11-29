@@ -8,7 +8,7 @@
 import Foundation
 
 protocol DeviceScanner: class {
-    weak var scanningDelegate: DeviceScannerDelegate? { get set }
+    var scanningDelegate: DeviceScannerDelegate? { get set }
     
     func startScanning()
     func stopScanning()

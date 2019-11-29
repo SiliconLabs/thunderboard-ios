@@ -21,8 +21,8 @@ class MotionCarDemoViewController : MotionDemoViewController {
         let identity = SCNMatrix4Identity
         let scale = SCNMatrix4Scale(identity, scaleFactor, scaleFactor, scaleFactor)
         
-        var initialOrientation = SCNMatrix4Rotate(scale, Float(M_PI_2), 1, 0, 0)
-        initialOrientation = SCNMatrix4Rotate(initialOrientation, Float(M_PI_2), 0, 1, 0)
+        var initialOrientation = SCNMatrix4Rotate(scale, .pi/2, 1, 0, 0)
+        initialOrientation = SCNMatrix4Rotate(initialOrientation, .pi/2, 0, 1, 0)
 
         motionView.setModelScene("SL_Derby_Assembly_1116_centered.obj", initialOrientation: initialOrientation)
     }

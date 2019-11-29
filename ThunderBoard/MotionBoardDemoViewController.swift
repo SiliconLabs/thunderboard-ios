@@ -22,7 +22,7 @@ class MotionBoardDemoViewController : MotionDemoViewController {
         let scale = SCNMatrix4Scale(identity, scaleFactor, scaleFactor, scaleFactor)
 
         var initialOrientation = SCNMatrix4Rotate(scale, 0, 1, 0, 0)
-        initialOrientation = SCNMatrix4Rotate(initialOrientation, -Float(M_PI_2), 0, 1, 0)
+        initialOrientation = SCNMatrix4Rotate(initialOrientation, -.pi/2, 0, 1, 0)
         
         motionView.setModelScene("Thunderboard_React_031716_obj.obj", initialOrientation: initialOrientation)
     }

@@ -89,7 +89,7 @@ class DeviceSelectionInteraction : DeviceScannerDelegate, DeviceConnectionDelega
     }
     
     func connectToDevice(_ device: Device) {
-        if let index = self.discoveredDevices.index(where: { $0.device.deviceIdentifier == device.deviceIdentifier }) {
+        if let index = self.discoveredDevices.firstIndex(where: { $0.device.deviceIdentifier == device.deviceIdentifier }) {
             connectToDevice(index)
         }
     }

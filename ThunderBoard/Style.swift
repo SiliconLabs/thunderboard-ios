@@ -239,23 +239,23 @@ class StyleText {
     
     func attributedString(_ text: String) -> NSAttributedString {
         var attributes: [String : Any] = [
-            NSFontAttributeName : self.font,
-            NSForegroundColorAttributeName : self.color
+            convertFromNSAttributedStringKey(NSAttributedString.Key.font) : self.font,
+            convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor) : self.color
         ]
         
         if adjustLineHeightMultiple {
             let style = NSMutableParagraphStyle()
             style.lineHeightMultiple = 0.75
             style.alignment = .center
-            attributes[NSParagraphStyleAttributeName] = style
+            attributes[convertFromNSAttributedStringKey(NSAttributedString.Key.paragraphStyle)] = style
         }
         
         if let kerning = self.kerning {
             let kerningAdjustment: CGFloat = 20.0
-            attributes[NSKernAttributeName] = (kerning / kerningAdjustment)
+            attributes[convertFromNSAttributedStringKey(NSAttributedString.Key.kern)] = (kerning / kerningAdjustment)
         }
         
-        let attributedString = NSAttributedString(string: text, attributes: attributes)
+        let attributedString = NSAttributedString(string: text, attributes: convertToOptionalNSAttributedStringKeyDictionary(attributes))
         return attributedString
     }
     
@@ -459,4 +459,15 @@ extension UIImage {
             return "icn_demo_hall_effect_tampered"
         }
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
+	return input.rawValue
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }

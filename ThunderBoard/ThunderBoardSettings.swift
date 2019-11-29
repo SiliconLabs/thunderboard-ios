@@ -72,48 +72,7 @@ class ThunderboardSettings: NSObject {
             defaults.set(newValue.rawValue, forKey: motionDemoModelKey)
         }
     }
-    
-    //MARK: User Name
-    fileprivate let userNameKey = "userName"
-    var userName: String? {
-        get {
-            return identityOrNilForEmpty(defaults.string(forKey: userNameKey))
-        }
-        set (newValue) {
-            defaults.setValue(newValue, forKey: userNameKey)
-        }
-    }
-    
-    fileprivate let userTitleKey = "userTitle"
-    var userTitle: String? {
-        get {
-            return identityOrNilForEmpty(defaults.string(forKey: userTitleKey))
-        }
-        set (newValue) {
-            defaults.setValue(newValue, forKey: userTitleKey)
-        }
-    }
-    
-    fileprivate let userPhoneKey = "userPhone"
-    var userPhone: String? {
-        get {
-            return identityOrNilForEmpty(defaults.string(forKey: userPhoneKey))
-        }
-        set (newValue) {
-            defaults.setValue(newValue, forKey: userPhoneKey)
-        }
-    }
-    
-    fileprivate let userEmailKey = "userEmail"
-    var userEmail: String? {
-        get {
-            return identityOrNilForEmpty(defaults.string(forKey: userEmailKey))
-        }
-        set (newValue) {
-            defaults.setValue(newValue, forKey: userEmailKey)
-        }
-    }
-    
+
     fileprivate let notificationsKey = "beaconNotifications"
     var beaconNotifications: Bool {
         get {
@@ -154,7 +113,7 @@ class ThunderboardSettings: NSObject {
     
     func removeConnectedDevice(_ device: NotificationDevice) {
         var devices = connectedDevices
-        if let index = devices.index(of: device) {
+        if let index = devices.firstIndex(of: device) {
             devices.remove(at: index)
             connectedDevices = devices
         }
@@ -171,10 +130,6 @@ class ThunderboardSettings: NSObject {
         let defaultValues = [
             self.measurementKey     : MeasurementUnits.imperial.rawValue,
             self.temperatureKey     : TemperatureUnits.fahrenheit.rawValue,
-            self.userNameKey        : "",
-            self.userTitleKey       : "",
-            self.userPhoneKey       : "",
-            self.userEmailKey       : "",
             self.motionDemoModelKey : MotionDemoModel.board.rawValue,
         ] as [String : Any]
         
@@ -182,7 +137,7 @@ class ThunderboardSettings: NSObject {
     }
     
     fileprivate func identityOrNilForEmpty(_ value: String?) -> String? {
-        if value?.characters.count > 1 {
+        if value?.count > 1 {
             return value
         }
         

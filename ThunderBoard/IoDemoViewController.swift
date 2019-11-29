@@ -166,7 +166,7 @@ class IoDemoViewController: DemoViewController, IoDemoInteractionOutput {
             }
         }()
         
-        buttons[index].setImage(UIImage(named: image)!, for: UIControlState())
+        buttons[index].setImage(UIImage(named: image)!, for: UIControl.State())
         labels[index].text = on ? onString : offString
     }
     
@@ -246,7 +246,7 @@ class IoDemoViewController: DemoViewController, IoDemoInteractionOutput {
         rgbLightsView?.tb_applyCommonRoundedCornerWithShadowStyle()
         colorHueView?.tb_applyRoundedCorner(1)
         
-        rgbButton?.setImage(UIImage(named: "ic_led_lights_off")!, for: UIControlState())
+        rgbButton?.setImage(UIImage(named: "ic_led_lights_off")!, for: UIControl.State())
         rgbStateLabel?.style = StyleText.demoStatus
         rgbStateLabel?.text = "--"
         
@@ -297,7 +297,7 @@ extension UISlider {
     func tb_updateSliderValueWithTap(_ gesture: UITapGestureRecognizer) {
         let point = gesture.location(in: self)
         self.value = Float(point.x / self.frame.size.width)
-        self.sendActions(for: UIControlEvents.valueChanged)
+        self.sendActions(for: UIControl.Event.valueChanged)
     }
 }
 

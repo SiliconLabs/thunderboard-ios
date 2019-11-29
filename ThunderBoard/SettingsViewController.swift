@@ -10,14 +10,8 @@ import UIKit
 class SettingsViewController: UITableViewController {
     
     fileprivate enum Sections: Int {
-        case personalInfo
         case preferences
     }
-    
-    @IBOutlet weak var nameLabel: StyledLabel!
-    @IBOutlet weak var titleLabel: StyledLabel!
-    @IBOutlet weak var phoneLabel: StyledLabel!
-    @IBOutlet weak var emailLabel: StyledLabel!
 
     @IBOutlet weak var measurementsLabel: StyledLabel!
     @IBOutlet weak var measurementsControl: UISegmentedControl!
@@ -36,17 +30,11 @@ class SettingsViewController: UITableViewController {
     fileprivate let notificationsSegue           = "notificationsSegue"
     fileprivate let beaconEnabledText            = "ON"
     fileprivate let beaconDisabledText           = "OFF"
-    fileprivate let personalInfoTitleText        = "PERSONAL INFO"
     fileprivate let preferencesTitleText         = "PREFERENCES"
-    fileprivate let editLabelText                = "Edit"
     fileprivate let measurementsLabelText        = "Measurements"
     fileprivate let temperatureLabelText         = "Temperature"
     fileprivate let motionModelText              = "Motion Demo Model"
     fileprivate let beaconNotificationsLabelText = "Beacon Notifications"
-    fileprivate let emptyNameText                = "Name"
-    fileprivate let emptyTitleText               = "Title"
-    fileprivate let emptyEmailText               = "Email"
-    fileprivate let emptyPhoneText               = "Phone"
     fileprivate let versionText                  = "Version "
     fileprivate let copyrightText                = "| © Silicon Labs 2016"
 
@@ -55,7 +43,6 @@ class SettingsViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        populatePersonalInfoFields()
         updateMeasurementsControl()
         updateTemperatureControl()
         updateMotionModelControl()
@@ -102,14 +89,7 @@ class SettingsViewController: UITableViewController {
         
         contentView.backgroundColor = StyleColor.lightGray
 
-        switch Sections(rawValue: section)! {
-        case .personalInfo:
-            setupSectionTitle(personalInfoTitleText, contentView: contentView)
-            setupEditLabel(contentView)
-        
-        case .preferences:
-            setupSectionTitle(preferencesTitleText, contentView: contentView)
-        }
+        setupSectionTitle(preferencesTitleText, contentView: contentView)
         
         return headerView
     }
@@ -148,52 +128,7 @@ class SettingsViewController: UITableViewController {
             constant: 15)
         )
     }
-    
-    func editTapped() {
-        performSegue(withIdentifier: "editInfoSegue", sender: nil)
-    }
-    
-    fileprivate func setupEditLabel(_ contentView: UIView) {
-        let editView = StyledLabel()
-        contentView.addSubview(editView)
-        
-        editView.tb_setText(editLabelText, style: StyleText.header)
-        
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(editTapped))
-        editView.addGestureRecognizer(tapGestureRecognizer)
-        editView.isUserInteractionEnabled = true
-        
-        editView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addConstraint(NSLayoutConstraint(
-            item: editView,
-            attribute: .top,
-            relatedBy: .equal,
-            toItem: contentView,
-            attribute: .top,
-            multiplier: 1,
-            constant: 18)
-        )
-        contentView.addConstraint(NSLayoutConstraint(
-            item: editView,
-            attribute: .bottom,
-            relatedBy: .equal,
-            toItem: contentView,
-            attribute: .bottom,
-            multiplier: 1,
-            constant: -10)
-        )
-        contentView.addConstraint(NSLayoutConstraint(
-            item: editView,
-            attribute: .trailing,
-            relatedBy: .equal,
-            toItem: contentView,
-            attribute: .trailing,
-            multiplier: 1,
-            constant: -15)
-        )
-        
-    }
-    
+
     fileprivate func setupFooter() {
         let footerView = UITableViewHeaderFooterView()
         let contentView = footerView.contentView
@@ -288,7 +223,7 @@ class SettingsViewController: UITableViewController {
     // Private
     
     fileprivate func setupAppearance() {
-        tableView.rowHeight          = UITableViewAutomaticDimension
+        tableView.rowHeight          = UITableView.automaticDimension
         tableView.estimatedRowHeight = 42
         
         automaticallyAdjustsScrollViewInsets = true
@@ -307,30 +242,7 @@ class SettingsViewController: UITableViewController {
         
         setupFooter()
     }
-    
-    fileprivate func populatePersonalInfoFields() {
-        if let name = settings.userName {
-            nameLabel.tb_setText(name, style: StyleText.main1.tweakColorAlpha(1.0))
-        } else {
-            nameLabel.tb_setText(emptyNameText, style: StyleText.main1.tweakColorAlpha(0.5))
-        }
-        if let title = settings.userTitle {
-            titleLabel.tb_setText(title, style: StyleText.main1.tweakColorAlpha(1.0))
-        } else {
-            titleLabel.tb_setText(emptyTitleText, style: StyleText.main1.tweakColorAlpha(0.5))
-        }
-        if let phone = settings.userPhone {
-            phoneLabel.tb_setText(phone, style: StyleText.main1.tweakColorAlpha(1.0))
-        } else {
-            phoneLabel.tb_setText(emptyPhoneText, style: StyleText.main1.tweakColorAlpha(0.5))
-        }
-        if let email = settings.userEmail {
-            emailLabel.tb_setText(email, style: StyleText.main1.tweakColorAlpha(1.0))
-        } else {
-            emailLabel.tb_setText(emptyEmailText, style: StyleText.main1.tweakColorAlpha(0.5))
-        }
-    }
-    
+
     fileprivate func updateMeasurementsControl() {
         let measurementUnits = settings.measurement
         switch measurementUnits {

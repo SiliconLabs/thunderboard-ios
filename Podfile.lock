@@ -2,20 +2,31 @@ PODS:
   - HockeySDK (4.1.3):
     - HockeySDK/DefaultLib (= 4.1.3)
   - HockeySDK/DefaultLib (4.1.3)
-  - RxCocoa (3.6.1):
-    - RxSwift (~> 3.6)
-  - RxSwift (3.6.1)
+  - RxCocoa (5.0.0):
+    - RxRelay (~> 5)
+    - RxSwift (~> 5)
+  - RxRelay (5.0.0):
+    - RxSwift (~> 5)
+  - RxSwift (5.0.0)
 
 DEPENDENCIES:
   - HockeySDK
-  - RxCocoa (~> 3.0)
-  - RxSwift (~> 3.0)
+  - RxCocoa (~> 5.0)
+  - RxSwift (~> 5.0)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - HockeySDK
+    - RxCocoa
+    - RxRelay
+    - RxSwift
 
 SPEC CHECKSUMS:
   HockeySDK: 7dd8d7f5a4d71b7a5eebb320c8515cb22e99221b
-  RxCocoa: 84a08739ab186248c7f31ce4ee92d6f8a947d690
-  RxSwift: f9de85ea20cd2f7716ee5409fc13523dc638e4e4
+  RxCocoa: fcf32050ac00d801f34a7f71d5e8e7f23026dcd8
+  RxRelay: 4f7409406a51a55cd88483f21ed898c234d60f18
+  RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
 
-PODFILE CHECKSUM: 2b2f9a0ef090ec2ebff1f44bb9ea2641c09c82cb
+PODFILE CHECKSUM: 297743529fac840b31d0e89387954f41f393917e
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.5.3

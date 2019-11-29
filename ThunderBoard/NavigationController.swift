@@ -199,10 +199,10 @@ extension UINavigationController {
         self.navigationBar.shadowImage = UIImage()
         self.navigationBar.tintColor = StyleColor.white
 
-        self.navigationBar.titleTextAttributes = [
-            NSForegroundColorAttributeName: StyleColor.white,
-            NSFontAttributeName : StyleText.navBarTitle.font
-        ]
+        self.navigationBar.titleTextAttributes = convertToOptionalNSAttributedStringKeyDictionary([
+            NSAttributedString.Key.foregroundColor.rawValue: StyleColor.white,
+            NSAttributedString.Key.font.rawValue : StyleText.navBarTitle.font
+        ])
 
         var image: UIImage?
         
@@ -228,4 +228,10 @@ extension UINavigationController {
 
         self.navigationBar.setBackgroundImage(image, for: UIBarMetrics.default)
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }

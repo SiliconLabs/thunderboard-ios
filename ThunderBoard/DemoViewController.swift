@@ -56,7 +56,7 @@ class DemoViewController : UIViewController, DemoStreamingInteractionOutput, Str
                                                   object: nil)
     }
 
-    func firebaseStatusDidChange() {
+    @objc func firebaseStatusDidChange() {
         switch FirebaseConnectionMonitor.shared.isConnected {
         case true:
             streamingEnabled = true

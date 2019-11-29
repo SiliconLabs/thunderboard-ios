@@ -10,7 +10,7 @@ import RxSwift
 
 class EnvironmentDemoCollectionViewCell: UICollectionViewCell {
 
-    static let cellIdentifier = "\(self).cellID"
+    static let cellIdentifier = "\(String(describing: self)).cellID"
     
     // MARK: - Properties
 
@@ -76,13 +76,13 @@ class EnvironmentDemoCollectionViewCell: UICollectionViewCell {
 
         titleLabel.minimumScaleFactor = 0.5
         titleLabel.adjustsFontSizeToFitWidth = true
-        titleLabel.setContentCompressionResistancePriority(1000, for: .vertical)
-        titleLabel.setContentHuggingPriority(1000, for: .vertical)
+        titleLabel.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .vertical)
+        titleLabel.setContentHuggingPriority(UILayoutPriority(rawValue: 1000), for: .vertical)
 
         valueLabel.numberOfLines = 0
         valueLabel.textAlignment = .center
-        valueLabel.setContentHuggingPriority(1000, for: .vertical)
-        valueLabel.setContentCompressionResistancePriority(1000, for: .vertical)
+        valueLabel.setContentHuggingPriority(UILayoutPriority(rawValue: 1000), for: .vertical)
+        valueLabel.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .vertical)
 
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: iconContainer.leadingAnchor),

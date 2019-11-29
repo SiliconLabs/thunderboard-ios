@@ -61,7 +61,7 @@ class DemoStreamingConnection : DemoStreaming {
             return
         }
         
-        if firebaseToken.characters.count != 40 {
+        if firebaseToken.count != 40 {
             log.error("Firebase token invalid - streaming disabled")
             streamingEnabled = false
             return
@@ -101,7 +101,7 @@ class DemoStreamingConnection : DemoStreaming {
             self?.firebase?.auth(withCustomToken: self?.firebaseToken, withCompletionBlock: { (fbError: Error?, authData: FAuthData?) -> Void in
                 
                 if fbError != nil {
-                    log.error("Firebase authentication error: \(fbError)")
+                    log.error("Firebase authentication error: \(String(describing: fbError))")
                     error = fbError
                 }
                 else {
@@ -127,7 +127,7 @@ class DemoStreamingConnection : DemoStreaming {
                 else {
                     
                     if let _ = shortenError {
-                        log.error("Error shortening URL: \(shortenError)")
+                        log.error("Error shortening URL: \(String(describing: shortenError))")
                         // error = shortenError
 
                     }
@@ -234,7 +234,7 @@ class DemoStreamingConnection : DemoStreaming {
     
     fileprivate func beginStreamingSession(_ device: Device, sessionId: String, shortUrl: String) {
         
-        guard let firebase = firebase, let deviceId = device.deviceIdentifier, let deviceName = device.name else {
+        guard let firebase = firebase, let deviceId = device.deviceIdentifier, let _ = device.name else {
             return
         }
 
@@ -249,29 +249,8 @@ class DemoStreamingConnection : DemoStreaming {
         // Start Time
         session.child(byAppendingPath: "startTime").setValue(NSNumber(value: startTime as Int64))
         
-        // Contact Info
         let settings = ThunderboardSettings()
-        let contactInfo = session.child(byAppendingPath: "contactInfo")
 
-        if let userName = settings.userName {
-            contactInfo?.child(byAppendingPath: "fullName").setValue(userName)
-        }
-        
-        if let userEmail = settings.userEmail {
-            contactInfo?.child(byAppendingPath: "emailAddress").setValue(userEmail)
-        }
-        
-        if let userTitle = settings.userTitle {
-            contactInfo?.child(byAppendingPath: "title").setValue(userTitle)
-        }
-        
-        if let userPhone = settings.userPhone {
-            contactInfo?.child(byAppendingPath: "phoneNumber").setValue(userPhone)
-        }
-        
-        // Device ID (included in contact info)
-        contactInfo?.child(byAppendingPath: "deviceName").setValue(deviceName)
-        
         // User Preferences
         let temperatureUnits = session.child(byAppendingPath: "temperatureUnits")
         switch settings.temperature {

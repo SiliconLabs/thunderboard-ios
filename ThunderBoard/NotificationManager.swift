@@ -20,8 +20,8 @@ protocol NotificationPresenter : class {
 protocol NotificationManager : class {
     
     var notificationsEnabled: Bool { get set }
-    weak var delegate: NotificationManagerDelegate? { get set }
-    weak var presenter: NotificationPresenter? { get set }
+    var delegate: NotificationManagerDelegate? { get set }
+    var presenter: NotificationPresenter? { get set }
 
     func enableNotifications(_ enable: Bool)
     func allowDevice(_ device: NotificationDevice)

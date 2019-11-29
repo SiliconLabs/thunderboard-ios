@@ -221,24 +221,31 @@ class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConne
                 self.powerState = .disabled
                 self.stopScanning()
                 self.notifyLostAllConnections()
+            @unknown default:
+                fatalError()
             }
         }
     }
 
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        
         // RSSI value 127 is Apple-reserved and indicates the RSSI value could not be read.
-        if RSSI.intValue != 127 {
-            if isThunderboard(peripheral) {
-                let device = bleDeviceForPeripheral(peripheral)
-                device.RSSI = RSSI.intValue
-                if device.advertisementDataLocalName == nil {
-                    device.advertisementDataLocalName = advertisementData[CBAdvertisementDataLocalNameKey] as? String
-                }
-                dispatch_main_async {
-                    self.scanningDelegate?.discoveredDevice(device)
-                }
-            }
+        guard RSSI.intValue != 127,
+            let peripheralName = advertisementData[CBAdvertisementDataLocalNameKey] as? String,
+            isThunderboard(peripheralName) else {
+            return
+        }
+        
+        let device = bleDeviceForPeripheral(peripheral)
+        
+        device.name = peripheralName
+        device.RSSI = RSSI.intValue
+        
+        if device.advertisementDataLocalName == nil {
+            device.advertisementDataLocalName = peripheralName
+        }
+        
+        dispatch_main_async {
+            self.scanningDelegate?.discoveredDevice(device)
         }
     }
     
@@ -269,7 +276,7 @@ class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConne
     
     
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
-        log.error("failed connection to peripheral \(peripheral) error \(error)")
+        log.error("failed connection to peripheral \(peripheral) error \(String(describing: error))")
         
         let device = bleDeviceForPeripheral(peripheral)
         device.connectionState = .disconnected
@@ -284,7 +291,7 @@ class BleManager: NSObject, CBCentralManagerDelegate, DeviceScanner, DeviceConne
     
 
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        log.info("disconnected from peripheral \(peripheral) error=\(error)")
+        log.info("disconnected from peripheral \(peripheral) error=\(String(describing: error))")
         
         let device = bleDeviceForPeripheral(peripheral)
         device.connectionState = .disconnected

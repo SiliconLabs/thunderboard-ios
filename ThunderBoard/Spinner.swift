@@ -66,7 +66,7 @@ class Spinner: UIView {
             let strokeEndAnim = CABasicAnimation(keyPath: "strokeEnd")
             strokeEndAnim.toValue = 1.0
             strokeEndAnim.duration = duration
-            strokeEndAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+            strokeEndAnim.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
             strokeEndAnim.repeatCount = HUGE
             strokeEndAnim.isRemovedOnCompletion = false
             
@@ -123,14 +123,19 @@ class Spinner: UIView {
         colorPathLayer.strokeColor = lineColor.cgColor
         colorPathLayer.strokeStart = 0
         colorPathLayer.strokeEnd = 0
-        colorPathLayer.lineCap = "butt"
+        colorPathLayer.lineCap = convertToCAShapeLayerLineCap("butt")
     }
     
     fileprivate func circlePath() -> UIBezierPath {
         return UIBezierPath(arcCenter: CGPoint(x: bounds.midX, y: bounds.midY),
             radius: (bounds.size.width - lineWidth) / 2,
-            startAngle: CGFloat(M_PI_2),
-            endAngle: CGFloat(5*M_PI_2),
+            startAngle: .pi/2,
+            endAngle: 5 * .pi/2,
             clockwise: true)
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToCAShapeLayerLineCap(_ input: String) -> CAShapeLayerLineCap {
+	return CAShapeLayerLineCap(rawValue: input)
 }

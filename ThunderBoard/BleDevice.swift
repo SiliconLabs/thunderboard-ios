@@ -11,7 +11,7 @@ import CoreBluetooth
 class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
     
     override var debugDescription: String {
-        get { return "name=\(name) identifier=\(deviceIdentifier) RSSI=\(RSSI) connectionState=\(connectionState)" }
+        get { return "name=\(String(describing: name)) identifier=\(String(describing: deviceIdentifier)) RSSI=\(String(describing: RSSI)) connectionState=\(connectionState)" }
     }
     
     fileprivate (set) var model: DeviceModel = .unknown
@@ -221,7 +221,7 @@ class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
     
     fileprivate func updateCapabilities(_ characteristics: [CBCharacteristic]) {
         // map characteristics to capabilities
-        capabilities = capabilities.union(characteristics.flatMap({ (characteristic: CBCharacteristic) -> DeviceCapability? in
+        capabilities = capabilities.union(characteristics.compactMap({ (characteristic: CBCharacteristic) -> DeviceCapability? in
             switch characteristic.uuid {
                 
             case CBUUID.Digital:
@@ -308,7 +308,7 @@ class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
         }
     }
     
-    override var hashValue: Int {
+    override var hash: Int {
         return cbPeripheral.hashValue
     }
     
@@ -355,7 +355,7 @@ class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
             return
         }
         
-        log.debug("service: \(service.uuid) characteristics: \(service.characteristics)")
+        log.debug("service: \(service.uuid) characteristics: \(String(describing: service.characteristics))")
         
         // update capabilities based on characteristics
         updateCapabilities(characteristics)
@@ -402,7 +402,8 @@ class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
                     switch model.uppercased() {
                     case "RD-0057":
                         self.model = .react
-                    case "BRD4160A":
+                    case "BRD4160A": fallthrough
+                    case "BRD4166A":
                         self.model = .sense
                     default:
                         self.model = .unknown

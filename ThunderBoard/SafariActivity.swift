@@ -11,8 +11,8 @@ class SafariActivity : UIActivity {
     
     fileprivate var url: URL?
     
-    override var activityType : UIActivityType? {
-        return UIActivityType("com.silab.activity.safari")
+    override var activityType : UIActivity.ActivityType? {
+        return UIActivity.ActivityType("com.silab.activity.safari")
     }
     
     override var activityTitle : String? {

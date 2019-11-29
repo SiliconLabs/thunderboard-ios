@@ -7,7 +7,7 @@
 
 import UIKit
 
-public let π = M_PI
+public let π = Double.pi
 
 class ButtonAnimationTrackLayer: CALayer, CAAnimationDelegate {
     
@@ -96,7 +96,7 @@ class ButtonAnimationTrackLayer: CALayer, CAAnimationDelegate {
         strokeEndAnim.fromValue = 1.0
         strokeEndAnim.toValue = 0.02
         strokeEndAnim.duration = 0.7
-        strokeEndAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+        strokeEndAnim.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeIn)
         strokeEndAnim.isRemovedOnCompletion = false
         strokeEndAnim.delegate = self
         
@@ -111,7 +111,7 @@ class ButtonAnimationTrackLayer: CALayer, CAAnimationDelegate {
         strokeEndAnim.fromValue = trackColor.cgColor
         strokeEndAnim.toValue = StyleColor.gray.cgColor
         strokeEndAnim.duration = 0.5
-        strokeEndAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        strokeEndAnim.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
         strokeEndAnim.isRemovedOnCompletion = false
         strokeEndAnim.delegate = self
         
@@ -126,7 +126,7 @@ class ButtonAnimationTrackLayer: CALayer, CAAnimationDelegate {
         animation.fromValue = 0.0
         animation.toValue = 2.0 * π
         animation.repeatCount = HUGE
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
         animation.isRemovedOnCompletion = false
         
         self.add(animation, forKey: "rotation")
@@ -143,7 +143,7 @@ class ButtonAnimationTrackLayer: CALayer, CAAnimationDelegate {
         strokeEndAnim.fromValue = 0.02
         strokeEndAnim.toValue = 1.0
         strokeEndAnim.duration = fillDuration
-        strokeEndAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+        strokeEndAnim.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeIn)
         strokeEndAnim.isRemovedOnCompletion = false
         strokeEndAnim.delegate = self
         
@@ -162,7 +162,7 @@ class ButtonAnimationTrackLayer: CALayer, CAAnimationDelegate {
         strokeEndAnim.fromValue = 1.0
         strokeEndAnim.toValue = 0.02
         strokeEndAnim.duration = reverseDuration
-        strokeEndAnim.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        strokeEndAnim.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
         strokeEndAnim.isRemovedOnCompletion = false
         strokeEndAnim.delegate = self
         
@@ -210,7 +210,7 @@ class ButtonAnimationTrackLayer: CALayer, CAAnimationDelegate {
     fileprivate func setupTrack() {
         trackLayer.frame = bounds
         trackLayer.fillColor = UIColor.clear.cgColor
-        trackLayer.lineCap = "round"
+        trackLayer.lineCap = convertToCAShapeLayerLineCap("round")
         trackLayer.strokeColor = trackColor.cgColor
         trackLayer.strokeStart = 0.0
         trackLayer.strokeEnd = 1.0
@@ -344,4 +344,9 @@ class ButtonSpinner: UIView {
         
         self.backgroundColor = UIColor.clear
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToCAShapeLayerLineCap(_ input: String) -> CAShapeLayerLineCap {
+	return CAShapeLayerLineCap(rawValue: input)
 }

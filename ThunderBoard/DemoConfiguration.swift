@@ -9,7 +9,7 @@ import Foundation
 
 protocol DemoConfiguration: class {
     var deviceIdentifier: DeviceId? { get }
-    weak var configurationDelegate: DemoConfigurationDelegate? { get set }
+    var configurationDelegate: DemoConfigurationDelegate? { get set }
     func configureForDemo(_ demo: ThunderboardDemo)
     func resetDemoConfiguration()
 }

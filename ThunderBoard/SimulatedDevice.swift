@@ -85,7 +85,7 @@ class SimulatedDevice : Device, DemoConfiguration, Equatable, CustomDebugStringC
     }
     
     var debugDescription: String {
-        get { return "\(name): \(deviceIdentifier) \(capabilities) \(power)" }
+        get { return "\(String(describing: name)): \(String(describing: deviceIdentifier)) \(capabilities) \(power)" }
     }
     
     //MARK: - Private

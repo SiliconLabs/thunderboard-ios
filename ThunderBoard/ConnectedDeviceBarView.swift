@@ -66,6 +66,6 @@ class ConnectedDeviceBarView: UIView {
         ])
         
         deviceNameLabel.lineBreakMode = .byTruncatingMiddle
-        batteryStatusLabel.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: UILayoutConstraintAxis.horizontal)
+        batteryStatusLabel.setContentCompressionResistancePriority(UILayoutPriority.required, for: NSLayoutConstraint.Axis.horizontal)
     }
 }

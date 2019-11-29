@@ -79,7 +79,7 @@ extension LedState {
 
 extension Degree {
     func tb_toRadian() -> Radian {
-        return self * Float(M_PI) / 180.0
+        return self * .pi / 180.0
     }
     
     func tb_toString(_ maximumDecimalPlaces: Int, minimumDecimalPlaces: Int = 0) -> String? {
@@ -234,7 +234,7 @@ struct ThunderboardWheel {
     var distance: Meters {
         
         get {
-            return Meters(Double(revolutionsSinceConnecting) * M_PI * Double(diameter))
+            return Meters(Double(revolutionsSinceConnecting) * .pi * Double(diameter))
         }
     }
     
@@ -255,7 +255,7 @@ struct ThunderboardWheel {
             if deltaSeconds() == 0 {
                 return 0.0
             } else {
-                let distance = Meters(deltaRevolutions()) * Float(M_PI) * diameter
+                let distance = Meters(deltaRevolutions()) * .pi * diameter
                 let distancePerSecond = distance / Float(deltaSeconds())
                 return distancePerSecond
             }

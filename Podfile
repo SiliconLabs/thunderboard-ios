@@ -7,6 +7,6 @@ target 'Thunderboard' do
 
   # Pods for Thunderboard
   pod "HockeySDK"
-  pod 'RxSwift',    '~> 3.0'
-  pod 'RxCocoa',    '~> 3.0'
+  pod 'RxSwift',    '~> 5.0'
+  pod 'RxCocoa',    '~> 5.0'
 end

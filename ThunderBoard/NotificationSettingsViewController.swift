@@ -106,10 +106,10 @@ class NotificationSettingsViewController : UIViewController, UITableViewDelegate
     
     func locationServicesNotAllowed() {
         let alert = UIAlertController(title: "Location Services Disabled", message: "Open Settings and enable Location in order to use beacons.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertAction.Style.cancel, handler: nil))
         
         let settings = UIAlertAction(title: "Open Settings", style: .default) { (action: UIAlertAction) -> Void in
-            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+            UIApplication.shared.openURL(URL(string: UIApplication.openSettingsURLString)!)
         }
         alert.addAction(settings)
         self.present(alert, animated: true, completion: nil)
@@ -117,10 +117,10 @@ class NotificationSettingsViewController : UIViewController, UITableViewDelegate
     
     func notificationsNotAllowed() {
         let alert = UIAlertController(title: "Notifications Disabled", message: "Open Settings and enable Notifications in order to use beacons.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertAction.Style.cancel, handler: nil))
         
         let settings = UIAlertAction(title: "Open Settings", style: .default) { (action: UIAlertAction) -> Void in
-            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+            UIApplication.shared.openURL(URL(string: UIApplication.openSettingsURLString)!)
         }
         alert.addAction(settings)
         self.present(alert, animated: true, completion: nil)

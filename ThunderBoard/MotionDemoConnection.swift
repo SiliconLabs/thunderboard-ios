@@ -8,7 +8,7 @@
 import Foundation
 
 protocol MotionDemoConnection: DemoConnection {
-    weak var connectionDelegate: MotionDemoConnectionDelegate? { get set }
+    var connectionDelegate: MotionDemoConnectionDelegate? { get set }
     
     func startCalibration()
     func resetOrientation()

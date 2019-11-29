@@ -172,14 +172,9 @@ class BeaconNotificationManager : NSObject, NotificationManager, CLLocationManag
             return []
         }
 
-        let beacons = regions.filter({
-            if let _ = $0 as? CLBeaconRegion {
-                return true
-            }
-            return false
-        }) as! [CLBeaconRegion]
-
+        let beacons = regions.compactMap({ $0 as? CLBeaconRegion })
         let previous = previouslyConnectedDevices()
+        
         return beacons.map({ beacon -> NotificationDevice in
             let identifier = deviceIdentifierForRegion(beacon)
 
@@ -222,7 +217,7 @@ class BeaconNotificationManager : NSObject, NotificationManager, CLLocationManag
     
     fileprivate func dumpDebugInformation() {
         let regions = clManager?.monitoredRegions
-        log.debug("monitored regions: \(regions)")
+        log.debug("monitored regions: \(String(describing: regions))")
     }
     
     //MARK: - CLLocationManagerDelegate
@@ -240,6 +235,8 @@ class BeaconNotificationManager : NSObject, NotificationManager, CLLocationManag
         case .notDetermined:
             // NO-OP: decision from the user forthcoming
             break
+        @unknown default:
+            fatalError()
         }
     }
 
@@ -248,7 +245,7 @@ class BeaconNotificationManager : NSObject, NotificationManager, CLLocationManag
     }
     
     func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
-        log.error("\(region) error \(error)")
+        log.error("\(String(describing: region)) error \(error)")
     }
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {

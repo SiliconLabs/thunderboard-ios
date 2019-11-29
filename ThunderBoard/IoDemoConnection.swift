@@ -8,7 +8,7 @@
 import Foundation
 
 protocol IoDemoConnection: DemoConnection {
-    weak var connectionDelegate: IoDemoConnectionDelegate? { get set }
+    var connectionDelegate: IoDemoConnectionDelegate? { get set }
 
     var numberOfLeds: Int { get }
     var numberOfSwitches: Int { get }

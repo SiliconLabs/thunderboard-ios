@@ -22,7 +22,7 @@ class MotionSenseBoardDemoViewController : MotionDemoViewController {
         let scale = SCNMatrix4Scale(identity, scaleFactor, scaleFactor, scaleFactor)
 
         var initialOrientation = SCNMatrix4Rotate(scale, 0, 1, 0, 0)
-        initialOrientation = SCNMatrix4Rotate(initialOrientation, Float(M_PI_2), 1, 0, 0)
+        initialOrientation = SCNMatrix4Rotate(initialOrientation, .pi/2, 1, 0, 0)
 
         motionView.setModelScene("TBSense_Rev_Lowpoly_2.obj", initialOrientation: initialOrientation)
         ledMaterials = locateMaterialsNamed([

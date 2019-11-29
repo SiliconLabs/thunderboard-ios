@@ -388,7 +388,7 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
     }
     
     func bleDeviceUpdated(_ device: DiscoveredDeviceDisplay, index: Int) {
-        if let cell = tableView?.cellForRow(at: IndexPath(row: index, section: 0)) as! DeviceTableViewCell! {
+        if let cell = tableView?.cellForRow(at: IndexPath(row: index, section: 0)) as! DeviceTableViewCell? {
             updateData(cell, device: device)
         }
     }

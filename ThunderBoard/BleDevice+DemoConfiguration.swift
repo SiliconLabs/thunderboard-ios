@@ -22,7 +22,7 @@ extension BleDevice {
     fileprivate func allKnownCharacteristics() -> Set<CBUUID> {
         var result: Set<CBUUID> = []
         
-        if let knownUUIDs = self.cbPeripheral.services?.flatMap({ $0.characteristics?.flatMap({ $0.uuid }) }).flatMap({$0}) {
+        if let knownUUIDs = self.cbPeripheral.services?.compactMap({ $0.characteristics?.compactMap({ $0.uuid }) }).flatMap({$0}) {
             for uuid in knownUUIDs {
                 result.insert(uuid)
             }

@@ -27,7 +27,7 @@ class ApplicationPresenter : NSObject, DeviceTransportApplicationDelegate, Conne
         
         factory.presenter = self
         
-        #if (arch(i386) || arch(x86_64)) && os(iOS)
+        #if targetEnvironment(simulator)
             let sim = SimulatedDeviceScanner()
             sim.applicationDelegate = self
             

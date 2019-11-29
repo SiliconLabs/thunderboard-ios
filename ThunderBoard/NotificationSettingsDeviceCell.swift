@@ -52,7 +52,7 @@ class NotificationSettingsDeviceCell: UITableViewCell {
     }
     
     func setActionTitle(_ title: String) {
-        actionButton?.setAttributedTitle(actionStyle.attributedString(title), for: UIControlState())
+        actionButton?.setAttributedTitle(actionStyle.attributedString(title), for: UIControl.State())
     }
     
     @objc fileprivate func actionButtonTapped(_ sender: AnyObject?) {

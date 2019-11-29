@@ -8,7 +8,7 @@
 import Foundation
 
 protocol EnvironmentDemoConnection: DemoConnection {
-    weak var connectionDelegate: EnvironmentDemoConnectionDelegate? { get set }
+    var connectionDelegate: EnvironmentDemoConnectionDelegate? { get set }
 
     func resetTamper()
 }

@@ -33,7 +33,7 @@ class WeakTimer : NSObject {
     
     func start() {
         if let timer = timer {
-            RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
+            RunLoop.main.add(timer, forMode: RunLoop.Mode.common)
         }
     }
     

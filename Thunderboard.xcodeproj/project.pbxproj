@@ -10,7 +10,6 @@
 		13169D851BBC2D2B00B011BF /* DemoSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13169D841BBC2D2B00B011BF /* DemoSelectionViewController.swift */; };
 		13169D891BBC2D7D00B011BF /* IoDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13169D881BBC2D7D00B011BF /* IoDemoViewController.swift */; };
 		13169D8D1BBC2DD800B011BF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13169D8C1BBC2DD800B011BF /* SettingsViewController.swift */; };
-		13169D8F1BBC2E0100B011BF /* PersonalInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13169D8E1BBC2E0100B011BF /* PersonalInfoViewController.swift */; };
 		1326730D1BCC534800541016 /* IoDemoInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1326730C1BCC534800541016 /* IoDemoInteraction.swift */; };
 		137416FE1BC43E8F00D8EB8F /* DeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 137416FD1BC43E8F00D8EB8F /* DeviceTableViewCell.swift */; };
 		13B7A07E1BC80EF20010DEF8 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B7A07D1BC80EF20010DEF8 /* NavigationController.swift */; };
@@ -145,7 +144,6 @@
 		DFDAD64A1BFD33E30052D997 /* DeviceTransportDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFDAD6491BFD33E30052D997 /* DeviceTransportDelegate.swift */; };
 		DFE733221BD67EA00041BDFF /* MotionDemoStreamingConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE733211BD67EA00041BDFF /* MotionDemoStreamingConnection.swift */; };
 		DFF425861BF52CEB00B087F0 /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF425851BF52CEB00B087F0 /* UITableView+Extensions.swift */; };
-		DFF425881BF5322A00B087F0 /* PersonalInfoTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF425871BF5322A00B087F0 /* PersonalInfoTableCell.swift */; };
 		DFF4FEA81BC448BC00EE8BD7 /* CBCharacteristicExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF4FEA71BC448BC00EE8BD7 /* CBCharacteristicExtensions.swift */; };
 		DFFE9E801BF1A17400D7E1D3 /* NotificationDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFFE9E7F1BF1A17400D7E1D3 /* NotificationDevice.swift */; };
 /* End PBXBuildFile section */
@@ -165,7 +163,6 @@
 		13169D841BBC2D2B00B011BF /* DemoSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = DemoSelectionViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		13169D881BBC2D7D00B011BF /* IoDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoDemoViewController.swift; sourceTree = "<group>"; };
 		13169D8C1BBC2DD800B011BF /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		13169D8E1BBC2E0100B011BF /* PersonalInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalInfoViewController.swift; sourceTree = "<group>"; };
 		1326730C1BCC534800541016 /* IoDemoInteraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoDemoInteraction.swift; sourceTree = "<group>"; };
 		137416FD1BC43E8F00D8EB8F /* DeviceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceTableViewCell.swift; sourceTree = "<group>"; };
 		13B7A07D1BC80EF20010DEF8 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
@@ -305,7 +302,6 @@
 		DFDAD6491BFD33E30052D997 /* DeviceTransportDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceTransportDelegate.swift; sourceTree = "<group>"; };
 		DFE733211BD67EA00041BDFF /* MotionDemoStreamingConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionDemoStreamingConnection.swift; sourceTree = "<group>"; };
 		DFF425851BF52CEB00B087F0 /* UITableView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
-		DFF425871BF5322A00B087F0 /* PersonalInfoTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalInfoTableCell.swift; sourceTree = "<group>"; };
 		DFF4FEA71BC448BC00EE8BD7 /* CBCharacteristicExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CBCharacteristicExtensions.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		DFFE9E7F1BF1A17400D7E1D3 /* NotificationDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationDevice.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -524,8 +520,6 @@
 				DF4723F91BDAD1550045C718 /* SettingsViewController.storyboard */,
 				13169D8C1BBC2DD800B011BF /* SettingsViewController.swift */,
 				66CC65751CE3ADE600840D99 /* SettingsViewCell.swift */,
-				13169D8E1BBC2E0100B011BF /* PersonalInfoViewController.swift */,
-				DFF425871BF5322A00B087F0 /* PersonalInfoTableCell.swift */,
 				DF47241B1BDEC10F0045C718 /* NotificationSettingsViewController.swift */,
 				DF47241F1BDEDC800045C718 /* NotificationSettingsDeviceCell.swift */,
 				DF4C7AD41BE42B8C005AA60F /* SettingsTableViewHeader.swift */,
@@ -756,13 +750,14 @@
 				TargetAttributes = {
 					DCA103FB1E6F5C5E00AFFEB1 = {
 						CreatedOnToolsVersion = 8.2;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 						TestTargetID = DF6ADFAB1BBA4A1800B740D8;
 					};
 					DF6ADFAB1BBA4A1800B740D8 = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = THP5EV5EJ9;
-						LastSwiftMigration = 0820;
+						DevelopmentTeam = 52444FG85C;
+						LastSwiftMigration = 1020;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -776,6 +771,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -842,9 +838,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Thunderboard/Pods-Thunderboard-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -857,13 +860,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Thunderboard-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D80019A1F17362C0A75DDE4B /* [CP] Copy Pods Resources */ = {
@@ -872,9 +878,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Thunderboard/Pods-Thunderboard-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/HockeySDK/HockeySDKResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/HockeySDKResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -953,7 +962,6 @@
 				DF47241E1BDEC6690045C718 /* NotificationSettingsInteraction.swift in Sources */,
 				DF77C8171BC4003C00BBEC37 /* DeviceSelectionViewController.swift in Sources */,
 				DF2285931BBF16E20021EFFF /* DeviceSelectionInteraction.swift in Sources */,
-				13169D8F1BBC2E0100B011BF /* PersonalInfoViewController.swift in Sources */,
 				DF03F1641BEA8E010044DD50 /* Logging.swift in Sources */,
 				DF6ADFCB1BBB44ED00B740D8 /* BleManager.swift in Sources */,
 				DF7A9E4F1BD84B1200301047 /* DemoViewController.swift in Sources */,
@@ -972,7 +980,6 @@
 				DF8F9B031BC7FD5400154590 /* ConnectedDevice.swift in Sources */,
 				66D7B3761CEF96C4001B0EE3 /* EnvironmentDemoCollectionViewLayout.swift in Sources */,
 				DF3B7D791BC6E24900CF2D45 /* DeviceScanner.swift in Sources */,
-				DFF425881BF5322A00B087F0 /* PersonalInfoTableCell.swift in Sources */,
 				DFDAD64A1BFD33E30052D997 /* DeviceTransportDelegate.swift in Sources */,
 				DF25675D1BC6E8FF002B583B /* BleDevice+DemoConfiguration.swift in Sources */,
 				663665401D8AC73800F0F082 /* UIViewController+Extensions.swift in Sources */,
@@ -1050,7 +1057,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.silabs.ThunderBoard.ThunderboardTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Thunderboard.app/Thunderboard";
 			};
 			name = Debug;
@@ -1069,7 +1076,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.silabs.ThunderBoard.ThunderboardTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Thunderboard.app/Thunderboard";
 			};
 			name = Release;
@@ -1161,21 +1168,22 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = THP5EV5EJ9;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = 52444FG85C;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/External",
 				);
 				INFOPLIST_FILE = ThunderBoard/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.4.0;
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = io.intrepid.silabs.ThunderBoard;
+				PRODUCT_BUNDLE_IDENTIFIER = com.silabs.ThunderBoard;
 				PRODUCT_MODULE_NAME = ThunderBoard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1185,20 +1193,21 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = THP5EV5EJ9;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = 52444FG85C;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/External",
 				);
 				INFOPLIST_FILE = ThunderBoard/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = io.intrepid.silabs.ThunderBoard;
+				MARKETING_VERSION = 1.4.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.silabs.ThunderBoard;
 				PRODUCT_MODULE_NAME = ThunderBoard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

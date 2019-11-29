@@ -33,7 +33,7 @@ class MotionDemoCalibrateButton: UIButton {
         self.layer.borderColor = normalColor.cgColor
         
         let title = StyleText.buttonLabel.tweakColor(color: normalColor).attributedString("CALIBRATE")
-        self.setAttributedTitle(title, for: UIControlState())
+        self.setAttributedTitle(title, for: UIControl.State())
         
         let highlightedTitle = StyleText.buttonLabel.tweakColor(color: highlightColor).attributedString("CALIBRATE")
         self.setAttributedTitle(highlightedTitle, for: .highlighted)

@@ -9,11 +9,7 @@ import CoreBluetooth
 
 extension BleManager {
     
-    func isThunderboard(_ peripheral: CBPeripheral) -> Bool {
-        guard let name = peripheral.name else {
-            return false
-        }
-        
-        return name.hasPrefix("Thunder") || name.hasPrefix("TBS")
+    func isThunderboard(_ peripheralName: String) -> Bool {
+        return peripheralName.hasPrefix("Thunder") || peripheralName.hasPrefix("TBS")
     }
 }

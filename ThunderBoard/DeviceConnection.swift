@@ -8,7 +8,7 @@
 import Foundation
 
 protocol DeviceConnection: class {
-    weak var connectionDelegate: DeviceConnectionDelegate? { get set }
+    var connectionDelegate: DeviceConnectionDelegate? { get set }
     func connect(_ device: Device)
     func disconnectAllDevices()
     func isConnectedToDevice(_ device: Device) -> Bool
