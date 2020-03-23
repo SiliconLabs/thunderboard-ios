@@ -54,6 +54,15 @@ extension LedState {
         }
     }
     
+    func off() -> LedState {
+        switch self {
+        case .digital(_ , let color):
+            return .digital(false, color)
+        case .rgb(_, let color):
+            return .rgb(false, color)
+        }
+    }
+    
     func setColor(_ color: LedRgb) -> LedState {
         switch self {
         case .digital:

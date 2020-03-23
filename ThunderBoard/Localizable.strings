@@ -1,0 +1,18 @@
+/* 
+  Localizable.strings
+  Thunderboard
+
+  Created by Jan Wisniewski on 03/02/2020.
+  Copyright © 2020 Silicon Labs. All rights reserved.
+*/
+
+
+"io" = "I/O";
+"motion" = "Motion";
+"environment" = "Environment";
+"ON" = "ON";
+"OFF" = "OFF";
+"led" = "LED";
+"leds" = "LEDs";
+"rgb_leds" = "RGB LEDs";
+"app_info" = "For more information visit:\nwww.silabs.com/products/wireless\n\nSupport:\nsilabs.com/support\n\nSource code:\ngithub.com/SiliconLabs/thunderboard-ios\n\nAdditional documentation:\ndocs.silabs.com/bluetooth/latest\n\nAdditional Apps released by Silicon Labs:\napps.apple.com/us/developer/silicon-labs/id555074469";

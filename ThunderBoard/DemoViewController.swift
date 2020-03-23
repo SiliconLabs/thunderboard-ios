@@ -8,7 +8,6 @@
 import UIKit
 
 
-
 class DemoViewController : UIViewController, DemoStreamingInteractionOutput, StreamingViewControllerDelegate {
 
     var streamingInteraction: DemoStreamingInteraction!
@@ -38,7 +37,7 @@ class DemoViewController : UIViewController, DemoStreamingInteractionOutput, Str
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = StyleColor.lightGray
-        self.automaticallyAdjustsScrollViewInsets = false
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -91,7 +90,7 @@ class DemoViewController : UIViewController, DemoStreamingInteractionOutput, Str
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
-        alert.view.tintColor = StyleColor.siliconGray
+        alert.view.tintColor = StyleColor.vileRed
         present(alert, animated: true, completion: nil)
     }
     

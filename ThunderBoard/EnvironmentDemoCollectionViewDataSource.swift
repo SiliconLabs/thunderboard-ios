@@ -31,17 +31,25 @@ class EnvironmentDemoCollectionViewDataSource : NSObject {
     let activeViewModels: Observable<[EnvironmentDemoViewModel]>
     
     fileprivate static let capabilityOrder: [DeviceCapability] = [
-        .temperature,       .humidity,
-        .ambientLight,      .uvIndex,
-        .airPressure,       .soundLevel,
-        .airQualityCO2,     .airQualityVOC,
-        .hallEffectFieldStrength, .hallEffectState
+        .temperature,
+        .humidity,
+        .ambientLight,
+        
+        .uvIndex,
+        .airPressure,
+        .soundLevel,
+        
+        .airQualityCO2,
+        .airQualityVOC,
+        .hallEffectState,
+        
+        .hallEffectFieldStrength
     ]
     
     fileprivate static let dataMappers: [DeviceCapability : DataMapperFunction] = [
         .temperature : { data in
             
-            let title = "TEMPERATURE"
+            let title = "Temperature"
             if let temperature = data.temperature {
 
                 let color = UIColor.colorForTemperature(temperature)
@@ -57,7 +65,7 @@ class EnvironmentDemoCollectionViewDataSource : NSObject {
                     value = "\(temperature)°C"
                 }
                 
-                return EnvironmentCellData(name: title, value: value, imageName: "icn_demo_temp", imageBackgroundColor: color, power: .na)
+                return EnvironmentCellData(name: title, value: value, imageName: "icon - temp", imageBackgroundColor: color, power: .na)
             }
             
             return EnvironmentCellData(name: title, value: String.tb_placeholderText(), imageName: "icn_demo_temp_inactive", imageBackgroundColor: nil, power: .na)
@@ -65,13 +73,13 @@ class EnvironmentDemoCollectionViewDataSource : NSObject {
         
         .humidity : { data in
             
-            let title = "HUMIDITY"
+            let title = "Humidity"
             if let humidity = data.humidity {
 
                 let color = UIColor.colorForHumidity(humidity)
                 let value = "\(Int(humidity))%"
                 
-                return EnvironmentCellData(name: title, value: value, imageName: "icn_demo_humidity", imageBackgroundColor: color, power: .na)
+                return EnvironmentCellData(name: title, value: value, imageName: "icon - environment", imageBackgroundColor: color, power: .na)
             }
             
             return EnvironmentCellData(name: title, value: String.tb_placeholderText(), imageName: "icn_demo_humidity_inactive", imageBackgroundColor: nil, power: .na)
@@ -79,13 +87,13 @@ class EnvironmentDemoCollectionViewDataSource : NSObject {
         
         .ambientLight : { data in
             
-            let title = "AMBIENT LIGHT"
+            let title = "Ambient Light"
             if let ambientLight = data.ambientLight {
                 
                 let color = UIColor.colorForIlluminance(ambientLight)
                 let value = "\(ambientLight.tb_toString(0)!) lx"
                 
-                return EnvironmentCellData(name: title, value: value, imageName: "icn_demo_ambient_light", imageBackgroundColor: color, power: .na)
+                return EnvironmentCellData(name: title, value: value, imageName: "icon - light", imageBackgroundColor: color, power: .na)
             }
             
             return EnvironmentCellData(name: title, value: String.tb_placeholderText(), imageName: "icn_demo_ambient_light_inactive", imageBackgroundColor: nil, power: .na)
@@ -93,26 +101,26 @@ class EnvironmentDemoCollectionViewDataSource : NSObject {
         
         .uvIndex : { data in
             
-            let title = "UV INDEX"
+            let title = "UV Index"
             if let uvIndex = data.uvIndex {
                 
                 let color = UIColor.colorForUVIndex(uvIndex)
                 let value = uvIndex.tb_toString(0) ?? ""
                 
-                return EnvironmentCellData(name: title, value: value, imageName: "icn_demo_uv_index", imageBackgroundColor: color, power: .na)
+                return EnvironmentCellData(name: title, value: value, imageName: "icon - UV", imageBackgroundColor: color, power: .na)
             }
             
             return EnvironmentCellData(name: title, value: String.tb_placeholderText(), imageName: "icn_demo_uv_index_inactive", imageBackgroundColor: nil, power: .na)
         },
         
         .airQualityCO2 : { data in
-            let title = "CARBON DIOXIDE"
+            let title = "Carbon Dioxide"
             if let co2 = data.co2 {
                 if co2.enabled, let co2Value = co2.value {
                     let color = UIColor.colorForCO2(co2Value)
                     let value = "\(Int(co2Value)) ppm"
 
-                    return EnvironmentCellData(name: title, value: value, imageName: "ic_carbon_dioxide", imageBackgroundColor: color, power: .on)
+                    return EnvironmentCellData(name: title, value: value, imageName: "icon - CO2", imageBackgroundColor: color, power: .on)
                 }
 
                 return EnvironmentCellData(name: title, value: "OFF", imageName: "ic_carbon_dioxide_inactive", imageBackgroundColor: nil, power: .off)
@@ -128,7 +136,7 @@ class EnvironmentDemoCollectionViewDataSource : NSObject {
                     let color = UIColor.colorForVOC(vocValue)
                     let value = "\(Int(vocValue)) ppb"
                     
-                    return EnvironmentCellData(name: title, value: value, imageName: "ic_voc", imageBackgroundColor: color, power: .on)
+                    return EnvironmentCellData(name: title, value: value, imageName: "icon - VOCs", imageBackgroundColor: color, power: .on)
                 }
 
                 return EnvironmentCellData(name: title, value: "OFF", imageName: "ic_voc_inactive", imageBackgroundColor: nil, power: .off)
@@ -138,33 +146,33 @@ class EnvironmentDemoCollectionViewDataSource : NSObject {
         },
         
         .airPressure : { data in
-            let title = "AIR PRESSURE"
+            let title = "Air Pressure"
             if let pressure = data.pressure {
                 
                 let color = UIColor.colorForAtmosphericPressure(pressure)
                 let value = "\(Int(pressure)) mbar"
                 
-                return EnvironmentCellData(name: title, value: value, imageName: "ic_atmospheric_pressure", imageBackgroundColor: color, power: .na)
+                return EnvironmentCellData(name: title, value: value, imageName: "icon - air pressure", imageBackgroundColor: color, power: .na)
             }
             
             return EnvironmentCellData(name: title, value: String.tb_placeholderText(), imageName: "ic_atmospheric_pressure_inactive", imageBackgroundColor: nil, power: .na)
         },
         
         .soundLevel : { data in
-            let title = "SOUND LEVEL"
+            let title = "Sound Level"
             if let soundLevel = data.sound {
                 
                 let color = UIColor.colorForSoundLevel(soundLevel)
                 let value = "\(Int(soundLevel)) dB"
                 
-                return EnvironmentCellData(name: title, value: value, imageName: "ic_sound_level", imageBackgroundColor: color, power: .na)
+                return EnvironmentCellData(name: title, value: value, imageName: "icon - sound", imageBackgroundColor: color, power: .na)
             }
             
             return EnvironmentCellData(name: title, value: String.tb_placeholderText(), imageName: "ic_sound_level_inactive", imageBackgroundColor: nil, power: .na)
         },
 
         .hallEffectState : { data in
-            let title = "DOOR STATE"
+            let title = "Door State"
             if let hallEffectState = data.hallEffectState {
 
                 let color = UIColor.colorForHallEffectState(hallEffectState)
@@ -178,22 +186,22 @@ class EnvironmentDemoCollectionViewDataSource : NSObject {
                     value = "Tampered\nTap to Reset"
                 }
                 let imageName = UIImage.imageNameForHallEffectState(hallEffectState)
-                return EnvironmentCellData(name: title, value: value, imageName: imageName, imageBackgroundColor: color, power: .na)
+                return EnvironmentCellData(name: title, value: value, imageName: "icon - door state", imageBackgroundColor: color, power: .na)
             }
 
-            return EnvironmentCellData(name: title, value: String.tb_placeholderText(), imageName: "ic_atmospheric_pressure", imageBackgroundColor: nil, power: .na)
+            return EnvironmentCellData(name: title, value: String.tb_placeholderText(), imageName: "icon - door state", imageBackgroundColor: nil, power: .na)
         },
 
         .hallEffectFieldStrength : { data in
-            let title = "MAGNETIC FIELD"
+            let title = "Magnetic Field"
             if let hallEffectFieldStrength = data.hallEffectFieldStrength {
 
                 let color = UIColor.colorForHallEffectFieldStrength(mT: hallEffectFieldStrength)
                 let value = "\(hallEffectFieldStrength) uT"
-                return EnvironmentCellData(name: title, value: value, imageName: "icn_demo_magnetic_field", imageBackgroundColor: color, power: .na)
+                return EnvironmentCellData(name: title, value: value, imageName: "icon - magnetic field", imageBackgroundColor: color, power: .na)
             }
 
-            return EnvironmentCellData(name: title, value: String.tb_placeholderText(), imageName: "icn_demo_magnetic_field", imageBackgroundColor: nil, power: .na)
+            return EnvironmentCellData(name: title, value: String.tb_placeholderText(), imageName: "icon - magnetic field", imageBackgroundColor: nil, power: .na)
         },
     ]
     

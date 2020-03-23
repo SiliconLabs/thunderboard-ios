@@ -7,40 +7,31 @@
 
 import UIKit
 
-class DemoSelectionViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, DemoSelectionInteractionOutput {
+class DemoSelectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, DemoSelectionInteractionOutput {
 
     @IBOutlet var historyButton: UIBarButtonItem?
-    @IBOutlet var tableView: UITableView? {
-        didSet {
-            self.tableView?.backgroundColor = UIColor.clear
-        }
-    }
     
     var interaction: DemoSelectionInteraction?
-
+    
+    @IBOutlet weak var collectionView: UICollectionView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = StyleColor.lightGray
-        self.tableView?.backgroundColor = UIColor.clear
-        self.title = "Thunderboard"
-        self.tb_removeTitleFromBackButton()
+        //self.tb_removeTitleFromBackButton()
+        //self.navigationItem.setHidesBackButton(true, animated: false)
+        self.navigationController!.navigationItem.backBarButtonItem?.title = "Previous"
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.tb_setNavigationBarStyleForDemo(.demoSelection)
-        
-        // (roughly) center the table view content in the view
-        guard let table = self.tableView else {
-            return
+        self.navigationController?.title = ""
+        for cell: UICollectionViewCell in self.collectionView.visibleCells {
+            if let cell: DashboardCollectionViewCell = cell as? DashboardCollectionViewCell {
+                cell.demoSpinner.stopAnimating()
+                cell.demoSpinner.isHidden = true
+            }
         }
-        
-        let available = self.view.frame.size.height - (64 * 2)
-        let content = tableView(table, heightForRowAt: IndexPath(row: 0, section: 0)) * CGFloat(tableView(table, numberOfRowsInSection: 0))
-        let inset = (available - content) / 2
-        
-        table.contentInset = UIEdgeInsets(top: inset, left: 0, bottom: 0, right: 0)
-        table.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -58,62 +49,64 @@ class DemoSelectionViewController: UIViewController, UITableViewDataSource, UITa
     
     //MARK:- Internal
     
-    fileprivate func configureCell(_ cell: DemoTableViewCell, demo: ThunderboardDemo) {
+    fileprivate func configureCell(_ cell: DashboardCollectionViewCell, demo: ThunderboardDemo) {
         switch(demo) {
         case .io:
-            cell.demoName.tb_setText("I/O", style: StyleText.demoTitle)
-            cell.demoImage.image = UIImage(named: "icn_demo_io_unsel")
-
+            cell.titleLabel.text = NSLocalizedString("io", comment: "")
+            cell.icon.image = UIImage(named: "icon - power")
+            // TODO: ask client for info about detailLabel content
+            cell.detailsLabel.text = "Button and LED control."
         case .motion:
-            cell.demoName.tb_setText("Motion", style: StyleText.demoTitle)
-            cell.demoImage.image = UIImage(named: "icn_demo_motion_unsel")
-            
+            cell.titleLabel.text = NSLocalizedString("motion", comment: "")
+            cell.icon.image = UIImage(named: "icon - motion")
+            // TODO: ask client for info about detailLabel content
+            cell.detailsLabel.text = "Control a 3D rendering of the physical board."
         case .environment:
-            cell.demoName.tb_setText("Environment", style: StyleText.demoTitle)
-            cell.demoImage.image = UIImage(named: "icn_demo_environmental_unsel")
+            cell.titleLabel.text = NSLocalizedString("environment", comment: "")
+            cell.icon.image = UIImage(named: "icon - environment")
+            // TODO: ask client for info about detailLabel content
+            cell.detailsLabel.text = "Read and display data from the board sensors."
         }
-        
-        cell.demoSpinner.lineColor = StyleColor.terbiumGreen
-        cell.demoSpinner.trackColor = StyleColor.lightGray
-        
-        cell.accessoryType = .none
-        cell.backgroundColor = UIColor.clear
-        cell.selectedBackgroundView = UIView()
-        cell.selectedBackgroundView?.backgroundColor = StyleColor.mediumGreen
-        
-        let configuring = (demo == self.interaction?.configuringDemo)
-        (configuring) ? cell.demoSpinner.startAnimating(StyleAnimations.spinnerDuration) : cell.demoSpinner.stopAnimating()
     }
 
-    //MARK:- UITableViewDataSource
+    //MARK:- UICollectionViewDataSource
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 3
     }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "demoCell") as! DemoTableViewCell
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: DashboardCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "DashboardCollectionViewCell", for: indexPath) as! DashboardCollectionViewCell
         configureCell(cell, demo: ThunderboardDemo(rawValue: indexPath.row)!)
         return cell
     }
     
-    //MARK:- UITableViewDelegate
+    //MARK:- UICollectionViewDelegate
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        let demo = ThunderboardDemo(rawValue: indexPath.row)!
-        interaction?.configureForDemo(demo)
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: false)
+        DispatchQueue.main.async {
+            let demo = ThunderboardDemo(rawValue: indexPath.row)!
+            self.interaction?.configureForDemo(demo)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            if let cell: DashboardCollectionViewCell = collectionView.cellForItem(at: indexPath) as? DashboardCollectionViewCell {
+                cell.demoSpinner.isHidden = false
+                cell.demoSpinner.startAnimating()
+            }
+        }
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 98
+    func collectionView(_ collectionView: UICollectionView,
+           layout collectionViewLayout: UICollectionViewLayout,
+           sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return collectionView.twoItemsInRowSize
     }
     
     //MARK:- DemoSelectionInteractionOutput
     
     func showConfiguringDemo(_ demo: ThunderboardDemo) {
-        self.tableView?.reloadData()
+        self.collectionView?.reloadData()
     }
     
     func enableDemoHistory(_ enabled: Bool) {
@@ -121,3 +114,12 @@ class DemoSelectionViewController: UIViewController, UITableViewDataSource, UITa
     }
 }
 
+extension UICollectionView {
+    var twoItemsInRowSize: CGSize {
+        let cellsInRow: CGFloat = 2
+        let height: CGFloat = 162
+        let width: CGFloat = floor((self.frame.size.width - 64) / cellsInRow )
+        let size: CGSize = CGSize(width: width, height: height)
+        return size
+    }
+}

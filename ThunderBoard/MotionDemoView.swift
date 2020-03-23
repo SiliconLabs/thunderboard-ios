@@ -60,7 +60,6 @@ class MotionDemoView : UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        setupView()
     }
     
     //MARK: - Public
@@ -72,19 +71,7 @@ class MotionDemoView : UIView {
     }
 
     //MARK: - Internal
-    
-    fileprivate func setupView() {
-        
-        self.scrollView?.alwaysBounceVertical = false
-        self.contentView?.backgroundColor = StyleColor.lightGray
 
-        setupOrientation()
-        setupAcceleration()
-        setupWheel()
-        setupSpeed()
-        setupDistance()
-    }
-    
     fileprivate func setup3dModel() {
         
         let cameraNode = SCNNode()
@@ -102,6 +89,7 @@ class MotionDemoView : UIView {
         
         self.carModelView?.scene = scene
         self.carModelView?.allowsCameraControl = false
+        carModelView?.layer.cornerRadius = 10
     }
     
     fileprivate func setupOrientation() {
@@ -115,7 +103,7 @@ class MotionDemoView : UIView {
             label?.style = StyleText.subtitle1
             label?.text = String.tb_placeholderText()
         }
-    }
+    } 
     
     fileprivate func setupAcceleration() {
         self.accelerationLabel?.tb_setText("ACCELERATION", style: StyleText.header2)

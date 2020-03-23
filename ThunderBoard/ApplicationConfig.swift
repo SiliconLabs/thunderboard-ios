@@ -2,7 +2,6 @@
 //  UIApplication+EnvironmentConfiguration.swift
 //  ThunderBoard
 //
-//  Created by Thaddeus Ternes on 11/13/15.
 //  Copyright © 2015 Silicon Labs. All rights reserved.
 //
 
@@ -12,25 +11,25 @@ class ApplicationConfig {
     
     // URL used for microsite links (sent in demo emails)
     class var ProductMicroSiteUrl: String {
-        get { return "http://www.silabs.com/thunderboard" }
+        get { return "http://www.silabs.com" }
     }
 
-    // Silicon Labs Production
+    // Firebase IO Host ("your-application-0001.firebaseio.com")
     class var FirebaseIoHost: String {
-        get { return "" }
+        get { return "smoldering-ember-2016.firebaseio.com" }
     }
     
-    // Silicon Labs Production
+    // Firebase web app host ("your-application-0001.firebaseapp.com")
     class var FirebaseDemoHost: String {
-        get { return "" }
+        get { return "smoldering-ember-2016.firebaseio.com" }
     }
 
-    // Silicon Labs Production
+    // Firebase token (40 character string from your Firebase account)
     class var FirebaseToken: String {
-        get { return "" }
+        get { return "AIzaSyBchrm2wi0gxIhloko-KTQahaui8v29zXw" }
     }
     
-    // Disabled in Production
+    // Hockey Token - (32 character string provided by Hockey for crash reporting)
     class var HockeyToken: String? {
         get { return "" }
     }

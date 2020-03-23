@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class EnvironmentDemoCollectionViewCell: UICollectionViewCell {
+class EnvironmentDemoCollectionViewCellOld: UICollectionViewCell {
 
     static let cellIdentifier = "\(String(describing: self)).cellID"
     

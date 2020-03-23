@@ -19,6 +19,7 @@ class EnvironmentDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput
     var streamingConnection: DemoStreamingConnection?
     weak var streamingOutput: DemoStreamingInteractionOutput?
     weak var streamSharePresenter: DemoStreamSharePresenter?
+    weak var settingsPresenter: SettingsPresenter?
 
     fileprivate var currentData: EnvironmentData = EnvironmentData()
     fileprivate let capabilities: Set<DeviceCapability>
@@ -55,5 +56,9 @@ class EnvironmentDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput
     
     func currentEnvironmentData() -> EnvironmentData? {
         return currentData
+    }
+    
+    func showSettings() {
+        settingsPresenter?.showSettings()
     }
 }

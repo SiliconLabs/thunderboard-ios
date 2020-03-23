@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SettingsViewController: UITableViewController {
+class SettingsViewController: UITableViewController, SILAppSelectionHelpViewControllerDelegate, WYPopoverControllerDelegate {
     
     fileprivate enum Sections: Int {
         case preferences
@@ -22,19 +22,16 @@ class SettingsViewController: UITableViewController {
     @IBOutlet weak var motionModelLabel: StyledLabel!
     @IBOutlet weak var motionModelControl: UISegmentedControl!
     
-    @IBOutlet weak var beaconNotificationsLabel: StyledLabel!
-    @IBOutlet weak var beaconNotificationsStateLabel: StyledLabel!
+    weak var popoverController: WYPopoverController!
     
     weak var notificationManager: NotificationManager?
     fileprivate let settings = ThunderboardSettings()
     fileprivate let notificationsSegue           = "notificationsSegue"
-    fileprivate let beaconEnabledText            = "ON"
-    fileprivate let beaconDisabledText           = "OFF"
     fileprivate let preferencesTitleText         = "PREFERENCES"
     fileprivate let measurementsLabelText        = "Measurements"
     fileprivate let temperatureLabelText         = "Temperature"
     fileprivate let motionModelText              = "Motion Demo Model"
-    fileprivate let beaconNotificationsLabelText = "Beacon Notifications"
+    //fileprivate let beaconNotificationsLabelText = "Beacon Notifications"
     fileprivate let versionText                  = "Version "
     fileprivate let copyrightText                = "| © Silicon Labs 2016"
 
@@ -46,7 +43,6 @@ class SettingsViewController: UITableViewController {
         updateMeasurementsControl()
         updateTemperatureControl()
         updateMotionModelControl()
-        updateBeaconNotificationsControl()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -172,12 +168,38 @@ class SettingsViewController: UITableViewController {
         )
     }
     
+    // MARK: SILAppSelectionHelpViewControllerDelegate
+    
+    func didFinishHelp(with helpViewController: SILAppSelectionHelpViewController!) {
+        self.dismiss(animated: true) {
+            
+        }
+    }
+    
+    // MARK: WYPopoverControllerDelegate
+    
+    func popoverControllerDidDismissPopover(_ popoverController: WYPopoverController!) {
+        self.popoverController.dismissPopover(animated: true, completion: nil)
+        self.popoverController = nil
+    }
+    
     //MARK: action handlers
     
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
         navigationController?.dismiss(animated: true, completion: nil)
-        
     }
+    
+    @IBAction func help(_ sender: UIBarButtonItem) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            let helpViewController: SILAppSelectionHelpViewController = SILAppSelectionHelpViewController()
+            helpViewController.delegate = self
+            self.present(helpViewController, animated: true) {
+                
+            }
+        }
+    }
+    
+    static let measurementsSettingUpdated = NSNotification.Name("measurementsSettingUpdated")
     
     @IBAction func measurementsDidChange(_ sender: UISegmentedControl) {
         var newMeasurementsUnits: MeasurementUnits!
@@ -190,7 +212,10 @@ class SettingsViewController: UITableViewController {
             fatalError("Unsupported segment selected")
         }
         settings.measurement = newMeasurementsUnits
+        NotificationCenter.default.post(name: SettingsViewController.measurementsSettingUpdated, object: nil)
     }
+    
+    static let temperatureSettingUpdated = NSNotification.Name("temperatureSettingUpdated")
     
     @IBAction func temperatureDidChange(_ sender: UISegmentedControl) {
         var newTemperatureUnits: TemperatureUnits!
@@ -203,7 +228,10 @@ class SettingsViewController: UITableViewController {
             fatalError("Unsupported segment selected")
         }
         settings.temperature = newTemperatureUnits
+        NotificationCenter.default.post(name: SettingsViewController.temperatureSettingUpdated, object: nil)
     }
+    
+    static let motionDemoModelUpdated = NSNotification.Name("motionDemoModelUpdated")
     
     @IBAction func motionModelDidChange(_ sender: UISegmentedControl) {
         
@@ -216,8 +244,8 @@ class SettingsViewController: UITableViewController {
         default:
             fatalError("Unsupported segment selected")
         }
-        
         settings.motionDemoModel = newModel
+        NotificationCenter.default.post(name: SettingsViewController.motionDemoModelUpdated, object: nil)
     }
     
     // Private
@@ -233,8 +261,6 @@ class SettingsViewController: UITableViewController {
         measurementsLabel.tb_setText(measurementsLabelText, style: StyleText.main1)
         temperatureLabel.tb_setText(temperatureLabelText, style: StyleText.main1)
         motionModelLabel.tb_setText(motionModelText, style: StyleText.main1)
-        beaconNotificationsLabel.tb_setText(beaconNotificationsLabelText, style: StyleText.main1)
-        beaconNotificationsStateLabel.style = StyleText.main1
         
         measurementsControl.tintColor = StyleColor.terbiumGreen
         temperatureControl.tintColor = StyleColor.terbiumGreen
@@ -270,11 +296,5 @@ class SettingsViewController: UITableViewController {
         case .car:
             motionModelControl.selectedSegmentIndex = 1
         }
-    }
-    
-    fileprivate func updateBeaconNotificationsControl() {
-        let enabled = settings.beaconNotifications
-        let enabledText = enabled ? beaconEnabledText : beaconDisabledText
-        beaconNotificationsStateLabel.tb_setText(enabledText, style: StyleText.header.tweakColor(color: StyleColor.mediumGray))
     }
 }

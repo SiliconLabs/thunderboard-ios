@@ -9,4 +9,5 @@ target 'Thunderboard' do
   pod "HockeySDK"
   pod 'RxSwift',    '~> 5.0'
   pod 'RxCocoa',    '~> 5.0'
+  pod 'WYPopoverController'
 end

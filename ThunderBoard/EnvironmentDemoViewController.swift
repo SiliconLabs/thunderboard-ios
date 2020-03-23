@@ -19,14 +19,12 @@ class EnvironmentDemoViewController: DemoViewController, EnvironmentDemoInteract
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Environment"
         
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 7)
         collectionView.backgroundColor = UIColor.clear
         collectionView.delegate = self
-        collectionView.register(EnvironmentDemoCollectionViewCell.self, forCellWithReuseIdentifier: EnvironmentDemoCollectionViewCell.cellIdentifier)
         
-        dataSource.activeViewModels.debounce(.milliseconds(500), scheduler: MainScheduler.instance).bind(to: collectionView.rx.items(cellIdentifier: EnvironmentDemoCollectionViewCell.cellIdentifier, cellType: EnvironmentDemoCollectionViewCell.self)){(_, element, cell) in
+        dataSource.activeViewModels.debounce(.milliseconds(500), scheduler: MainScheduler.instance).bind(to: collectionView.rx.items(cellIdentifier: EnvironmentCollectionViewCell.cellIdentifier, cellType: EnvironmentCollectionViewCell.self)){(_, element, cell) in
             cell.configureCell(with: element)
         }.disposed(by: disposeBag)
         
@@ -45,11 +43,18 @@ class EnvironmentDemoViewController: DemoViewController, EnvironmentDemoInteract
                 }
             }
         }).disposed(by: disposeBag)
+        
+        NotificationCenter.default.addObserver(forName: SettingsViewController.temperatureSettingUpdated, object: nil, queue: nil) { (notification) in
+            self.collectionView.reloadData()
+        }
+        
+        NotificationCenter.default.addObserver(forName: SettingsViewController.measurementsSettingUpdated, object: nil, queue: nil) { (notification) in
+            self.collectionView.reloadData()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.tb_setNavigationBarStyleForDemo(.environment)
         self.interaction?.updateView()
     }
     
@@ -57,5 +62,9 @@ class EnvironmentDemoViewController: DemoViewController, EnvironmentDemoInteract
 
     func updatedEnvironmentData(_ data: EnvironmentData, capabilities: Set<DeviceCapability>) {
         dataSource.updateData(data, capabilities: capabilities)
+    }
+    
+    @IBAction func settingsButtonPressed() {
+        interaction?.showSettings()
     }
 }

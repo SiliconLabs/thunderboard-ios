@@ -1,9 +1,16 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Roboto-Medium.ttf">
+            <string>Roboto-Medium</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--View Controller-->
         <scene sceneID="EHf-IW-A2E">
@@ -14,39 +21,64 @@
                         <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_splash_mm" translatesAutoresizingMaskIntoConstraints="NO" id="Dso-wf-Qlv">
-                                <rect key="frame" x="137" y="64" width="100" height="33"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Mask Group 2" translatesAutoresizingMaskIntoConstraints="NO" id="NTG-2Z-uec">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_splash" translatesAutoresizingMaskIntoConstraints="NO" id="fO5-oK-IOF">
-                                <rect key="frame" x="152" y="600" width="70" height="35"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_splash_thunderboard" translatesAutoresizingMaskIntoConstraints="NO" id="ZEW-2e-u9x">
-                                <rect key="frame" x="90.5" y="201" width="194" height="198"/>
-                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jnu-fm-IVc">
+                                <rect key="frame" x="46.5" y="176" width="227" height="216"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="D1z-Zq-LLs">
+                                        <rect key="frame" x="28.5" y="-9" width="170" height="170"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="170" id="QZa-oH-hRW"/>
+                                            <constraint firstAttribute="width" constant="170" id="c9z-e5-XbU"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thunderboard" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nsE-C5-kFY">
+                                        <rect key="frame" x="0.0" y="171" width="227" height="37"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="227" id="KQM-sv-gAf"/>
+                                            <constraint firstAttribute="height" constant="37" id="dt2-k0-qmH"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="34"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="nsE-C5-kFY" firstAttribute="top" secondItem="D1z-Zq-LLs" secondAttribute="bottom" constant="10" id="3Ge-0K-18c"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="227" id="6yD-Zz-WFU"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="214" id="agU-AG-Kk2"/>
+                                    <constraint firstAttribute="width" constant="227" id="daD-wV-QqQ"/>
+                                    <constraint firstAttribute="height" constant="216" id="jAC-FE-eZ3"/>
+                                    <constraint firstAttribute="bottom" secondItem="nsE-C5-kFY" secondAttribute="bottom" constant="8" id="vO1-uZ-ySj"/>
+                                    <constraint firstItem="D1z-Zq-LLs" firstAttribute="centerX" secondItem="Jnu-fm-IVc" secondAttribute="centerX" id="vig-Qy-vyR"/>
+                                    <constraint firstItem="nsE-C5-kFY" firstAttribute="centerX" secondItem="Jnu-fm-IVc" secondAttribute="centerX" id="x9N-kZ-7Rz"/>
+                                </constraints>
+                            </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.63137254901960782" green="0.72549019607843135" blue="0.1803921568627451" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.92549019607843142" green="0.92549019607843142" blue="0.92549019607843142" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="fO5-oK-IOF" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="H2w-s3-Lce"/>
-                            <constraint firstItem="ZEW-2e-u9x" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" multiplier="0.9" id="Nt9-wX-3UQ"/>
-                            <constraint firstItem="ZEW-2e-u9x" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="jAD-Ic-5NU"/>
-                            <constraint firstItem="Dso-wf-Qlv" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="44" id="kvS-gv-4am"/>
-                            <constraint firstItem="Dso-wf-Qlv" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="lFz-TR-Rv6"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="fO5-oK-IOF" secondAttribute="bottom" multiplier="1.05" id="xdT-f3-hnA"/>
+                            <constraint firstItem="NTG-2Z-uec" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" id="9pj-a1-dQy"/>
+                            <constraint firstAttribute="trailing" secondItem="NTG-2Z-uec" secondAttribute="trailing" id="ANK-Xw-X9K"/>
+                            <constraint firstItem="Jnu-fm-IVc" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="J8k-EG-ggE"/>
+                            <constraint firstItem="Jnu-fm-IVc" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="TZT-SE-1AG"/>
+                            <constraint firstItem="NTG-2Z-uec" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="eSg-ja-A8t"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="NTG-2Z-uec" secondAttribute="bottom" id="iGl-63-9A1"/>
                         </constraints>
                     </view>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="52.5" y="374.5"/>
+            <point key="canvasLocation" x="52.5" y="373.94366197183098"/>
         </scene>
     </scenes>
     <resources>
-        <image name="logo_splash" width="70" height="35"/>
-        <image name="logo_splash_mm" width="100" height="33"/>
-        <image name="logo_splash_thunderboard" width="194" height="198"/>
+        <image name="Mask Group 2" width="375" height="812"/>
+        <image name="logo" width="170.5" height="166"/>
     </resources>
 </document>

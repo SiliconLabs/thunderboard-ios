@@ -9,12 +9,13 @@ import Foundation
 import CoreBluetooth
 
 class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
-    
+
     override var debugDescription: String {
         get { return "name=\(String(describing: name)) identifier=\(String(describing: deviceIdentifier)) RSSI=\(String(describing: RSSI)) connectionState=\(connectionState)" }
     }
     
     fileprivate (set) var model: DeviceModel = .unknown
+    fileprivate (set) var modelName: String = ""
     
     var name: String? {
         didSet {
@@ -399,11 +400,13 @@ class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
                 if let model = characteristic.tb_stringValue() {
                     log.info("model: \(model)")
                     
+                    self.modelName = model.uppercased()
+                    
                     switch model.uppercased() {
                     case "RD-0057":
                         self.model = .react
                     case "BRD4160A": fallthrough
-                    case "BRD4166A":
+                    case "BRD4166A", "BRD4184A":
                         self.model = .sense
                     default:
                         self.model = .unknown

@@ -8,24 +8,18 @@
 import UIKit
 
 class DeviceTableViewCell: UITableViewCell {
+    
+    let canvasCornerRadius: CGFloat = 16.0
+    
+    @IBOutlet weak var canvasView: UIView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var rssiImage: UIImageView!
     @IBOutlet weak var rssiLabel: UILabel!
     @IBOutlet weak var connectingSpinner: Spinner!
-
-    var drawSeparator: Bool = false
     
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        
-        if drawSeparator {
-            let path = UIBezierPath()
-            path.move(to: CGPoint(x: 15, y: 0))
-            path.addLine(to: CGPoint(x: rect.width, y: 0))
-            path.lineWidth = 1
-            
-            StyleColor.lightGray.setStroke()
-            path.stroke()
-        }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        canvasView.layer.cornerRadius = canvasCornerRadius
+        canvasView.layer.masksToBounds = true
     }
 }

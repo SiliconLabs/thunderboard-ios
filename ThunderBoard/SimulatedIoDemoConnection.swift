@@ -13,7 +13,7 @@ class SimulatedIoDemoConnection : IoDemoConnection {
     weak var connectionDelegate: IoDemoConnectionDelegate?
     
     // For demo, switches will shadow the LEDs
-    var numberOfLeds: Int = 3
+    var numberOfLeds: Int = 1
     var numberOfSwitches: Int = 2
     fileprivate var deviceState: [LedState] = []
     

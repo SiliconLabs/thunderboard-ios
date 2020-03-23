@@ -12,7 +12,6 @@ class MotionCarDemoViewController : MotionDemoViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Motion: Car"
     }
 
     override func setupModel() {
@@ -30,10 +29,16 @@ class MotionCarDemoViewController : MotionDemoViewController {
     override func modelTranformMatrixForOrientation(_ orientation: ThunderboardInclination) -> SCNMatrix4 {
         let modelIdentity = motionView.modelIdentity
         
-        var transform = SCNMatrix4Rotate(modelIdentity!, -orientation.x.tb_toRadian(), 1, 0, 0)
-        transform = SCNMatrix4Rotate(transform, orientation.y.tb_toRadian(), 0, 0, 1)
-        transform = SCNMatrix4Rotate(transform, orientation.z.tb_toRadian(), 0, 1, 0)
-        
-        return transform
+        if #available(iOS 13, *) {
+            var transform = SCNMatrix4Rotate(modelIdentity!, -orientation.x.tb_toRadian(), 1, 0, 0)
+            transform = SCNMatrix4Rotate(transform, orientation.y.tb_toRadian(), 0, 0, 1)
+            transform = SCNMatrix4Rotate(transform, orientation.z.tb_toRadian(), 0, 1, 0)
+            return transform
+        } else {
+            var transform = SCNMatrix4Rotate(modelIdentity!, -orientation.x.tb_toRadian(), 1, 0, 0)
+            transform = SCNMatrix4Rotate(transform, -orientation.y.tb_toRadian(), 0, 1, 0)
+            transform = SCNMatrix4Rotate(transform, orientation.z.tb_toRadian(), 0, 0, 1)
+            return transform
+        }
     }
 }

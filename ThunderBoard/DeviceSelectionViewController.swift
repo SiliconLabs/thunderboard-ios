@@ -32,6 +32,16 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 
 class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractionOutput, UITableViewDataSource, UITableViewDelegate {
+    
+    @IBOutlet weak var bottomTableInset: NSLayoutConstraint!
+    
+    enum DeviceListViewState {
+        case initial
+        case bluetoothDisabled
+        case searching
+        case noDevicesFound
+        case devicesFound
+    }
 
     fileprivate let lookingForDevices               =   "Looking for Devices"
     fileprivate let connectionTimeoutTitle          =   "Connection Failed"
@@ -48,7 +58,6 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
     @IBOutlet var messageContainerTopLayout: NSLayoutConstraint?
     
     @IBOutlet var deviceTableHeight: NSLayoutConstraint?
-    @IBOutlet var mmLogo: UIImageView?
     
     fileprivate let initialAnimationHold    = TimeInterval(1.3)
     fileprivate let initialAnimationFade    = TimeInterval(0.3)
@@ -60,7 +69,6 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
     @IBOutlet weak var logoImage: UIImageView?
     @IBOutlet weak var tableView: UITableView? {
         didSet {
-            self.tableView?.backgroundColor = StyleColor.white
             self.tableView?.separatorStyle = .none
         }
     }
@@ -94,8 +102,11 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = StyleColor.terbiumGreen
         self.title = ""
+        self.navigationItem.backBarButtonItem?.title = "Previous"
+        if UIDevice.current.hasNoth {
+            bottomTableInset.constant = 34
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -138,15 +149,13 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
         let display = (self.interaction?.deviceAtIndex(indexPath.row))!
         let cell = self.tableView?.dequeueReusableCell(withIdentifier: "deviceCell") as! DeviceTableViewCell
         updateData(cell, device:display)
-        cell.drawSeparator = indexPath.row > 0
         return cell
     }
 
     func updateData(_ cell: DeviceTableViewCell, device:DiscoveredDeviceDisplay) {
-        cell.backgroundColor = StyleColor.white
         cell.selectedBackgroundView = UIView()
         cell.selectedBackgroundView?.backgroundColor = StyleColor.lightGray
-        cell.nameLabel.tb_setText(device.name, style: StyleText.deviceName)
+        cell.nameLabel.text = device.name
         
         if device.connecting {
             cell.rssiImage.isHidden = true
@@ -159,21 +168,21 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
         }
         else {
 
-            var signalImage: String = "icn_device_signal_0bar"
+            var signalImage: String = "icon - bars - 0"
             if let rssi = device.RSSI {
                 switch(rssi) {
                 case -20 ..< 0:
-                    signalImage = "icn_device_signal_5bar"
+                    signalImage = "icon - bars - 5"
                 case -40 ..< (-20):
-                    signalImage = "icn_device_signal_4bar"
+                    signalImage = "icon - bars - 4"
                 case -60 ..< (-40):
-                    signalImage = "icn_device_signal_3bar"
+                    signalImage = "icon - bars - 3"
                 case -80 ..< (-60):
-                    signalImage = "icn_device_signal_2bar"
+                    signalImage = "icon - bars - 2"
                 case -90 ..< (-80):
-                    signalImage = "icn_device_signal_1bar"
+                    signalImage = "icon - bars - 1"
                 default:
-                    signalImage = "icn_device_signal_0bar"
+                    signalImage = "icon - bars - 0"
                 }
 
                 cell.rssiLabel.tb_setText("\(rssi) dBm", style: StyleText.subtitle2)
@@ -202,11 +211,13 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
             switch viewState {
             case .initial:
                 self.messagingViewContainer?.isHidden = true
+                self.messagingViewContainer?.backgroundColor = UIColor.clear
                 self.tableView?.isHidden = true
                 makeSpinnerVisible(false)
 
             case .bluetoothDisabled:
                 self.messagingViewContainer?.isHidden = false
+                self.messagingViewContainer?.backgroundColor = UIColor.clear
                 self.bluetoothDisabledAlert?.isHidden = false
                 self.tableView?.isHidden = true
                 makeSpinnerVisible(false)
@@ -215,6 +226,7 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
                 
             case .searching:
                 self.messagingViewContainer?.isHidden = false
+                self.messagingViewContainer?.backgroundColor = UIColor.clear
                 self.bluetoothDisabledAlert?.isHidden = true
                 self.tableView?.isHidden = true
                 makeSpinnerVisible(true)
@@ -223,6 +235,7 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
                 
             case .noDevicesFound:
                 self.messagingViewContainer?.isHidden = false
+                self.messagingViewContainer?.backgroundColor = UIColor.clear
                 self.bluetoothDisabledAlert?.isHidden = true
                 self.tableView?.isHidden = true
                 makeSpinnerVisible(true)
@@ -236,13 +249,6 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
                 animateInitialTransition()
             }
         }
-    }
-    enum DeviceListViewState {
-        case initial
-        case bluetoothDisabled
-        case searching
-        case noDevicesFound
-        case devicesFound
     }
     
     fileprivate func selectDevice(_ deviceIndex: Int) {
@@ -310,7 +316,6 @@ class DeviceSelectionViewController: UIViewController, DeviceSelectionInteractio
             delay(initialAnimationHold) {
                 OperationQueue.main.addOperation { () -> Void in
                     UIView.animate(withDuration: self.initialAnimationFade, animations: {
-                        self.mmLogo?.alpha = 0.0
                         
                     }, completion: { (complete) -> Void in
                         if complete {

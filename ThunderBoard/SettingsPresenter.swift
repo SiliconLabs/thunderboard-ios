@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol SettingsPresenter {
+protocol SettingsPresenter: class {
     func showSettings()
 }

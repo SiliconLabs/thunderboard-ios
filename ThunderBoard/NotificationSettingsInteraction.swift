@@ -84,6 +84,7 @@ class NotificationSettingsInteraction : NotificationManagerDelegate {
         
         if enabled {
             let settings = UIUserNotificationSettings(types: .alert, categories: nil)
+            
             UIApplication.shared.registerUserNotificationSettings(settings)
         }
     }

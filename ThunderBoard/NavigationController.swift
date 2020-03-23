@@ -11,7 +11,7 @@ class NavigationController: UINavigationController {
 
     var connectedDeviceView: ConnectedDeviceBarView!
 
-    fileprivate let connectedDeviceBarHeight: CGFloat = 64
+    fileprivate let connectedDeviceBarHeight: CGFloat = 77
     fileprivate let connectionLostTitle = "Connection Lost"
     fileprivate let connectionDismiss   = "Dismiss"
     fileprivate func connectionLostMessage(_ deviceName: String) -> String {
@@ -32,7 +32,6 @@ class NavigationController: UINavigationController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupAppearance()
         setupConnectedDeviceBar()
         hideConnectedDeviceBar()
     }
@@ -71,7 +70,7 @@ class NavigationController: UINavigationController {
     
     fileprivate func setupConnectedDeviceBar() {
         
-        connectedDeviceView = ConnectedDeviceBarView()
+        connectedDeviceView = UINib(nibName: "ConnectedDeviceBarView", bundle: nil).instantiate(withOwner: self, options: nil)[0] as? ConnectedDeviceBarView
         
         connectedDeviceView.backgroundColor = StyleColor.white
         connectedDeviceView.translatesAutoresizingMaskIntoConstraints = false
@@ -96,46 +95,21 @@ class NavigationController: UINavigationController {
     }
     
     fileprivate func updateDeviceInfo(_ name: String, power: PowerSource, firmware: String?) {
-        
-        func updateBatteryLevel(_ level: Int) {
-            var image: UIImage?
-            switch level {
-            case 0...10:
-                image = UIImage(named: "icn_signal_0")
-            case 11...25:
-                image = UIImage(named: "icn_signal_25")
-            case 26...50:
-                image = UIImage(named: "icn_signal_50")
-            case 51...75:
-                image = UIImage(named: "icn_signal_75")
-            default:
-                image = UIImage(named: "icn_signal_100")
-            }
-            
-            self.connectedDeviceView.batteryStatusImage.image = image
-            self.connectedDeviceView.batteryStatusLabel.tb_setText("\(level)%", style: StyleText.numbers1)
-        }
-        
-        self.connectedDeviceView.connectedToLabel.tb_setText("CONNECTED TO", style: StyleText.subtitle2)
-        self.connectedDeviceView.deviceNameLabel.tb_setText(name, style: StyleText.deviceName2)
-        
+        self.connectedDeviceView.deviceNameLabel.text = name
         switch power {
         case .unknown:
-            self.connectedDeviceView.batteryStatusImage.image = UIImage(named: "icn_signal_unknown")
+            self.connectedDeviceView.level = 0
             self.connectedDeviceView.batteryStatusLabel.tb_setText(String.tb_placeholderText(), style: StyleText.numbers1)
-            
         case .usb:
-            self.connectedDeviceView.batteryStatusImage.image = UIImage(named: "icn_usb")
+            self.connectedDeviceView.level = 0
+            self.connectedDeviceView.batteryStatusImageView.image = UIImage(named: "icon - usb - opt2")
             self.connectedDeviceView.batteryStatusLabel.text = ""
-            
         case .aa(let level):
-            updateBatteryLevel(level)
-            
+            self.connectedDeviceView.level = level
         case .coinCell(let level):
-            updateBatteryLevel(level)
-            
+            self.connectedDeviceView.level = level
         case .genericBattery(let level):
-            updateBatteryLevel(level)
+            self.connectedDeviceView.level = level
         }
 
         
@@ -211,19 +185,19 @@ extension UINavigationController {
             image = UIImage()   // clear
             
         case .demoSelection:
-            image = UIImage.tb_imageWithColor(StyleColor.terbiumGreen, size: CGSize(width: 1, height: 1))
+            image = UIImage.tb_imageWithColor(StyleColor.vileRed, size: CGSize(width: 1, height: 1))
             
         case .io:
-            image = UIImage.tb_imageWithColor(StyleColor.terbiumGreen, size: CGSize(width: 1, height: 1))
+            image = UIImage.tb_imageWithColor(StyleColor.vileRed, size: CGSize(width: 1, height: 1))
             
         case .motion:
-            image = UIImage.tb_imageWithColor(StyleColor.terbiumGreen, size: CGSize(width: 1, height: 1))
+            image = UIImage.tb_imageWithColor(StyleColor.vileRed, size: CGSize(width: 1, height: 1))
             
         case .environment:
-            image = UIImage.tb_imageWithColor(StyleColor.terbiumGreen, size: CGSize(width: 1, height: 1))
+            image = UIImage.tb_imageWithColor(StyleColor.vileRed, size: CGSize(width: 1, height: 1))
             
         case .settings:
-            image = UIImage.tb_imageWithColor(StyleColor.terbiumGreen, size: CGSize(width: 1, height: 1))
+            image = UIImage.tb_imageWithColor(StyleColor.vileRed, size: CGSize(width: 1, height: 1))
         }
 
         self.navigationBar.setBackgroundImage(image, for: UIBarMetrics.default)

@@ -10,9 +10,26 @@ import SceneKit
 
 class MotionDemoViewController : DemoViewController, MotionDemoInteractionOutput {
     
-    var motionView: MotionDemoView {
-        return self.view as! MotionDemoView
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tableLeftInset: NSLayoutConstraint!
+    @IBOutlet weak var tableRightInset: NSLayoutConstraint!
+    
+    let tableInset: CGFloat = 16.0
+    
+    var motionDemoView: MotionDemoView?
+    
+    var motionView: MotionDemoView! {
+        if let view: MotionDemoView = self.motionDemoView {
+            return view
+        } else {
+            if let cell: MotionCell = self.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? MotionCell {
+                self.motionDemoView = cell.motionView
+                return self.motionDemoView
+            }
+        }
+        return nil
     }
+    
     var interaction: MotionDemoInteraction!
     var ledMaterials: [SCNMaterial] = []
     
@@ -23,20 +40,56 @@ class MotionDemoViewController : DemoViewController, MotionDemoInteractionOutput
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupModel()
+        navigationItem.backBarButtonItem?.title = "Previous"
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.setupModel()
+        }
+        setupTableView()
+        NotificationCenter.default.addObserver(forName: SettingsViewController.motionDemoModelUpdated, object: nil, queue: nil) { (notification) in
+            self.dispatchSetup()
+        }
+        
+        NotificationCenter.default.addObserver(forName: SettingsViewController.measurementsSettingUpdated, object: nil, queue: nil) { (notification) in
+            self.dispatchSetup()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.tb_setNavigationBarStyleForDemo(.motion)
-        setupUnitsLabels()
-        setupWheel()
-        updateModelOrientation(ThunderboardInclination(x: 0, y: 0, z: 0), animated: false)
-        interaction.updateView()
+        navigationController?.title = ""
+        navigationItem.backBarButtonItem?.title = "Previous"
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.setupWheel()
+            self.updateModelOrientation(ThunderboardInclination(x: 0, y: 0, z: 0), animated: false)
+            self.interaction.updateView()
+        }
+        
+    }
+    
+    func dispatchSetup() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.setupModel()
+            self.tableView.reloadData()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.setupWheel()
+            self.updateModelOrientation(ThunderboardInclination(x: 0, y: 0, z: 0), animated: false)
+            self.interaction.updateView()
+            self.tableView.reloadData()
+        }
     }
     
     func setupModel() {
         // no-op - implemented in subclasses
+    }
+    
+    func setupTableView() {
+        if #available(iOS 13, *) {
+            tableView.separatorStyle = .none;
+        } else {
+            tableLeftInset.constant = tableInset;
+            tableRightInset.constant = tableInset;
+        }
     }
     
     func modelTranformMatrixForOrientation(_ orientation: ThunderboardInclination) -> SCNMatrix4 {
@@ -48,9 +101,9 @@ class MotionDemoViewController : DemoViewController, MotionDemoInteractionOutput
     
     func updateOrientation(_ orientation: ThunderboardInclination) {
         let degrees = " °"
-        self.motionView.orientationXValue?.text = orientation.x.tb_toString(0)! + degrees
-        self.motionView.orientationYValue?.text = orientation.y.tb_toString(0)! + degrees
-        self.motionView.orientationZValue?.text = orientation.z.tb_toString(0)! + degrees
+        motionView.orientationXValue?.text = orientation.x.tb_toString(0)! + degrees
+        motionView.orientationYValue?.text = orientation.y.tb_toString(0)! + degrees
+        motionView.orientationZValue?.text = orientation.z.tb_toString(0)! + degrees
         
         updateModelOrientation(orientation, animated: true)
     }
@@ -58,10 +111,10 @@ class MotionDemoViewController : DemoViewController, MotionDemoInteractionOutput
     func updateAcceleration(_ vector: ThunderboardVector) {
         let gravity = " g"
         
-        self.motionView.accelerationXValue?.text = vector.x.tb_toString(2, minimumDecimalPlaces: 2)!
-        self.motionView.accelerationXValue?.text = vector.x.tb_toString(2, minimumDecimalPlaces: 2)! + gravity
-        self.motionView.accelerationYValue?.text = vector.y.tb_toString(2, minimumDecimalPlaces: 2)! + gravity
-        self.motionView.accelerationZValue?.text = vector.z.tb_toString(2, minimumDecimalPlaces: 2)! + gravity
+        motionView.accelerationXValue?.text = vector.x.tb_toString(2, minimumDecimalPlaces: 2)!
+        motionView.accelerationXValue?.text = vector.x.tb_toString(2, minimumDecimalPlaces: 2)! + gravity
+        motionView.accelerationYValue?.text = vector.y.tb_toString(2, minimumDecimalPlaces: 2)! + gravity
+        motionView.accelerationZValue?.text = vector.z.tb_toString(2, minimumDecimalPlaces: 2)! + gravity
     }
     
     func updateWheel(_ diameter: Meters) {
@@ -69,10 +122,10 @@ class MotionDemoViewController : DemoViewController, MotionDemoInteractionOutput
         switch settings.measurement {
         case .metric:
             let diameterInCentimeters: Centimeters = diameter * 100
-            self.motionView.wheelDiameterValue?.text = diameterInCentimeters.tb_toString(2)! + " cm"
+            motionView.wheelDiameterValue?.text = diameterInCentimeters.tb_toString(2)! + " cm"
         case .imperial:
             let diameterInInches = diameter.tb_toInches()
-            self.motionView.wheelDiameterValue?.text = diameterInInches.tb_toString(2)! + "\""
+            motionView.wheelDiameterValue?.text = diameterInInches.tb_toString(2)! + "\""
         }
     }
     
@@ -80,14 +133,14 @@ class MotionDemoViewController : DemoViewController, MotionDemoInteractionOutput
         let settings = ThunderboardSettings()
         switch settings.measurement {
         case .metric:
-            self.motionView.distanceValue?.text = distance.tb_toString(1)
-            self.motionView.speedValue?.text = speed.tb_toString(1)
+            motionView.distanceValue?.text = distance.tb_toString(1)
+            motionView.speedValue?.text = speed.tb_toString(1)
         case .imperial:
-            self.motionView.distanceValue?.text = distance.tb_toFeet().tb_toString(1)
-            self.motionView.speedValue?.text = speed.tb_toFeet().tb_toString(1)
+            motionView.distanceValue?.text = distance.tb_toFeet().tb_toString(1)
+            motionView.speedValue?.text = speed.tb_toFeet().tb_toString(1)
         }
-        self.motionView.rpmValue?.text = rpm.tb_toString(0)
-        self.motionView.totalRpmValue?.text = String(totalRpm)
+        motionView.rpmValue?.text = rpm.tb_toString(0)
+        motionView.totalRpmValue?.text = String(totalRpm)
     }
     
     func updateLedColor(_ on: Bool, color: LedRgb) {
@@ -96,15 +149,16 @@ class MotionDemoViewController : DemoViewController, MotionDemoInteractionOutput
     
     func deviceCalibrating(_ isCalibrating: Bool) {
         if isCalibrating {
-            if self.calibrationAlert == nil {
-                self.calibrationAlert = UIAlertController(title: calibrationTitle, message: calibrationMessage, preferredStyle: .alert)
-                self.present(self.calibrationAlert!, animated: true, completion: nil)
+            if calibrationAlert == nil {
+                calibrationAlert = UIAlertController(title: calibrationTitle, message: calibrationMessage, preferredStyle: .alert)
+                calibrationAlert?.view.tintColor = StyleColor.vileRed
+                present(self.calibrationAlert!, animated: true, completion: nil)
             }
         } else {
-            guard self.calibrationAlert != nil else { return }
+            guard calibrationAlert != nil else { return }
             
             // Call dismiss on self because calling it on UIAlertController does not produce a completion call
-            self.dismiss(animated: true, completion: {
+            dismiss(animated: true, completion: {
                 let alertController = UIAlertController(title: "Calibration successful", message: nil, preferredStyle: .alert)
 
                 let cancelAction = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
@@ -112,14 +166,18 @@ class MotionDemoViewController : DemoViewController, MotionDemoInteractionOutput
 
                 self.present(alertController, animated: true, completion: nil)
             })
-            self.calibrationAlert = nil
+            calibrationAlert = nil
         }
     }
     
     //MARK: - Actions
     
     @IBAction func calibrateButtonPressed(_ sender: AnyObject) {
-        self.interaction.calibrate()
+        interaction.calibrate()
+    }
+    
+    @IBAction func settingsButtonPressed() {
+        interaction?.showSettings()
     }
     
     //MARK: - Private
@@ -129,20 +187,20 @@ class MotionDemoViewController : DemoViewController, MotionDemoInteractionOutput
         
         switch settings.measurement {
         case .metric:
-            self.motionView.distanceValueLabel?.text = "m"
-            self.motionView.speedValueLabel?.text = "m/s"
+            motionView.distanceValueLabel?.text = "m"
+            motionView.speedValueLabel?.text = "m/s"
         case .imperial:
-            self.motionView.distanceValueLabel?.text = "ft"
-            self.motionView.speedValueLabel?.text = "ft/s"
+            motionView.distanceValueLabel?.text = "ft"
+            motionView.speedValueLabel?.text = "ft/s"
         }
         
-        self.motionView.rpmValueLabel?.text = "rpm"
-        self.motionView.totalRpmValueLabel?.text = "total revolutions"
+        motionView.rpmValueLabel?.text = "rpm"
+        motionView.totalRpmValueLabel?.text = "total revolutions"
     }
 
     fileprivate func setupWheel() {
         let diameter = interaction.wheelDiameter()
-        self.updateWheel(diameter)
+        updateWheel(diameter)
     }
     
     fileprivate func updateModelOrientation(_ orientation : ThunderboardInclination, animated: Bool) {
@@ -160,4 +218,26 @@ class MotionDemoViewController : DemoViewController, MotionDemoInteractionOutput
             material.emission.contents = color
         }
     }
+}
+
+extension MotionDemoViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: MotionCell = tableView.dequeueReusableCell(withIdentifier: "MotionCell") as! MotionCell
+        motionDemoView = cell.motionView
+        setupModel()
+        
+        return cell
+    }
+}
+
+extension MotionDemoViewController: UITableViewDelegate {
+    
 }

@@ -21,6 +21,7 @@ class MotionDemoInteraction : DemoStreamingInteraction, MotionDemoConnectionDele
     var streamingConnection: DemoStreamingConnection?
     weak var streamingOutput: DemoStreamingInteractionOutput?
     weak var streamSharePresenter: DemoStreamSharePresenter?
+    weak var settingsPresenter: SettingsPresenter?
 
     fileprivate weak var output: MotionDemoInteractionOutput?
     fileprivate var connection: MotionDemoConnection?
@@ -192,5 +193,9 @@ class MotionDemoInteraction : DemoStreamingInteraction, MotionDemoConnectionDele
         let rpm      = position.rpm
         let total    = position.revolutionsSinceConnecting
         output?.updateLocation(distance, speed: speed, rpm: rpm, totalRpm: total)
+    }
+    
+    func showSettings() {
+        settingsPresenter?.showSettings()
     }
 }

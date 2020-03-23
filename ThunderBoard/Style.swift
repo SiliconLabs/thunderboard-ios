@@ -138,6 +138,10 @@ class StyleColor {
     class var white: UIColor {
         get { return UIColor.white }
     }
+    
+    class var vileRed: UIColor {
+        get { return UIColor.tb_hex(0xD91E2A) }
+    }
 }
 
 class StyleText {
@@ -169,7 +173,7 @@ class StyleText {
     }
     
     class var deviceListStatus: StyleText {
-        get { return StyleText(fontName: .OpenSansLight, size: 19, color: StyleColor.mediumGray, kerning: 25) }
+        get { return StyleText(fontName: .OpenSansLight, size: 19, color: StyleColor.white, kerning: 25) }
     }
     
     class var header: StyleText {

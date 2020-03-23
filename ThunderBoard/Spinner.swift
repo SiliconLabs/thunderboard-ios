@@ -30,7 +30,7 @@ class Spinner: UIView {
         colorPathLayer.strokeEnd = 0.4
     }
     
-    var lineWidth: CGFloat = 2.0 {
+    var lineWidth: CGFloat = 4.0 {
         didSet {
             colorPathLayer.lineWidth = lineWidth
             trackPathLayer.lineWidth = lineWidth

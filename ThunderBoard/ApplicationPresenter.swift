@@ -112,12 +112,12 @@ class ApplicationPresenter : NSObject, DeviceTransportApplicationDelegate, Conne
     //MARK: - DemoPresenter
     
     func showEnvironmentDemo(_ connection: EnvironmentDemoConnection) {
-        let demo = factory.environmentDemoViewController(connection)
+        let demo = factory.environmentDemoViewController(connection, settingsPresenter: self)
         self.navigationController?.pushViewController(demo, animated: true)
     }
     
     func showIoDemo(_ connection: IoDemoConnection) {
-        let demo = factory.ioDemoViewController(connection)
+        let demo = factory.ioDemoViewController(connection, settingsPresenter: self)
         self.navigationController?.pushViewController(demo, animated: true)
     }
 
@@ -131,19 +131,21 @@ class ApplicationPresenter : NSObject, DeviceTransportApplicationDelegate, Conne
         case .unknown:
             switch settings.motionDemoModel {
             case .board:
-                demo = factory.motionBoardDemoViewController(connection)
+                demo = factory.motionBoardDemoViewController(connection, settingsPresenter: self)
             case .car:
-                demo = factory.motionCarDemoViewController(connection)
+                demo = factory.motionBoardDemoViewController(connection, settingsPresenter: self)
             }
         case .sense:
-            demo = factory.motionSenseBoardDemoViewController(connection)
+            if connection.device.modelName == "BRD4184A" {
+                demo = factory.motionSense84BoardDemoViewController(connection, settingsPresenter: self)
+            } else {
+                demo = factory.motionSenseBoardDemoViewController(connection, settingsPresenter: self)
+            }
         }
-        
         
         self.navigationController?.pushViewController(demo, animated: true)
     }
 
-    
     //MARK: - NotificationPresenter
     
     func showDetectedDevice(_ device: NotificationDevice) {
@@ -180,7 +182,9 @@ class ApplicationPresenter : NSObject, DeviceTransportApplicationDelegate, Conne
         }
         
         let url = URL.tb_urlForDemoHistory(device)
-        UIApplication.shared.openURL(url)
+        UIApplication.shared.open(url, options: [:]) { (success) in
+            
+        }
     }
     
     //MARK: - SettingsPresenter

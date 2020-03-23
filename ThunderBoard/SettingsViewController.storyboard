@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1XA-9s-9Nl">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1XA-9s-9Nl">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -14,7 +12,7 @@
             <objects>
                 <navigationController storyboardIdentifier="SettingsViewController" id="1XA-9s-9Nl" customClass="SettingsNavigationController" customModule="ThunderBoard" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="sVS-ey-aI8">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -37,7 +35,7 @@
                             <tableViewSection id="4G1-EM-F9w">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="54" id="ze4-Sq-QZb" customClass="SettingsViewCell" customModule="ThunderBoard" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="35" width="375" height="54"/>
+                                        <rect key="frame" x="0.0" y="18" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ze4-Sq-QZb" id="8Tx-q3-f5P">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
@@ -50,7 +48,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <segmentedControl contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="h07-R0-byY">
-                                                    <rect key="frame" x="249" y="13" width="110" height="29"/>
+                                                    <rect key="frame" x="249" y="11.5" width="110" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="110" id="XId-HT-hAc"/>
                                                     </constraints>
@@ -81,7 +79,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="54" id="1Ix-fS-iAz" customClass="SettingsViewCell" customModule="ThunderBoard" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="89" width="375" height="54"/>
+                                        <rect key="frame" x="0.0" y="72" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Ix-fS-iAz" id="Q11-1q-Mye">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
@@ -94,7 +92,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ymW-9A-0xc">
-                                                    <rect key="frame" x="249" y="13" width="110" height="29"/>
+                                                    <rect key="frame" x="249" y="11.5" width="110" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="110" id="RaT-AO-XiG"/>
                                                     </constraints>
@@ -125,7 +123,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="57" id="X0y-5c-hHr" customClass="SettingsViewCell" customModule="ThunderBoard" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="143" width="375" height="57"/>
+                                        <rect key="frame" x="0.0" y="126" width="375" height="57"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="X0y-5c-hHr" id="kD4-al-VFI">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="57"/>
@@ -138,7 +136,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="lkx-Rm-ttT">
-                                                    <rect key="frame" x="249" y="15" width="110" height="29"/>
+                                                    <rect key="frame" x="249" y="13" width="110" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="110" id="CUc-0U-qoT"/>
                                                     </constraints>
@@ -160,54 +158,6 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="57" id="R09-Ht-1dJ" customClass="SettingsViewCell" customModule="ThunderBoard" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="200" width="375" height="57"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="R09-Ht-1dJ" id="pwG-Pe-kP1">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="57"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Beacon Notifications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7g5-OS-OUU" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
-                                                    <rect key="frame" x="15" y="18" width="159" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icn_settings_arrow" translatesAutoresizingMaskIntoConstraints="NO" id="T2C-UZ-nPM">
-                                                    <rect key="frame" x="352" y="22" width="8" height="14"/>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="On" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lgy-rZ-cQp" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
-                                                    <rect key="frame" x="317" y="18" width="23" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="lgy-rZ-cQp" secondAttribute="trailing" id="2oM-BF-Ky3"/>
-                                                <constraint firstItem="T2C-UZ-nPM" firstAttribute="leading" secondItem="lgy-rZ-cQp" secondAttribute="trailing" constant="12" id="9BJ-oX-9L0"/>
-                                                <constraint firstItem="7g5-OS-OUU" firstAttribute="trailing" secondItem="lgy-rZ-cQp" secondAttribute="trailing" constant="12" id="XTq-F6-PQA"/>
-                                                <constraint firstItem="7g5-OS-OUU" firstAttribute="leading" secondItem="pwG-Pe-kP1" secondAttribute="leading" constant="15" id="aQA-o1-h5c"/>
-                                                <constraint firstItem="lgy-rZ-cQp" firstAttribute="centerY" secondItem="pwG-Pe-kP1" secondAttribute="centerY" id="eev-gI-h4g"/>
-                                                <constraint firstItem="T2C-UZ-nPM" firstAttribute="leading" secondItem="lgy-rZ-cQp" secondAttribute="trailing" constant="-12" id="fVo-rT-lo8"/>
-                                                <constraint firstAttribute="trailing" secondItem="T2C-UZ-nPM" secondAttribute="trailing" constant="-15" id="iuU-Hl-CzA"/>
-                                                <constraint firstItem="T2C-UZ-nPM" firstAttribute="centerY" secondItem="pwG-Pe-kP1" secondAttribute="centerY" id="s1D-Gs-0hw"/>
-                                                <constraint firstItem="7g5-OS-OUU" firstAttribute="centerY" secondItem="pwG-Pe-kP1" secondAttribute="centerY" id="wJB-hL-wPG"/>
-                                                <constraint firstAttribute="trailing" secondItem="T2C-UZ-nPM" secondAttribute="trailing" constant="15" id="wUi-20-RmB"/>
-                                            </constraints>
-                                            <variation key="default">
-                                                <mask key="constraints">
-                                                    <exclude reference="XTq-F6-PQA"/>
-                                                    <exclude reference="2oM-BF-Ky3"/>
-                                                    <exclude reference="fVo-rT-lo8"/>
-                                                    <exclude reference="iuU-Hl-CzA"/>
-                                                </mask>
-                                            </variation>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="GFR-4g-RkF" kind="show" identifier="notificationsSegue" id="ckd-sf-pyJ"/>
-                                        </connections>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -223,10 +173,14 @@
                                 <action selector="doneButtonTapped:" destination="wn4-bo-hC8" id="QZw-Ar-iCG"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="icon - thunderboard" id="B30-Ov-gnO">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="help:" destination="wn4-bo-hC8" id="h9o-Xn-U5s"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="beaconNotificationsLabel" destination="7g5-OS-OUU" id="UBG-zR-CCm"/>
-                        <outlet property="beaconNotificationsStateLabel" destination="lgy-rZ-cQp" id="QWM-dt-fMU"/>
                         <outlet property="measurementsControl" destination="h07-R0-byY" id="EuX-sO-lzf"/>
                         <outlet property="measurementsLabel" destination="Qeg-Pa-bNG" id="vZY-5I-RGD"/>
                         <outlet property="motionModelControl" destination="lkx-Rm-ttT" id="U2s-Op-S9L"/>
@@ -257,10 +211,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="52" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="vZm-js-dKw">
-                                <rect key="frame" x="0.0" y="165" width="375" height="502"/>
+                                <rect key="frame" x="0.0" y="100.5" width="375" height="566.5"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NotificationSettingsDeviceCell" rowHeight="52" id="Mst-K7-As9" customClass="NotificationSettingsDeviceCell" customModule="ThunderBoard" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NotificationSettingsDeviceCell" rowHeight="52" id="Mst-K7-As9" customClass="NotificationSettingsDeviceCell" customModule="ThunderBoard" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.5" width="375" height="52"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Mst-K7-As9" id="DlL-Gj-Dxn">
@@ -268,19 +222,19 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Device-1234" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kgc-XL-gHE" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
-                                                    <rect key="frame" x="15" y="2.5" width="53" height="21"/>
+                                                    <rect key="frame" x="15" y="2.5" width="278" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1000" text="Connected" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ATr-uL-AJH" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
-                                                    <rect key="frame" x="15" y="21" width="53" height="21"/>
+                                                    <rect key="frame" x="15" y="21" width="278" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SZx-Sj-wgr">
-                                                    <rect key="frame" x="81" y="9" width="54" height="34"/>
+                                                    <rect key="frame" x="306" y="9" width="54" height="34"/>
                                                     <state key="normal" title="Button"/>
                                                 </button>
                                             </subviews>
@@ -309,13 +263,13 @@
                                 </connections>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cz2-vp-RhM" userLabel="Notifications Description" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
-                                <rect key="frame" x="16" y="76" width="343" height="21"/>
+                                <rect key="frame" x="16" y="12" width="343" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H0O-ra-o7U" userLabel="Notifications Container">
-                                <rect key="frame" x="0.0" y="113" width="375" height="52"/>
+                                <rect key="frame" x="0.0" y="48.5" width="375" height="52"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wFO-HN-Ajy" customClass="StyledLabel" customModule="ThunderBoard" customModuleProvider="target">
                                         <rect key="frame" x="16" y="15.5" width="42" height="21"/>
@@ -324,7 +278,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EAy-7U-qPj">
-                                        <rect key="frame" x="310" y="10" width="51" height="31"/>
+                                        <rect key="frame" x="310" y="10.5" width="51" height="31"/>
                                         <connections>
                                             <action selector="notificationSwitchChanged:" destination="GFR-4g-RkF" eventType="valueChanged" id="2Yh-yU-49f"/>
                                         </connections>
@@ -379,6 +333,6 @@
     <resources>
         <image name="btn_navbar_back" width="25" height="25"/>
         <image name="btn_navbar_close" width="25" height="25"/>
-        <image name="icn_settings_arrow" width="8" height="14"/>
+        <image name="icon - thunderboard" width="24" height="24"/>
     </resources>
 </document>

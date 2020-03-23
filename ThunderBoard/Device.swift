@@ -66,6 +66,7 @@ enum PowerSource : Equatable {
 
 protocol Device : DemoConfiguration {
     var model: DeviceModel { get }
+    var modelName: String { get }
     var name: String? { get }
     var advertisementDataLocalName: String? { get }
     var deviceIdentifier: DeviceId? { get }

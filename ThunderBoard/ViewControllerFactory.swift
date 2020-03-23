@@ -36,7 +36,8 @@ class ViewControllerFactory {
         return demoViewController
     }
 
-    func environmentDemoViewController(_ connection: EnvironmentDemoConnection) -> EnvironmentDemoViewController {
+    func environmentDemoViewController(_ connection: EnvironmentDemoConnection,
+                                       settingsPresenter: SettingsPresenter) -> EnvironmentDemoViewController {
         
         let demoViewController = UIStoryboard(name: "EnvironmentDemoViewController", bundle: nil).instantiateViewController(withIdentifier: "EnvironmentDemoViewController") as! EnvironmentDemoViewController
         
@@ -47,6 +48,7 @@ class ViewControllerFactory {
         let streaming = EnvironmentDemoStreamingConnection(device: connection.device, output: interaction)
         streaming.dataSource = interaction
         interaction.streamingConnection = streaming
+        interaction.settingsPresenter = settingsPresenter
 
         demoViewController.interaction = interaction
         demoViewController.streamingInteraction = interaction
@@ -54,13 +56,15 @@ class ViewControllerFactory {
         return demoViewController
     }
     
-    func ioDemoViewController(_ connection: IoDemoConnection) -> IoDemoViewController {
+    func ioDemoViewController(_ connection: IoDemoConnection,
+                              settingsPresenter: SettingsPresenter) -> IoDemoViewController {
 
         let demoViewController = UIStoryboard(name: "IoDemoViewController", bundle: nil).instantiateViewController(withIdentifier: "IoDemoViewController") as! IoDemoViewController
         
         let interaction = IoDemoInteraction(output: demoViewController, demoConnection: connection)
         interaction.streamingOutput = demoViewController
         interaction.streamSharePresenter = self.presenter
+        interaction.settingsPresenter = settingsPresenter
         
         let streaming = IoDemoStreamingConnection(device: connection.device, output: interaction)
         streaming.dataSource = interaction
@@ -72,7 +76,8 @@ class ViewControllerFactory {
         return demoViewController
     }
 
-    func motionCarDemoViewController(_ connection: MotionDemoConnection) -> MotionCarDemoViewController {
+    func motionCarDemoViewController(_ connection: MotionDemoConnection,
+                                     settingsPresenter: SettingsPresenter) -> MotionCarDemoViewController {
         
         let demoViewController = UIStoryboard(name: "MotionCarDemoViewController", bundle: nil).instantiateViewController(withIdentifier: "MotionCarDemoViewController") as! MotionCarDemoViewController
         
@@ -83,6 +88,7 @@ class ViewControllerFactory {
         let streaming = MotionDemoStreamingConnection(device: connection.device, output: interaction)
         streaming.dataSource = interaction
         interaction.streamingConnection = streaming
+        interaction.settingsPresenter = settingsPresenter
         
         demoViewController.interaction = interaction
         demoViewController.streamingInteraction = interaction
@@ -90,13 +96,15 @@ class ViewControllerFactory {
         return demoViewController
     }
     
-    func motionBoardDemoViewController(_ connection: MotionDemoConnection) -> MotionBoardDemoViewController {
+    func motionBoardDemoViewController(_ connection: MotionDemoConnection,
+                                       settingsPresenter: SettingsPresenter) -> MotionBoardDemoViewController {
         
         let demoViewController = UIStoryboard(name: "MotionBoardDemoViewController", bundle: nil).instantiateViewController(withIdentifier: "MotionBoardDemoViewController") as! MotionBoardDemoViewController
         
         let interaction = MotionDemoInteraction(output: demoViewController, demoConnection: connection)
         interaction.streamingOutput = demoViewController
         interaction.streamSharePresenter = self.presenter
+        interaction.settingsPresenter = settingsPresenter
         
         let streaming = MotionDemoStreamingConnection(device: connection.device, output: interaction)
         streaming.dataSource = interaction
@@ -108,13 +116,35 @@ class ViewControllerFactory {
         return demoViewController
     }
     
-    func motionSenseBoardDemoViewController(_ connection: MotionDemoConnection) -> MotionSenseBoardDemoViewController {
+    func motionSense84BoardDemoViewController(_ connection: MotionDemoConnection,
+                                              settingsPresenter: SettingsPresenter) -> MotionSense84BoardDemoViewController {
+        
+        let demoViewController = UIStoryboard(name: "MotionSenseBoardDemoViewController", bundle: nil).instantiateViewController(withIdentifier: "MotionSense84BoardDemoViewController") as! MotionSense84BoardDemoViewController
+        
+        let interaction = MotionDemoInteraction(output: demoViewController, demoConnection: connection)
+        interaction.streamingOutput = demoViewController
+        interaction.streamSharePresenter = self.presenter
+        
+        let streaming = MotionDemoStreamingConnection(device: connection.device, output: interaction)
+        streaming.dataSource = interaction
+        interaction.streamingConnection = streaming
+        interaction.settingsPresenter = settingsPresenter
+        
+        demoViewController.interaction = interaction
+        demoViewController.streamingInteraction = interaction
+        
+        return demoViewController
+    }
+    
+    func motionSenseBoardDemoViewController(_ connection: MotionDemoConnection,
+                                            settingsPresenter: SettingsPresenter) -> MotionSenseBoardDemoViewController {
         
         let demoViewController = UIStoryboard(name: "MotionSenseBoardDemoViewController", bundle: nil).instantiateViewController(withIdentifier: "MotionSenseBoardDemoViewController") as! MotionSenseBoardDemoViewController
         
         let interaction = MotionDemoInteraction(output: demoViewController, demoConnection: connection)
         interaction.streamingOutput = demoViewController
         interaction.streamSharePresenter = self.presenter
+        interaction.settingsPresenter = settingsPresenter
         
         let streaming = MotionDemoStreamingConnection(device: connection.device, output: interaction)
         streaming.dataSource = interaction

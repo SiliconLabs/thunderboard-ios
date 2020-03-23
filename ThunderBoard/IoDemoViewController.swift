@@ -7,42 +7,18 @@
 
 import UIKit
 
+@IBDesignable
 class IoDemoViewController: DemoViewController, IoDemoInteractionOutput {
     
-    @IBOutlet weak var contentView: UIView?
-    @IBOutlet weak var switchesLabel: StyledLabel!
-    @IBOutlet weak var switchesView: UIView!
+    @IBOutlet weak var tableView: UITableView!
     
-    @IBOutlet weak var switch1View: ButtonSpinner!
-    @IBOutlet weak var switch1OnOffLabel: StyledLabel!
-    
-    @IBOutlet weak var switch2View: ButtonSpinner!
-    @IBOutlet weak var switch2OnOffLabel: StyledLabel!
-    
-    @IBOutlet weak var lightsLabel: StyledLabel!
-    @IBOutlet weak var lightsView: UIView!
-
-    @IBOutlet weak var light1Button: UIButton!
-    @IBOutlet weak var light1OnOffLabel: StyledLabel!
-
-    @IBOutlet weak var light2Button: UIButton!
-    @IBOutlet weak var light2OnOffLabel: StyledLabel!
-    
-    @IBOutlet weak var rgbLightsView: UIView?
-    
-    @IBOutlet weak var rgbButton: UIButton?
-    @IBOutlet weak var rgbStateLabel: StyledLabel?
-    
-    @IBOutlet weak var colorLabel: StyledLabel?
     @IBOutlet weak var colorSlider: UISlider?
-    @IBOutlet weak var colorHueView: HueGradientView?
-    
-    @IBOutlet weak var brightnessLabel: StyledLabel?
     @IBOutlet weak var brightnessSlider: UISlider?
-    @IBOutlet weak var brightnessNegativeLabel: StyledLabel?
-    @IBOutlet weak var brightnessPositiveLabel: StyledLabel?
     
-    @IBOutlet var rgbLedViews: [UIView]!
+    @IBOutlet weak var tableLeftInset: NSLayoutConstraint!
+    @IBOutlet weak var tableRightInset: NSLayoutConstraint!
+    
+    let tableInset: CGFloat = 16.0
     
     let onString         = "ON"
     let offString        = "OFF"
@@ -51,42 +27,69 @@ class IoDemoViewController: DemoViewController, IoDemoInteractionOutput {
     let switchesString   = "SWITCHES"
     let lightsString     = "LIGHTS"
 
-    struct ButtonImageNames {
-        static let Off      = "btn_io_light_off"
-        static let Red      = "btn_io_light_red_on"
-        static let Green    = "btn_io_light_green_on"
-        static let Blue     = "btn_io_light_blue_on"
-    }
     
-    let switchOnImage  = "icn_io_switch_on"
-    let switchOffImage = "icn_io_switch_off"
+    let rgbLEDPositionNo = 2
+    let switchMaxNo = 2
 
     var interaction: IoDemoInteraction?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupAppearance()
-        addSliderGestures()
+        setupTableView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.tb_setNavigationBarStyleForDemo(.io)
         interaction?.updateView()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if showRGB {
+            interaction?.toggleLed(2)
+        }
+        showRGB = false
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        interaction?.turnOffLed(0)
+        interaction?.turnOffLed(1)
+        interaction?.turnOffLed(2)
+        tableView.reloadData()
+        let cell: LightsCell = tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as! LightsCell
+        cell.lights[0].isOn = false
+        cell.lights[1].isOn = false
+    }
+    
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .default
+    }
+    
+    func setupTableView() {
+        if #available(iOS 13, *) {
+            tableView.separatorStyle = .none;
+        } else {
+            tableLeftInset.constant = tableInset;
+            tableRightInset.constant = tableInset;
+        }
+    }
+    
     //MARK: - Actions
-    
-    @IBAction func light1ButtonPressed(_ sender: UIButton) {
-        self.interaction?.toggleLed(0)
+    @IBAction func lightsSwitched(_ sender: UISwitch) {
+        self.interaction?.toggleLed(sender.tag)
     }
     
-    @IBAction func light2ButtonPressed(_ sender: UIButton) {
-        self.interaction?.toggleLed(1)
-    }
+    var showRGB: Bool = false
     
-    @IBAction func rgbLightButtonPressed(_ sender: UIButton) {
+    @IBAction func showRGB(_ sender: UISwitch) {
         interaction?.toggleLed(2)
+        showRGB = sender.isOn
+        tableView.reloadData()
+        /*tableView.reloadRows(at: [IndexPath(row: 1, section: 2),
+                                  IndexPath(row: 2, section: 2),
+                                  IndexPath(row: 3, section: 2)],
+                             with: .automatic)*/
     }
     
     @IBAction func colorSliderChanged(_ sender: UISlider) {
@@ -98,35 +101,25 @@ class IoDemoViewController: DemoViewController, IoDemoInteractionOutput {
     }
     
     @IBAction func brightnessSliderChanged(_ sender: UISlider) {
-        guard let color = colorForSliderValues() else {
+        guard let color = colorForSliderValues(   ) else {
             return
         }
         
         interaction?.setColor(2, color: color)
     }
     
+    @IBAction func settingsButtonPressed() {
+        interaction?.showSettings()
+    }
+    
     //MARK: - IoDemoInteractionOutput
     
     func showButtonState(_ button: Int, pressed: Bool) {
-        switch button {
-        case 0:
-            log.debug("Button 0 is \(pressed)")
-            if (pressed) {
-                switch1View.startAnimating()
-            } else {
-                switch1View.stopAnimating()
+        
+        if let cell: SwitchStatusCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? SwitchStatusCell {
+            if let switchView: SwitchView = cell.switches?[button] {
+                switchView.switchStatus = pressed ? .on : .off
             }
-            switch1OnOffLabel.text = pressed ? onString : offString
-        case 1:
-            log.debug("Button 1 is \(pressed)")
-            if (pressed) {
-                switch2View.startAnimating()
-            } else {
-                switch2View.stopAnimating()
-            }
-            switch2OnOffLabel.text = pressed ? onString : offString
-        default:
-            break
         }
     }
     
@@ -142,70 +135,47 @@ class IoDemoViewController: DemoViewController, IoDemoInteractionOutput {
     
     fileprivate func showDigital(_ index: Int, on: Bool, color: LedStaticColor? = nil) {
         log.debug("showLedState \(index) \(on)")
-
-        let buttons: [UIButton] = [light1Button, light2Button, rgbButton!]
-        let labels: [StyledLabel] = [light1OnOffLabel, light2OnOffLabel, rgbStateLabel!]
-        
-        let image: String = {
-            if on {
-                if let color = color {
-                    switch color {
-                    case .red:
-                        return ButtonImageNames.Red
-                    case .blue:
-                        return ButtonImageNames.Blue
-                    case .green:
-                        return ButtonImageNames.Green
-                    }
-                }
-                
-                return ButtonImageNames.Green
-            }
-            else {
-                return ButtonImageNames.Off
-            }
-        }()
-        
-        buttons[index].setImage(UIImage(named: image)!, for: UIControl.State())
-        labels[index].text = on ? onString : offString
     }
     
     fileprivate func showRgbState(_ on: Bool, color: LedRgb) {
-        showDigital(2, on: on)
-        
         let color = color.uiColor
         var brightness: CGFloat = 0.0
         var hue: CGFloat = 0.0
-        
         color.getHue(&hue, saturation: nil, brightness: &brightness, alpha: nil)
-        
-        brightnessSlider?.isEnabled = on
-        brightnessSlider?.value = Float(brightness)
-        
-        colorSlider?.isEnabled = on
-        colorSlider?.value = Float(hue)
-        colorHueView?.isHidden = !on
-        let trackColor = on ? UIColor.clear : StyleColor.lightGray
-        colorSlider?.minimumTrackTintColor = trackColor
-        colorSlider?.maximumTrackTintColor = trackColor
-        
-
-        // Instead of using brightness, we adjust opacity on the views to simulate brightness
         let imageColor = UIColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: brightness)
-        rgbLedViews.forEach({ $0.backgroundColor = on ? imageColor : StyleColor.gray })
+        guard let cell: StrengthCell = tableView.cellForRow(at: IndexPath(row: 1, section: 2)) as? StrengthCell else { return }
+        cell.barView.color = on ? imageColor : StyleColor.gray
     }
     
+    var rgbEnabled = true
+    
     func disableRgb() {
-        rgbLightsView?.removeFromSuperview()
+        rgbEnabled = false
+        self.tableView.reloadData()
+    }
+    
+    var ledOn: Bool = true
+    var ledNo: Int = 0
+    
+    func enable(_ enable: Bool, led ledNo: Int) {
+        self.ledOn = enable
+        self.ledNo = ledNo
+    }
+    
+    var switchOn: Bool = true
+    var switchNo: Int = 0
+    
+    func enable(_ enable: Bool, switch switchNo: Int) {
+        self.switchOn = enable
+        self.switchNo = switchNo
     }
 
     //MARK: - Internal
     
     fileprivate func colorForSliderValues() -> LedRgb? {
-        guard let hue = colorSlider?.value,
-            let brightness = brightnessSlider?.value else {
-                return nil
-        }
+        guard let colorCell: ColorCell = tableView?.cellForRow(at: IndexPath(row: 2, section: 2)) as? ColorCell else { return  nil}
+        guard let brightnessCell: BrightnessCell = tableView?.cellForRow(at: IndexPath(row: 3, section: 2)) as? BrightnessCell else { return nil }
+        guard let hue = colorCell.colorSlider?.value, let brightness = brightnessCell.slider?.value else { return nil }
         
         let color = UIColor(hue: CGFloat(hue), saturation: 1.0, brightness: CGFloat(brightness), alpha: 1.0)
         var r = CGFloat(0)
@@ -217,72 +187,11 @@ class IoDemoViewController: DemoViewController, IoDemoInteractionOutput {
         return LedRgb(red: Float(r), green: Float(g), blue: Float(b))
     }
     
-    fileprivate func setupAppearance() {
-        setupSwitchesSectionAppearance()
-        setupLightsSectionAppearance()
-        setupRgbSectionAppearance()
-    }
-
-    fileprivate func setupSwitchesSectionAppearance() {
-        switchesLabel.tb_setText(switchesString, style: StyleText.header2)
-        switchesView.backgroundColor = StyleColor.white
-        switchesView.tb_applyCommonRoundedCornerWithShadowStyle()
-        
-        switch1OnOffLabel.style = StyleText.demoStatus
-        switch2OnOffLabel.style = StyleText.demoStatus
-    }
-    
-    fileprivate func setupLightsSectionAppearance() {
-        lightsLabel.tb_setText(lightsString, style: StyleText.header2)
-        lightsView.backgroundColor = StyleColor.white
-        lightsView.tb_applyCommonRoundedCornerWithShadowStyle()
-        
-        light1OnOffLabel.style = StyleText.demoStatus
-        light2OnOffLabel.style = StyleText.demoStatus
-    }
-    
-    fileprivate func setupRgbSectionAppearance() {
-        rgbLightsView?.backgroundColor = StyleColor.white
-        rgbLightsView?.tb_applyCommonRoundedCornerWithShadowStyle()
-        colorHueView?.tb_applyRoundedCorner(1)
-        
-        rgbButton?.setImage(UIImage(named: "ic_led_lights_off")!, for: UIControl.State())
-        rgbStateLabel?.style = StyleText.demoStatus
-        rgbStateLabel?.text = "--"
-        
-        colorLabel?.tb_setText(colorString, style: .header2)
-        colorSlider?.minimumTrackTintColor = UIColor.clear
-        colorSlider?.maximumTrackTintColor = UIColor.clear
-        colorSlider?.minimumValue = 0.01
-        colorSlider?.maximumValue = 0.99
-        colorSlider?.isContinuous = true
-        
-        brightnessLabel?.tb_setText(brightnessString, style: .header2)
-        brightnessSlider?.minimumTrackTintColor = StyleColor.lightGray
-        brightnessSlider?.maximumTrackTintColor = StyleColor.lightGray
-        brightnessSlider?.minimumValue = 0.01
-        brightnessSlider?.maximumValue = 1.00
-        brightnessSlider?.isContinuous = true
-        
-        brightnessNegativeLabel?.tb_setText("-", style: StyleText.demoStatus)
-        brightnessPositiveLabel?.tb_setText("+", style: StyleText.demoStatus)
-
-        rgbLedViews.forEach({
-            $0.backgroundColor = StyleColor.lightGray
-            $0.tb_applyRoundedCorner(Float($0.frame.size.width/2))
-        })
-    }
-    
-    fileprivate func addSliderGestures() {
-        brightnessSlider?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(brightnessSliderTapped)))
-        colorSlider?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(colorSliderTapped)))
-    }
-    
-    @objc func brightnessSliderTapped(_ recognizer: UITapGestureRecognizer) {
+    @objc @IBAction func brightnessSliderTapped(_ recognizer: UITapGestureRecognizer) {
         brightnessSlider?.tb_updateSliderValueWithTap(recognizer)
     }
     
-    @objc func colorSliderTapped(_ recognizer: UITapGestureRecognizer) {
+    @objc @IBAction func colorSliderTapped(_ recognizer: UITapGestureRecognizer) {
         colorSlider?.tb_updateSliderValueWithTap(recognizer)
     }
 }
@@ -294,10 +203,135 @@ extension LedRgb {
 }
 
 extension UISlider {
-    func tb_updateSliderValueWithTap(_ gesture: UITapGestureRecognizer) {
+    @IBAction func tb_updateSliderValueWithTap(_ gesture: UITapGestureRecognizer) {
         let point = gesture.location(in: self)
         self.value = Float(point.x / self.frame.size.width)
         self.sendActions(for: UIControl.Event.valueChanged)
     }
 }
 
+extension IoDemoViewController: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        if rgbEnabled {
+            return 3
+        }
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return 1
+        case 1:
+            return 1
+        case 2:
+            return 4
+        default:
+            return 0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch indexPath.section {
+        case 0:
+            switch indexPath.row {
+            case 0:
+                let cell: SwitchStatusCell = tableView.dequeueReusableCell(withIdentifier: "SwitchStatusCell", for: indexPath) as! SwitchStatusCell
+                for switchView in cell.switches {
+                    switchView.isHidden = true
+                }
+                if switchNo == 0 {
+                    cell.switches[0].isHidden = false
+                    cell.switches[1].removeFromSuperview()
+                    cell.switchConstraint.constant = 27.0
+                } else {
+                    for switchView in cell.switches {
+                        switchView.isHidden = false
+                    }
+                }
+                return cell
+            default:
+                break
+            }
+        case 1:
+            switch indexPath.row {
+            case 0:
+                let cell: LightsCell = tableView.dequeueReusableCell(withIdentifier: "LightsCell", for: indexPath) as! LightsCell
+                cell.titleLabel.text = NSLocalizedString("led", comment: "")
+                for led in cell.lights {
+                    led.isHidden = true
+                }
+                if ledNo == 0 {
+                    cell.lights[0].isHidden = false
+                    cell.lights[0].tag = 0
+                } else {
+                    for led in cell.lights {
+                        led.isHidden = false
+                    }
+                    cell.titleLabel.text = NSLocalizedString("leds", comment: "")
+                }
+                return cell
+            default:
+                break
+            }
+        case 2:
+            switch indexPath.row {
+            case 0:
+                let cell: RGBCell = tableView.dequeueReusableCell(withIdentifier: "RGBCell", for: indexPath) as! RGBCell
+                cell.titleLabel.text = NSLocalizedString("rgb_leds", comment: "")
+                cell.lightSwitch.isOn = showRGB
+                cell.layer.maskedCorners = [.layerMinXMinYCorner,.layerMaxXMinYCorner]
+                return cell
+            case 1:
+                let cell: StrengthCell = tableView.dequeueReusableCell(withIdentifier: "StrengthCell", for: indexPath) as! StrengthCell
+                cell.barView.isUserInteractionEnabled = showRGB
+                return cell
+            case 2:
+                let cell: ColorCell = tableView.dequeueReusableCell(withIdentifier: "ColorCell", for: indexPath) as! ColorCell
+                cell.colorSlider.isEnabled = showRGB
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    self.colorSliderChanged(cell.colorSlider)
+                }
+                return cell
+            case 3:
+                let cell: BrightnessCell = tableView.dequeueReusableCell(withIdentifier: "BrightnessCell", for: indexPath) as! BrightnessCell
+                cell.slider.isEnabled = showRGB
+                cell.layer.maskedCorners = [.layerMinXMaxYCorner,.layerMaxXMaxYCorner]
+                return cell
+            default:
+                break
+            }
+        default:
+            break
+        }
+        return tableView.dequeueReusableCell(withIdentifier: "BlankCell", for: indexPath)
+    }
+}
+
+extension IoDemoViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch indexPath.section {
+        case 0:
+            return 85
+        case 1:
+            return 64
+        case 2:
+            switch indexPath.row {
+            case 0:
+                return 64
+            case 1:
+                return 64
+            case 2:
+                return 70
+            case 3:
+                return 90
+            default:
+                return 0
+            }
+        default:
+            return 0
+        }
+    }
+}

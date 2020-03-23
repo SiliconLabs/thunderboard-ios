@@ -9,6 +9,7 @@ import Foundation
 
 class SimulatedDevice : Device, DemoConfiguration, Equatable, CustomDebugStringConvertible {
     
+    var modelName: String
     fileprivate (set) var model: DeviceModel
     var name: String?
     var advertisementDataLocalName: String?
@@ -58,7 +59,7 @@ class SimulatedDevice : Device, DemoConfiguration, Equatable, CustomDebugStringC
         self.deviceIdentifier = identifier
         self.capabilities = capabilities
         self.RSSI = rssi ?? -40
-
+        self.modelName = ""
         connectionState = .disconnected
         
         delay(2.0) {
@@ -159,6 +160,7 @@ func ==(lhs: SimulatedDevice, rhs: SimulatedDevice) -> Bool {
 }
 
 extension Array {
+    
     func random() -> Element {
         let randomIndex = Int(arc4random()) % count
         return self[randomIndex]
