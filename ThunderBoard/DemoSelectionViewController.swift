@@ -18,8 +18,6 @@ class DemoSelectionViewController: UIViewController, UICollectionViewDataSource,
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = StyleColor.lightGray
-        //self.tb_removeTitleFromBackButton()
-        //self.navigationItem.setHidesBackButton(true, animated: false)
         self.navigationController!.navigationItem.backBarButtonItem?.title = "Previous"
     }
     

@@ -86,10 +86,6 @@ class IoDemoViewController: DemoViewController, IoDemoInteractionOutput {
         interaction?.toggleLed(2)
         showRGB = sender.isOn
         tableView.reloadData()
-        /*tableView.reloadRows(at: [IndexPath(row: 1, section: 2),
-                                  IndexPath(row: 2, section: 2),
-                                  IndexPath(row: 3, section: 2)],
-                             with: .automatic)*/
     }
     
     @IBAction func colorSliderChanged(_ sender: UISlider) {

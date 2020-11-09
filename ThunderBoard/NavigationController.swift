@@ -11,7 +11,7 @@ class NavigationController: UINavigationController {
 
     var connectedDeviceView: ConnectedDeviceBarView!
 
-    fileprivate let connectedDeviceBarHeight: CGFloat = 77
+    fileprivate var connectedDeviceBarHeight: CGFloat = 77
     fileprivate let connectionLostTitle = "Connection Lost"
     fileprivate let connectionDismiss   = "Dismiss"
     fileprivate func connectionLostMessage(_ deviceName: String) -> String {
@@ -32,8 +32,6 @@ class NavigationController: UINavigationController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupConnectedDeviceBar()
-        hideConnectedDeviceBar()
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -69,7 +67,6 @@ class NavigationController: UINavigationController {
     }
     
     fileprivate func setupConnectedDeviceBar() {
-        
         connectedDeviceView = UINib(nibName: "ConnectedDeviceBarView", bundle: nil).instantiate(withOwner: self, options: nil)[0] as? ConnectedDeviceBarView
         
         connectedDeviceView.backgroundColor = StyleColor.white
@@ -82,6 +79,12 @@ class NavigationController: UINavigationController {
             connectedDeviceView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             connectedDeviceView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
         ])
+    }
+    
+    internal func addBottomNotchToHeight(_ value: CGFloat) {
+        connectedDeviceBarHeight += value
+        setupConnectedDeviceBar()
+        hideConnectedDevice()
     }
     
     //MARK:- Internal

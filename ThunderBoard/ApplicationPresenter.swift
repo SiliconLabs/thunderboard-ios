@@ -53,6 +53,8 @@ class ApplicationPresenter : NSObject, DeviceTransportApplicationDelegate, Conne
         self.navigationController = NavigationController(rootViewController: deviceViewController)
         self.deviceViewController = deviceViewController
         
+        self.navigationController?.addBottomNotchToHeight(window?.safeAreaInsets.bottom ?? 0.0)
+        
         window?.rootViewController = self.navigationController
     }
     

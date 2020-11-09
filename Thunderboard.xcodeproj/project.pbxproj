@@ -43,7 +43,6 @@
 		4C96772823EC489B00B4EC61 /* MotionSense84BoardDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C96772723EC489B00B4EC61 /* MotionSense84BoardDemoViewController.swift */; };
 		4C97A50D23E82FDD000C6894 /* IoDemoInteractionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C97A50C23E82FDD000C6894 /* IoDemoInteractionProtocol.swift */; };
 		4C97A50F23E832C1000C6894 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4C97A50E23E832C1000C6894 /* Localizable.strings */; };
-		4CA586DE23DB1E3400602F57 /* UIColor+Thunderboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA586DD23DB1E3400602F57 /* UIColor+Thunderboard.swift */; };
 		4CB6CA0C23F3F1CE00A58A4C /* LightsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB6CA0B23F3F1CE00A58A4C /* LightsCell.swift */; };
 		4CB6CA0E23F3F37D00A58A4C /* SwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB6CA0D23F3F37D00A58A4C /* SwitchView.swift */; };
 		4CB6CA1023F40A2C00A58A4C /* StrengthCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB6CA0F23F40A2C00A58A4C /* StrengthCell.swift */; };
@@ -249,7 +248,6 @@
 		4C96772723EC489B00B4EC61 /* MotionSense84BoardDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionSense84BoardDemoViewController.swift; sourceTree = "<group>"; };
 		4C97A50C23E82FDD000C6894 /* IoDemoInteractionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoDemoInteractionProtocol.swift; sourceTree = "<group>"; };
 		4C97A50E23E832C1000C6894 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
-		4CA586DD23DB1E3400602F57 /* UIColor+Thunderboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Thunderboard.swift"; sourceTree = "<group>"; };
 		4CB6CA0B23F3F1CE00A58A4C /* LightsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightsCell.swift; sourceTree = "<group>"; };
 		4CB6CA0D23F3F37D00A58A4C /* SwitchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchView.swift; sourceTree = "<group>"; };
 		4CB6CA0F23F40A2C00A58A4C /* StrengthCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrengthCell.swift; sourceTree = "<group>"; };
@@ -675,7 +673,6 @@
 				AACEFC471F339C4200372BBA /* Data+Extensions.swift */,
 				6636653F1D8AC73800F0F082 /* UIViewController+Extensions.swift */,
 				DF7A90451BE4FA0B00CEF15E /* UIApplication+Version.swift */,
-				4CA586DD23DB1E3400602F57 /* UIColor+Thunderboard.swift */,
 				DF3A79DC1BCE265300E6A25E /* ThunderBoardErrors.swift */,
 				DF6ADFB61BBA4A1800B740D8 /* Assets.xcassets */,
 				4C97A50E23E832C1000C6894 /* Localizable.strings */,
@@ -1158,7 +1155,6 @@
 				DFF425861BF52CEB00B087F0 /* UITableView+Extensions.swift in Sources */,
 				DF7A3AE91BD1E56300DC441E /* SimulatedDeviceScanner.swift in Sources */,
 				DFA8C9A21BC8614F00DA938B /* ApplicationPresenter.swift in Sources */,
-				4CA586DE23DB1E3400602F57 /* UIColor+Thunderboard.swift in Sources */,
 				DF3B7D7B1BC6E27100CF2D45 /* DeviceConnection.swift in Sources */,
 				DF8F9AFE1BC7F25A00154590 /* EnvironmentalDemoConnection.swift in Sources */,
 				66C10F491D1428A0002F1BF7 /* MotionSenseBoardDemoViewController.swift in Sources */,
@@ -1431,7 +1427,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = 52444FG85C;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1441,7 +1437,7 @@
 				INFOPLIST_FILE = ThunderBoard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.0.1;
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.silabs.ThunderBoard;
 				PRODUCT_MODULE_NAME = ThunderBoard;
@@ -1459,7 +1455,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = 52444FG85C;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1469,7 +1465,7 @@
 				INFOPLIST_FILE = ThunderBoard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.silabs.ThunderBoard;
 				PRODUCT_MODULE_NAME = ThunderBoard;
 				PRODUCT_NAME = "$(TARGET_NAME)";

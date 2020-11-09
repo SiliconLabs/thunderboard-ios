@@ -27,12 +27,16 @@ class IoDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput, IoDemoC
     
     func updateView() {
         guard let connection = connection else { return }
-
-        if connection.device.modelName == "BRD4184A" {
+                
+        if connection.numberOfLeds == 1 {
             updateLed()
-            updateButton()
         } else {
             updateLeds()
+        }
+    
+        if connection.numberOfSwitches == 1 {
+            updateButton()
+        } else {
             updateButtons()
         }
         
@@ -40,7 +44,7 @@ class IoDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput, IoDemoC
             output?.disableRgb()
         }
     }
-    
+        
     func updateButton() {
         guard let connection = connection else { return }
         buttonPressed(0, pressed: connection.isSwitchPressed(0))

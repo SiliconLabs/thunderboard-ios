@@ -45,11 +45,7 @@ class EnvironmentDemoViewController: DemoViewController, EnvironmentDemoInteract
         }).disposed(by: disposeBag)
         
         NotificationCenter.default.addObserver(forName: SettingsViewController.temperatureSettingUpdated, object: nil, queue: nil) { (notification) in
-            self.collectionView.reloadData()
-        }
-        
-        NotificationCenter.default.addObserver(forName: SettingsViewController.measurementsSettingUpdated, object: nil, queue: nil) { (notification) in
-            self.collectionView.reloadData()
+            self.dataSource.update()
         }
     }
     

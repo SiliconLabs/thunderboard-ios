@@ -21,10 +21,12 @@ class EnvironmentDemoViewModel {
         self.capability = capability
     }
     
-    func updateData(cellData: EnvironmentCellData) {
+    func updateData(cellData: EnvironmentCellData, reload: Bool = true) {
         self.name.accept(cellData.name)
         self.value.accept(cellData.value)
-        self.imageName.accept(cellData.imageName)
+        if reload {
+            self.imageName.accept(cellData.imageName)
+        }
         self.imageBackgroundColor.accept(cellData.imageBackgroundColor)
     }
 }

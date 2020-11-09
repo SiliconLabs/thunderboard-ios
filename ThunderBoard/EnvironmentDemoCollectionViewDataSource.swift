@@ -30,6 +30,10 @@ class EnvironmentDemoCollectionViewDataSource : NSObject {
     fileprivate let allViewModels = BehaviorRelay<[EnvironmentDemoViewModel]>(value: [])
     let activeViewModels: Observable<[EnvironmentDemoViewModel]>
     
+    func update() {
+        calculateAllViewModelsValue()
+    }
+    
     fileprivate static let capabilityOrder: [DeviceCapability] = [
         .temperature,
         .humidity,
@@ -208,6 +212,19 @@ class EnvironmentDemoCollectionViewDataSource : NSObject {
     var currentHallEffectState: HallEffectState? = nil
     
     override init() {
+        activeViewModels = Observable.combineLatest(allViewModels.asObservable(), capabilities.asObservable().distinctUntilChanged())
+            .map { viewModels, capabilities in
+                return viewModels.filter({ capabilities.contains($0.capability) })
+        }
+        
+        super.init()
+        
+        calculateAllViewModelsValue()
+    }
+    
+    private func calculateAllViewModelsValue() {
+        let lastEmitedValueIsEmpty = allViewModels.value.isEmpty
+        
         let capabilityOrder = EnvironmentDemoCollectionViewDataSource.capabilityOrder
         let allViewModelsValue = capabilityOrder
             .compactMap { capability -> EnvironmentDemoViewModel? in
@@ -216,18 +233,11 @@ class EnvironmentDemoCollectionViewDataSource : NSObject {
                 }
                 
                 let viewModel = EnvironmentDemoViewModel(capability: capability)
-                viewModel.updateData(cellData: data)
+                viewModel.updateData(cellData: data, reload: lastEmitedValueIsEmpty)
                 return viewModel
         }
         
         allViewModels.accept(allViewModelsValue)
-        
-        activeViewModels = Observable.combineLatest(allViewModels.asObservable(), capabilities.asObservable().distinctUntilChanged())
-            .map { viewModels, capabilities in
-                return viewModels.filter({ capabilities.contains($0.capability) })
-        }
-        
-        super.init()
     }
     
     // MARK: - Public (Internal)

@@ -406,7 +406,7 @@ class BleDevice : NSObject, Device, DemoConfiguration, CBPeripheralDelegate {
                     case "RD-0057":
                         self.model = .react
                     case "BRD4160A": fallthrough
-                    case "BRD4166A", "BRD4184A":
+                    case "BRD4166A", "BRD4184A", "BRD4184B":
                         self.model = .sense
                     default:
                         self.model = .unknown

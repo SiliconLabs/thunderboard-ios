@@ -13,10 +13,18 @@ class BleIoDemoConnection: IoDemoConnection {
     var device: Device
     
     var numberOfLeds: Int {
+        if modelHasOneLedAndOneButton(modelName: bleDevice.modelName) {
+            return 1
+        }
+        
         return 2 + ((hasAnalogRgb) ? 1 : 0)
     }
     
     var numberOfSwitches: Int {
+        if modelHasOneLedAndOneButton(modelName: bleDevice.modelName) {
+            return 1
+        }
+        
         return 2    // TODO: detect this value based on digital characteristics
     }
 
@@ -212,5 +220,14 @@ class BleIoDemoConnection: IoDemoConnection {
                             UInt8(color.red * 255),
                             UInt8(color.green * 255),
                             UInt8(color.blue * 255)])
+    }
+    
+    fileprivate func modelHasOneLedAndOneButton(modelName: String) -> Bool {
+        let modelsWithOneLetAndOneButton = [
+            "BRD4184A",
+            "BRD4184B"
+        ]
+        
+        return modelsWithOneLetAndOneButton.contains(modelName)
     }
 }
