@@ -29,10 +29,6 @@ class SimulatedIoDemoConnection : IoDemoConnection {
         let index = Int(led)
         if index < deviceState.count {
             deviceState[index] = state
-            
-            delay(0.5) {
-                self.connectionDelegate?.buttonPressed(index, pressed: self.isSwitchPressed(index))
-            }
 
             self.connectionDelegate?.updatedLed(led, state: state)
         }

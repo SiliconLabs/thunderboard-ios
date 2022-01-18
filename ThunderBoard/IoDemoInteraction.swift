@@ -7,14 +7,11 @@
 
 import Foundation
 
-class IoDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput, IoDemoConnectionDelegate, IoDemoStreamingDataSource {
+class IoDemoInteraction : IoDemoConnectionDelegate {
     
     fileprivate weak var output: IoDemoInteractionOutput?
     fileprivate var connection: IoDemoConnection?
 
-    var streamingConnection: DemoStreamingConnection?
-    weak var streamingOutput: DemoStreamingInteractionOutput?
-    weak var streamSharePresenter: DemoStreamSharePresenter?
     weak var settingsPresenter: SettingsPresenter?
 
     //MARK: Public
@@ -93,8 +90,8 @@ class IoDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput, IoDemoC
     
     //MARK: IoDemoConnectionDelegate
     
+    // TODO: empty
     func demoDeviceDisconnected() {
-        streamingConnection?.stopStreaming()
     }
     
     func buttonPressed(_ button: Int, pressed: Bool) {
@@ -103,32 +100,6 @@ class IoDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput, IoDemoC
     
     func updatedLed(_ led: Int, state: LedState) {
         output?.showLedState(led, state: state)
-    }
-    
-    //MARK:- IoDemoStreamingDataSource
-    
-    func currentInputStates() -> [Bool] {
-        guard let connection = connection else {
-            log.error("Connection to device is invalid")
-            return []
-        }
-        
-        return [
-            connection.isSwitchPressed(0),  // TODO WIP Sense: hardcoded number of inputs
-            connection.isSwitchPressed(1)
-        ]
-    }
-    
-    func currentOutputStates() -> [LedState] {
-        guard let connection = connection else {
-            log.error("Connection to device is invalid")
-            return []
-        }
-        
-        return [
-            connection.ledState(0),   // TODO WIP Sense: hardcoded number of outputs
-            connection.ledState(1)
-        ]
     }
     
     func showSettings() {

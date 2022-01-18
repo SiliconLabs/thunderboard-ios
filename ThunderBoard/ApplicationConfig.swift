@@ -28,9 +28,4 @@ class ApplicationConfig {
     class var FirebaseToken: String {
         get { return "AIzaSyBchrm2wi0gxIhloko-KTQahaui8v29zXw" }
     }
-    
-    // Hockey Token - (32 character string provided by Hockey for crash reporting)
-    class var HockeyToken: String? {
-        get { return "" }
-    }
 }

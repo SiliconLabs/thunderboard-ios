@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import HockeySDK
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,15 +15,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-        if let hockeyToken = ApplicationConfig.HockeyToken {
-            BITHockeyManager.shared().configure(withIdentifier: hockeyToken)
-            BITHockeyManager.shared().start()
-        }
-
         let background = application.applicationState
         log.info("launchOptions=\(String(describing: launchOptions)) background=\(background.rawValue)")
-
-        FirebaseConnectionMonitor.shared.checkAuth()
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window?.tintColor = StyleColor.terbiumGreen

@@ -6,8 +6,7 @@ target 'Thunderboard' do
   use_frameworks!
 
   # Pods for Thunderboard
-  pod "HockeySDK"
-  pod 'RxSwift',    '~> 5.0'
-  pod 'RxCocoa',    '~> 5.0'
+  pod 'RxSwift',    '~> 6.2.0'
+  pod 'RxCocoa',    '~> 6.2.0'
   pod 'WYPopoverController'
 end

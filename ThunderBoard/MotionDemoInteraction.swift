@@ -16,11 +16,8 @@ protocol MotionDemoInteractionOutput : class {
     func deviceCalibrating(_ isCalibrating: Bool)
 }
 
-class MotionDemoInteraction : DemoStreamingInteraction, MotionDemoConnectionDelegate, DemoStreamingOutput, MotionDemoStreamingDataSource {
+class MotionDemoInteraction : MotionDemoConnectionDelegate {
 
-    var streamingConnection: DemoStreamingConnection?
-    weak var streamingOutput: DemoStreamingInteractionOutput?
-    weak var streamSharePresenter: DemoStreamSharePresenter?
     weak var settingsPresenter: SettingsPresenter?
 
     fileprivate weak var output: MotionDemoInteractionOutput?
@@ -113,20 +110,6 @@ class MotionDemoInteraction : DemoStreamingInteraction, MotionDemoConnectionDele
         queue.isSuspended = false
     }
     
-    //MARK: - MotionDemoStreamingDataSource
-    
-    func currentAcceleration() -> ThunderboardVector {
-        return acceleration
-    }
-    
-    func currentOrientation() -> ThunderboardInclination {
-        return orientation
-    }
-    
-    func currentPosition() -> ThunderboardWheel {
-        return position
-    }
-    
     func wheelDiameter() -> Meters {
         return position.diameter
     }
@@ -134,8 +117,6 @@ class MotionDemoInteraction : DemoStreamingInteraction, MotionDemoConnectionDele
     //MARK: - MotionDemoConnectionDelegate
     
     func demoDeviceDisconnected() {
-        streamingConnection?.stopStreaming()
-        
         // If calibration is in-progress, trigger completion
         finishedCalbration()
         finishedOrientationReset()

@@ -1,37 +1,30 @@
 PODS:
-  - HockeySDK (4.1.3):
-    - HockeySDK/DefaultLib (= 4.1.3)
-  - HockeySDK/DefaultLib (4.1.3)
-  - RxCocoa (5.0.0):
-    - RxRelay (~> 5)
-    - RxSwift (~> 5)
-  - RxRelay (5.0.0):
-    - RxSwift (~> 5)
-  - RxSwift (5.0.0)
+  - RxCocoa (6.2.0):
+    - RxRelay (= 6.2.0)
+    - RxSwift (= 6.2.0)
+  - RxRelay (6.2.0):
+    - RxSwift (= 6.2.0)
+  - RxSwift (6.2.0)
   - WYPopoverController (0.3.9)
 
 DEPENDENCIES:
-  - HockeySDK
-  - RxCocoa (~> 5.0)
-  - RxSwift (~> 5.0)
+  - RxCocoa (~> 6.2.0)
+  - RxSwift (~> 6.2.0)
   - WYPopoverController
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
-    - HockeySDK
+  trunk:
     - RxCocoa
     - RxRelay
     - RxSwift
-  trunk:
     - WYPopoverController
 
 SPEC CHECKSUMS:
-  HockeySDK: 81c37cbd6e0a93a752da839229d0e0bd3485bc9c
-  RxCocoa: fcf32050ac00d801f34a7f71d5e8e7f23026dcd8
-  RxRelay: 4f7409406a51a55cd88483f21ed898c234d60f18
-  RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
+  RxCocoa: 4baf94bb35f2c0ab31bc0cb9f1900155f646ba42
+  RxRelay: e72dbfd157807478401ef1982e1c61c945c94b2f
+  RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
   WYPopoverController: a9db25ac2841a686acdc0f3a99bdb21545db32f4
 
-PODFILE CHECKSUM: d86540e47e382dcfbe6a1af831ed9435cb864459
+PODFILE CHECKSUM: 847eb703c22a5edabc1094486bd4abe9c8938753
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.1

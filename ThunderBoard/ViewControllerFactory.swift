@@ -42,16 +42,9 @@ class ViewControllerFactory {
         let demoViewController = UIStoryboard(name: "EnvironmentDemoViewController", bundle: nil).instantiateViewController(withIdentifier: "EnvironmentDemoViewController") as! EnvironmentDemoViewController
         
         let interaction = EnvironmentDemoInteraction(output: demoViewController, demoConnection: connection)
-        interaction.streamingOutput = demoViewController
-        interaction.streamSharePresenter = self.presenter
-        
-        let streaming = EnvironmentDemoStreamingConnection(device: connection.device, output: interaction)
-        streaming.dataSource = interaction
-        interaction.streamingConnection = streaming
         interaction.settingsPresenter = settingsPresenter
 
         demoViewController.interaction = interaction
-        demoViewController.streamingInteraction = interaction
         
         return demoViewController
     }
@@ -62,16 +55,9 @@ class ViewControllerFactory {
         let demoViewController = UIStoryboard(name: "IoDemoViewController", bundle: nil).instantiateViewController(withIdentifier: "IoDemoViewController") as! IoDemoViewController
         
         let interaction = IoDemoInteraction(output: demoViewController, demoConnection: connection)
-        interaction.streamingOutput = demoViewController
-        interaction.streamSharePresenter = self.presenter
         interaction.settingsPresenter = settingsPresenter
-        
-        let streaming = IoDemoStreamingConnection(device: connection.device, output: interaction)
-        streaming.dataSource = interaction
-        interaction.streamingConnection = streaming
 
         demoViewController.interaction = interaction
-        demoViewController.streamingInteraction = interaction
 
         return demoViewController
     }
@@ -82,16 +68,10 @@ class ViewControllerFactory {
         let demoViewController = UIStoryboard(name: "MotionCarDemoViewController", bundle: nil).instantiateViewController(withIdentifier: "MotionCarDemoViewController") as! MotionCarDemoViewController
         
         let interaction = MotionDemoInteraction(output: demoViewController, demoConnection: connection)
-        interaction.streamingOutput = demoViewController
-        interaction.streamSharePresenter = self.presenter
 
-        let streaming = MotionDemoStreamingConnection(device: connection.device, output: interaction)
-        streaming.dataSource = interaction
-        interaction.streamingConnection = streaming
         interaction.settingsPresenter = settingsPresenter
         
         demoViewController.interaction = interaction
-        demoViewController.streamingInteraction = interaction
         
         return demoViewController
     }
@@ -102,16 +82,9 @@ class ViewControllerFactory {
         let demoViewController = UIStoryboard(name: "MotionBoardDemoViewController", bundle: nil).instantiateViewController(withIdentifier: "MotionBoardDemoViewController") as! MotionBoardDemoViewController
         
         let interaction = MotionDemoInteraction(output: demoViewController, demoConnection: connection)
-        interaction.streamingOutput = demoViewController
-        interaction.streamSharePresenter = self.presenter
         interaction.settingsPresenter = settingsPresenter
         
-        let streaming = MotionDemoStreamingConnection(device: connection.device, output: interaction)
-        streaming.dataSource = interaction
-        interaction.streamingConnection = streaming
-        
         demoViewController.interaction = interaction
-        demoViewController.streamingInteraction = interaction
 
         return demoViewController
     }
@@ -122,16 +95,9 @@ class ViewControllerFactory {
         let demoViewController = UIStoryboard(name: "MotionSenseBoardDemoViewController", bundle: nil).instantiateViewController(withIdentifier: "MotionSense84BoardDemoViewController") as! MotionSense84BoardDemoViewController
         
         let interaction = MotionDemoInteraction(output: demoViewController, demoConnection: connection)
-        interaction.streamingOutput = demoViewController
-        interaction.streamSharePresenter = self.presenter
-        
-        let streaming = MotionDemoStreamingConnection(device: connection.device, output: interaction)
-        streaming.dataSource = interaction
-        interaction.streamingConnection = streaming
         interaction.settingsPresenter = settingsPresenter
         
         demoViewController.interaction = interaction
-        demoViewController.streamingInteraction = interaction
         
         return demoViewController
     }
@@ -142,16 +108,9 @@ class ViewControllerFactory {
         let demoViewController = UIStoryboard(name: "MotionSenseBoardDemoViewController", bundle: nil).instantiateViewController(withIdentifier: "MotionSenseBoardDemoViewController") as! MotionSenseBoardDemoViewController
         
         let interaction = MotionDemoInteraction(output: demoViewController, demoConnection: connection)
-        interaction.streamingOutput = demoViewController
-        interaction.streamSharePresenter = self.presenter
         interaction.settingsPresenter = settingsPresenter
         
-        let streaming = MotionDemoStreamingConnection(device: connection.device, output: interaction)
-        streaming.dataSource = interaction
-        interaction.streamingConnection = streaming
-        
         demoViewController.interaction = interaction
-        demoViewController.streamingInteraction = interaction
         
         return demoViewController
     }

@@ -25,9 +25,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Thunderboard uses bluetooth.</string>
+	<string>Bluetooth access is required to find Thunderboard kits advertising in your proximity.</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Thunderboard uses bluetooth.</string>
+	<string>Bluetooth access is required to find Thunderboard kits advertising in your proximity.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Thunderboard uses beacons to find nearby devices</string>
 	<key>UIAppFonts</key>

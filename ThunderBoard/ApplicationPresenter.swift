@@ -8,7 +8,7 @@
 import UIKit
 import SafariServices
 
-typealias PresentationRoles = DeviceSelectionPresenter & DemoSelectionPresenter & DemoPresenter & DemoStreamSharePresenter & NotificationPresenter & DemoHistoryPresenter & SettingsPresenter
+typealias PresentationRoles = DeviceSelectionPresenter & DemoSelectionPresenter & DemoPresenter & NotificationPresenter & DemoHistoryPresenter & SettingsPresenter
 class ApplicationPresenter : NSObject, DeviceTransportApplicationDelegate, ConnectedDeviceDelegate, PresentationRoles {
 
     var navigationController: NavigationController?
@@ -138,7 +138,7 @@ class ApplicationPresenter : NSObject, DeviceTransportApplicationDelegate, Conne
                 demo = factory.motionBoardDemoViewController(connection, settingsPresenter: self)
             }
         case .sense:
-            if connection.device.modelName == "BRD4184A" {
+            if connection.device.modelName == "BRD4184A" || connection.device.modelName == "BRD4166B" {
                 demo = factory.motionSense84BoardDemoViewController(connection, settingsPresenter: self)
             } else {
                 demo = factory.motionSenseBoardDemoViewController(connection, settingsPresenter: self)

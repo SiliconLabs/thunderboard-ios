@@ -11,14 +11,11 @@ protocol EnvironmentDemoInteractionOutput : class {
     func updatedEnvironmentData(_ data: EnvironmentData, capabilities: Set<DeviceCapability>)
 }
 
-class EnvironmentDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput, EnvironmentDemoConnectionDelegate, EnvironmentDemoStreamingDataSource {
-
+class EnvironmentDemoInteraction: EnvironmentDemoConnectionDelegate {
+    
     fileprivate weak var output: EnvironmentDemoInteractionOutput?
     fileprivate var connection: EnvironmentDemoConnection?
     
-    var streamingConnection: DemoStreamingConnection?
-    weak var streamingOutput: DemoStreamingInteractionOutput?
-    weak var streamSharePresenter: DemoStreamSharePresenter?
     weak var settingsPresenter: SettingsPresenter?
 
     fileprivate var currentData: EnvironmentData = EnvironmentData()
@@ -43,19 +40,13 @@ class EnvironmentDemoInteraction : DemoStreamingInteraction, DemoStreamingOutput
 
     //MARK: - EnvironmentDemoConnectionDelegate
     
+    // TODO: - empty
     func demoDeviceDisconnected() {
-        streamingConnection?.stopStreaming()
     }
     
     func updatedEnvironmentData(_ data: EnvironmentData) {
         currentData = data
         self.output?.updatedEnvironmentData(currentData, capabilities: capabilities)
-    }
-    
-    //MARK: - EnvironmentDemoStreamingDataSource
-    
-    func currentEnvironmentData() -> EnvironmentData? {
-        return currentData
     }
     
     func showSettings() {
